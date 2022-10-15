@@ -1,28 +1,56 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <HeaderVue titulo="Sistema PDV" />
+    <MenuVue />
+    <FooterVue />
+    <ConteudoVue />
   </div>
+
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+/*import AutenticacaoVue from './components/Autenticacao/AutenticacaoVue.vue'*/
+import HeaderVue from './components/template/HeaderVue.vue'
+import MenuVue from './components/template/MenuVue.vue'
+import FooterVue from './components/template/FooterVue.vue'
+import ConteudoVue from './components/template/ConteudoVue.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    HeaderVue,
+    MenuVue,
+    FooterVue,
+    ConteudoVue,
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,body{
+  font-family: 'Poppins', sans-serif;
+  font-family: 'Rubik', sans-serif;
+  font-family: 'Roboto', sans-serif;
+}
+
+#app{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 60px 1fr 40px;
+  grid-template-columns: 300px 1fr;
+  grid-template-areas: 
+  "header header"
+  "menu content"
+  "footer footer"
 }
+
 </style>
