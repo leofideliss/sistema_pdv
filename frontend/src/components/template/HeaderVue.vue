@@ -1,10 +1,12 @@
 <template>
     <header class="header">
         <a class="toggle" @click="toggleMenu">
-            <img src="@/assets/check.svg" alt="abrir e fechar">
+            <img src="@/assets/menu-aberto.png" alt="menu lateral" class="menu-lateral">
         </a>
         <h1 class="titulo">
-            {{titulo}}
+            <router-link to="/">
+                {{titulo}}
+            </router-link>
         </h1>
     </header>
 </template>
@@ -19,7 +21,7 @@ export default {
     },
     methods: {
         toggleMenu(){
-            console.log('ToggleMenu')
+            this.$store.commit('toggleMenu')
         }
     }
 }
@@ -38,11 +40,16 @@ export default {
     .titulo{
         font-size: 1.2rem;
 
-        color: #4280e1;
+        color: black;
         font-weight: 100;
         flex-grow: 1;
         text-align: center;
         font-family: "Rubik";
+    }
+
+    .titulo a{
+        color: black;
+        text-decoration: none;
     }
 
     .header.header > a.toggle{
@@ -57,7 +64,12 @@ export default {
         align-items: center;
     }
 
+    .menu-lateral{
+        width: 20px;
+    }
+
     header.header > a.toggle:hover{
         background-color: rgba(0,0,0,0.2);
+        cursor: pointer;
     }
 </style>

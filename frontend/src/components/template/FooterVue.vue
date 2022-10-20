@@ -26,5 +26,6 @@ export default {
     .footer span{
         font-family: "Rubik";
         font-size: 0.8rem;
+        color: black;
     }
 </style>
