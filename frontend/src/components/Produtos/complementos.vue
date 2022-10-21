@@ -11,13 +11,23 @@
             </router-link>
         </div>
 
-        <b-table hover striped :items="complements" :fields="fields">
-            <template slot="cell(actions)">
-                <b-button variant="warning" class="mr-2">
-                    <img src="@/assets/lapis.png" alt="Icone de somar" class="icone-lapis">
-                </b-button>
-            </template>   
-        </b-table>
+        <v-card>
+            <v-card-title>
+                <v-text-field
+                    v-model="search"
+                    append-icon="mdi-magnify"
+                    label="Buscar"
+                    single-line
+                    hide-details
+                ></v-text-field>
+            </v-card-title>
+            <v-data-table
+                :headers="headers"
+                :items="itens"
+                :search="search"
+            >
+            </v-data-table>
+        </v-card>
 
         
     </div>
@@ -29,23 +39,125 @@
     name: 'ComplementosVue',
     data: function(){
         return{
-            complements: [
-                {id: 40, nome:'Alface',prodVinculados:'X-bacon,X-frango,X-Egg,X-Tudo, X-FrangoBacon' ,precoCusto:1.5, precoVenda:4.0, ativo:true},
-                {id: 20, nome:'Milho',prodVinculados:'X-bacon,X-frango,X-Egg,X-Tudo, X-FrangoBacon', precoCusto:1, precoVenda:3., ativo: false},
-                {id: 2, nome:'Banana', prodVinculados:'X-bacon,X-frango,X-Egg,X-Tudo, X-FrangoBacon' ,precoCusto:2.5, precoVenda:6.0, ativo: true},
-                {id: 10, nome:'Amendoim', prodVinculados:'X-bacon,X-frango,X-Egg,X-Tudo, X-FrangoBacon' ,precoCusto:5, precoVenda:15.0, ativo:false},
-            ],
-            fields: [
-                { key: 'id', label: 'Codigo', sortable: true},
-                { key: 'nome', label: 'Nome', sortable: true},
-                {key: 'prodVinculados', label: 'Produtos Vinculados'},
-                {key: 'precoCusto', label: 'Preço de Custo', sortable: true},
-                {key: 'precoVenda', label: 'Preço de Venda', sortable: true},
-                {key: 'ativo', label: 'Status Venda', sortable: true, formatter: value => value ? 'Ativo' : 'Desativado'},
-                {key: 'actions', label: 'Ações'}
-            ]
+        
+        search: '',
+        headers: [
+          {
+            text: 'Código',
+            align: 'start',
+            filterable: false,
+            value: 'id',
+          },
+          { text: 'Nome', value: 'nome' },
+          { text: 'Produtos Vinculados', value: 'prodVinculados' },
+          { text: 'Preço Custo', value: 'precoCusto' },
+          { text: 'Preço Venda', value: 'precoVenda' },
+          { text: 'Status', value: 'status' },
+          { text: 'Ações', value: 'actions' },
+        ],
+        itens: [
+          {
+            id: 13,
+            nome: 'Frozen Yogurt',
+            prodVinculados: 'X-tudo, X-Frango, X-egg, X-Burger',
+            precoCusto: 6.0,
+            precoVenda: 24,
+            status: 'ativo',
+            
+          },
+          {
+            id: 13,
+            nome: 'Frozen Yogurt',
+            prodVinculados: 'X-tudo, X-Frango, X-egg, X-Burger',
+            precoCusto: 6.0,
+            precoVenda: 24,
+            status: 'desativado',
+            
+          },
+          {
+            id: 2,
+            nome: 'Frozen Yogurt',
+            prodVinculados: 'X-tudo, X-Frango, X-egg, X-Burger',
+            precoCusto: 6.0,
+            precoVenda: 24,
+            status: 'ativo',
+            
+          },
+          {
+            id: 13,
+            nome: 'Frozen Yogurt',
+            prodVinculados: 'X-tudo, X-Frango, X-egg, X-Burger',
+            precoCusto: 6.0,
+            precoVenda: 24,
+            status: 'ativo',
+            
+          },
+          {
+            id: 54,
+            nome: 'Frozen Yogurt',
+            prodVinculados: 'X-tudo, X-Frango, X-egg, X-Burger',
+            precoCusto: 6.0,
+            precoVenda: 24,
+            status: 'ativo',
+            
+          },
+          {
+            id: 12,
+            nome: 'Frozen Yogurt',
+            prodVinculados: 'X-tudo, X-Frango, X-egg, X-Burger',
+            precoCusto: 6.0,
+            precoVenda: 24,
+            status: 'ativo',
+            
+          },
+          {
+            id: 32,
+            nome: 'Frozen Yogurt',
+            prodVinculados: 'X-tudo, X-Frango, X-egg, X-Burger',
+            precoCusto: 6.0,
+            precoVenda: 24,
+            status: 'ativo',
+            
+          },
+          {
+            id: 13,
+            nome: 'Calabresa',
+            prodVinculados: 'X-tudo, X-Frango, X-egg, X-Burger',
+            precoCusto: 6.0,
+            precoVenda: 24,
+            status: 'ativo',
+            
+          },
+          {
+            id: 13,
+            nome: 'Cebola',
+            prodVinculados: 'X-tudo, X-Frango, X-egg, X-Burger',
+            precoCusto: 6.0,
+            precoVenda: 24,
+            status: 'ativo',
+            
+          },
+          {
+            id: 13,
+            nome: 'Alface',
+            prodVinculados: 'X-tudo, X-Frango, X-egg, X-Burger',
+            precoCusto: 6.0,
+            precoVenda: 24,
+            status: 'ativo',
+            
+          },
+          {
+            id: 13,
+            nome: 'Alface',
+            prodVinculados: 'X-tudo, X-Frango, X-egg, X-Burger',
+            precoCusto: 6.0,
+            precoVenda: 24,
+            status: 'ativo',
+            
+          },
+        ],
         }
-    }
+    },
     
 }
 </script>
