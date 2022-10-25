@@ -1,14 +1,13 @@
 <template>
-  <div id="app" :class="{ 'hide-menu': !isMenuVisible }">
-    <HeaderVue titulo="Sistema PDV" />
-    <MenuVue />
-    <FooterVue />
-    <ConteudoVue />
-  </div>
+    <div id="app" :class="{ 'hide-menu': !isMenuVisible }">
+      <HeaderVue titulo="Sistema PDV" />
+      <MenuVue />
+      <FooterVue />
+      <ConteudoVue />
+    </div>
 </template>
 
 <script>
-/*import AutenticacaoVue from './components/Autenticacao/AutenticacaoVue.vue'*/
 import HeaderVue from "./components/template/HeaderVue.vue";
 import MenuVue from "./components/template/MenuVue.vue";
 import FooterVue from "./components/template/FooterVue.vue";
@@ -45,6 +44,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
+
   display: grid;
   grid-template-rows: 60px 1fr 40px;
   grid-template-columns: 300px 1fr;

@@ -1,22 +1,18 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-// import AutenticacaoVue from '@/components/Autenticacao/AutenticacaoVue.vue'
 
 import Home from '@/components/Home/Home.vue'
 import Complemento from '@/components/Produtos/complementos.vue'
 import NovoComplemento from '@/components/Produtos/NovoComplemento.vue'
+import AutenticacaoVue from '@/components/Autenticacao/AutenticacaoVue.vue'
 
 
 
 Vue.use(VueRouter)
 
 const routes = [
-    // {
-    //     name: 'Login',
-    //     path: '/signin',
-    //     component: AutenticacaoVue
-    // },    
+   
     {
         name: 'Home',
         path: '/',
@@ -31,7 +27,13 @@ const routes = [
         name: 'NovoComplemento',
         path: '/novoComplemento',
         component: NovoComplemento
-    }
+    },
+    {
+        name: 'Login',
+        path: '/signin',
+        component: AutenticacaoVue
+
+    },    
 ]
 
 export default new VueRouter({

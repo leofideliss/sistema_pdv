@@ -1,6 +1,6 @@
 <template>
     <header class="header">
-        <a class="toggle" @click="toggleMenu">
+        <a class="toggle" @click="toggleMenu" >
             <img src="@/assets/menu-aberto.png" alt="menu lateral" class="menu-lateral">
         </a>
         <h1 class="titulo">
