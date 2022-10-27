@@ -29,8 +29,8 @@ const routes = [
         component: NovoComplemento
     },
     {
-        name: 'Login',
-        path: '/signin',
+        name: 'login',
+        path: '/login',
         component: AutenticacaoVue
 
     },    
