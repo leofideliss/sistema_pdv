@@ -1,52 +1,84 @@
 <template>
-  <div id="principal" :class="{'hide-menu': !isMenuVisible}">
-    <HeaderVue titulo="Sistema PDV" />
+  <div id="app" :class="{ 'hide-menu': !isMenuVisible || !user }">
+    <HeaderVue titulo="Sistema PDV" :hideToggle="user" />
     <MenuVue />
+    <LoadingVue v-if="validatingToken" />
     <FooterVue />
     <ConteudoVue />
   </div>
 </template>
 
 <script>
-/*import AutenticacaoVue from './components/Autenticacao/AutenticacaoVue.vue'*/
-import HeaderVue from './components/template/HeaderVue.vue'
-import MenuVue from './components/template/MenuVue.vue'
-import FooterVue from './components/template/FooterVue.vue'
-import ConteudoVue from './components/template/ConteudoVue.vue'
-import { mapState } from 'vuex'
+import HeaderVue from "./components/template/HeaderVue.vue";
+import MenuVue from "./components/template/MenuVue.vue";
+import FooterVue from "./components/template/FooterVue.vue";
+import ConteudoVue from "./components/template/ConteudoVue.vue";
+import LoadingVue from "@/components/template/LoadingVue.vue";
+import { mapState } from "vuex";
+
+import { userKey, baseApiUrl } from "@/global.js";
+import axios from "axios";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     HeaderVue,
     MenuVue,
     FooterVue,
     ConteudoVue,
+    LoadingVue,
   },
-  computed: mapState(['isMenuVisible'])
+  computed: mapState(["isMenuVisible", "user"]),
+  methods: {
+    async validateToken() {
+      this.validatingToken = true;
+      const json = localStorage.getItem(userKey);
+      const userData = JSON.parse(json);
+      this.$store.commit("setUser", null);
+      if (!userData) {
+        this.validatingToken = false;
+        this.$router.push({ name: "login" });
+        return;
+      }
+      const res = await axios.post(`${baseApiUrl}/validateToken`, userData);
+      if (res.data) {
+        this.$store.commit("setUser", userData);
 
-
+        if (this.$mq === "xs" || this.$mq === "sm") {
+          this.$store.commit("toggleMenu", false);
+        }
+      } else {
+        localStorage.removeItem(userKey);
+        this.$router.push({ name: "login" });
+      }
+      this.validatingToken = false;
+    },
+  },
+  created() {
+    this.validateToken();
+  },
 };
 </script>
 
 <style>
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-
-html,body{
-  font-family: 'Poppins', sans-serif;
-  font-family: 'Rubik', sans-serif;
-  font-family: 'Roboto', sans-serif;
+html,
+body {
+  font-family: "Poppins", sans-serif;
+  font-family: "Rubik", sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 #principal{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
+
   display: grid;
   grid-template-rows: 60px 1fr 40px;
   grid-template-columns: 300px 1fr;
@@ -58,9 +90,9 @@ html,body{
 
 #principal.hide-menu{
   grid-template-areas:
-  "header header"
-  "content content"
-  "footer footer";
+    "header header"
+    "menu content"
+    "footer footer";
 }
 
 .v-application--wrap{

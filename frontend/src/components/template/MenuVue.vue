@@ -108,7 +108,17 @@
                     </div>
                     <img src="@/assets/seta-direita.png" alt="menu lateral" class="setah2">
                 </div>
-            </router-link>
+                <img src="@/assets/seta-direita.png" alt="menu lateral" class="setah2">
+            </div>
+
+            <!-- ALTERAR O LAYOUT DO LOGOUT -->
+            <div class="itemH2">
+                <div class="divInternoItemH2">
+                    <button @click.prevent="logout" class="textoH2">Sair</button>
+                </div>
+            </div>
+            <!-- ALTERAR O LAYOUT DO LOGOUT -->
+
         </div>
     </aside>
 </template>
@@ -116,11 +126,19 @@
 <script>
 
 import {mapState} from 'vuex'
-
+import {userKey} from '@/global.js'
 export default {
     name: 'MenuVue',
-    computed: mapState(['isMenuVisible'])
+    computed: mapState(['isMenuVisible']),
+    methods:{
+        logout(){
+            localStorage.removeItem(userKey)
+            this.$store.commit('setUser',null)
+            this.$router.push({name: 'login'})
+        }
+    }
 }
+
 </script>
 
 <style>
