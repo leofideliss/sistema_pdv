@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="{'hide-menu': !isMenuVisible}">
+  <div id="principal" :class="{'hide-menu': !isMenuVisible}">
     <HeaderVue titulo="Sistema PDV" />
     <MenuVue />
     <FooterVue />
@@ -43,7 +43,7 @@ html,body{
   font-family: 'Roboto', sans-serif;
 }
 
-#app{
+#principal{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
@@ -56,11 +56,21 @@ html,body{
   "footer footer";
 }
 
-#app.hide-menu{
+#principal.hide-menu{
   grid-template-areas:
   "header header"
   "content content"
   "footer footer";
 }
+
+.v-application--wrap{
+            min-height: 0px !important;
+    }
+
+
+    .v-text-field__details{
+        min-height: 0px !important;
+    }
+
 
 </style>

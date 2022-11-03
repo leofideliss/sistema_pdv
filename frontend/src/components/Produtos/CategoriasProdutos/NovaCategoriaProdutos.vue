@@ -1,16 +1,15 @@
 <template>
-    <div class="NovoComplemento-pages">
-        <div class="headerNovoComplemento">
-            <router-link to='/complemento' class="botaoVoltar">
+    <div class="NovaCategoria-pages">
+        <div class="headerNovaCategoria">
+            <router-link to='/categoriasProdutos' class="botaoVoltar">
                 <img src="@/assets/seta-esquerda.png" alt="Voltar para Página anterior">
                 <h1>Voltar</h1>
             </router-link>
 
             <h1>
-                Adicionar Novo Complemento
+                Adicionar Nova Categoria de Produtos
             </h1>
         </div>
-
 
         <form action="" class="fomularioComplemento">
             <div class="primeiraLinha">
@@ -21,50 +20,8 @@
                         </label>
                         <input id="nomeComplemento" type="text">
                     </div>
-                    <div class="campos-formulario campoAtivo">
-                        <label for="nomeComplemento" style="margin-bottom:0px;">
-                            Status
-                        </label>
-                        <!--
-                        <b-form-checkbox v-model="checked" name="check-button" switch size="lg">
-                         
-                        </b-form-checkbox>--> 
-
-                    </div>
                 </div>
-
-                <div class="campos-formulario campoCodigo">
-                    <label for="codigoAcompanhamento">
-                        Código
-                    </label>
-                    <input id="codigoAcompanhamento" type="number">
-                </div>
-            
             </div>
-            <div class="primeiraLinha">
-                <div class="personalizarCampos">
-                    <div class="campos-formulario campoCusto">
-                        <label for="precoCusto">
-                            Preço de Custo
-                        </label>
-                        <v-currency-field id="precoCusto" />
-                    </div>                  
-                    <div class="campos-formulario campoVenda">
-                        <label for="precoVenda">
-                            Preço de Venda
-                        </label>
-                        <v-currency-field id="precoVenda"/>
-                    </div>
-                    <div class="campos-formulario campoProdVinculados">
-                        <label for="produtosVinculados">
-                            Produtos Vinculados
-                        </label>
-                        <input id="produtosVinculados" type="select">
-                    </div>
-                </div>
-            
-            </div>
-
             <div class="botaos-form">
                 <button class="botao-cancelar">
                     Cancelar
@@ -82,7 +39,7 @@
 <script>
 
     export default{
-    name: 'NovoComplemento',
+    name: 'NovaCategoriaProdutos',
     data(){
         return{
             switch1: true,
@@ -93,23 +50,21 @@
 </script>
 
 <style>
-    .headerNovoComplemento{
+    .headerNovaCategoria{
         display: flex;
         margin-bottom: 20px;
     }
 
-    .headerNovoComplemento a{
+    .headerNovaCategoria a{
         width: 80px;
     }
 
-    .headerNovoComplemento h1{
-        font-size: 1.8rem;
+    .headerNovaCategoria h1{
+        font-size: 1.6rem;
         width: 90%;
         text-align: center;
         margin-bottom: 0px;
-        
     }
-
 
     .botaoVoltar{
         display: flex;
@@ -178,32 +133,7 @@
     }
 
     .campoNome{
-        width: 45%;
-    }
-
-    .campoAtivo{
-        width: 10%;
-    }
-
-    .campoCodigo{
-        width: 15%;
-    }
-
-    .campoCusto{
-        width: 15%;
-    }
-
-    .campoVenda{
-        width: 15%;
-    }
-
-    .campo-moeda{
-        width: 15%;
-    
-    }
-
-    .campoProdVinculados{
-        width: 68%;
+        width: 100%;
     }
 
     .botaos-form{
@@ -253,6 +183,101 @@
     .v-text-field > .v-input__control > .v-input__slot:before{
         border-style: none !important;
     }
+
+    .input-select{
+        border: 1px solid black;
+        outline: none; /*borda que aparece quando clicamos*/
+        padding: 5px;
+        background:white;
+        font-size: 0.8rem;
+        font-family: 'Poppins';
+        border-radius: 5px;
+    }
+
+    .opcoes-medidas{
+        display: flex;
+        width: 100%;
+    }
+
+    .opcoes-medidas div{
+        margin-right: 15px;
+    }
+
+    .radio-medidas{
+        margin-right: 4px;
+    }
+
+    .custom-radio{
+        display: flex;
+        align-items: center;
+    }
+
+    .custom-radio label{
+        cursor: pointer;
+        margin-bottom: 0px !important;
+    }
+
+    .radio-medidas{
+        cursor:pointer !important;
+        appearance: none !important;
+        width: 25px !important;
+        height: 25px !important;
+        border-radius: 50% !important;
+        outline: none !important;
+        border: 2px solid #3decb1 !important;
+        position: relative !important;;
+        display: flex !important;;
+        align-items: center !important;;
+        justify-content: center !important;
+        padding: 0px !important;
+    }
+
+    .radio-medidas:before{
+        content: '';
+        position: absolute;
+        height: 11px;
+        width: 11px;
+        background: #3decb1;
+        border-radius: 50%;
+        opacity: 0;
+        transition: all 300ms ease-in-out;
+    }
+
+    .radio-medidas:checked:before{
+        opacity: 1;
+    }
+
+    .radio-medidas:focus{
+        box-shadow: 0 0 5px rgba(0, 0, 0, 1);
+    }
+
+
+    /** 
+    .custom-radio input{
+        display: none;
+        
+    }
+
+    .custom-radio input + label:before{
+        content: '';
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background-color: white;
+        border: 1px solid gray;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 4px;
+    }
+
+    .custom-radio input:checked + label:before{
+        
+        background-color: #3decb1;
+        border: none;
+        
+    }
+    **/
+
     /** TESTE **/
 
     .custom-switch.b-custom-control-lg .custom-control-label::before, .input-group-lg .custom-switch .custom-control-label::before{

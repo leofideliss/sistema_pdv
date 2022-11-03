@@ -2,15 +2,43 @@
     <aside class="menu" v-show="isMenuVisible">
         <div class="divisao-interna">
             <h1>PRODUTOS</h1>
-            <div class="itemH2Primeiro">
+            <router-link to="/produtos" class="link-item">
+                <div class="itemH2Primeiro">
+                    <div class="divInternoItemH2">
+                        <img src="@/assets/comer.png" alt="menu lateral" class="iconeh2">
+                        <h2 class="textoH2">Produtos</h2>
+                    </div>
+                    <img src="@/assets/seta-direita.png" alt="menu lateral" class="setah2">
+                </div>
+            </router-link>
+            
+            <router-link to="/produtosTamanho" class="link-item">
+                <div class="itemH2">
                 <div class="divInternoItemH2">
-                    <img src="@/assets/comer.png" alt="menu lateral" class="iconeh2">
-                    <h2 class="textoH2">Todos os Produtos</h2>
+                    <img src="@/assets/molhos.png" alt="menu lateral" class="iconeh2">
+                    <h2 class="textoH2">Produtos com Tamanho</h2>
                 </div>
                 <img src="@/assets/seta-direita.png" alt="menu lateral" class="setah2">
-            </div>
-            <router-link to="/complemento" class="link-item">
+                </div>
+            </router-link>
+
+            <router-link to="/produtosCombo" class="link-item">
                 <div class="itemH2">
+                    <div class="divInternoItemH2">
+                        <img src="@/assets/contrato.png" alt="menu lateral" class="iconeh2">
+                        <h2 class="textoH2">Combos</h2>
+                    </div>
+                    <img src="@/assets/seta-direita.png" alt="menu lateral" class="setah2">
+                </div>
+            </router-link>
+
+
+        </div>
+   
+        <div class="divisao-interna">
+            <h1>ORGANIZAÇÃO DE PRODUTOS</h1>
+            <router-link to="/complemento" class="link-item">
+                <div class="itemH2Primeiro">
                 <div class="divInternoItemH2">
                     <img src="@/assets/molhos.png" alt="menu lateral" class="iconeh2">
                     <h2 class="textoH2">Complementos</h2>
@@ -19,45 +47,68 @@
                 </div>
             </router-link>
 
-            <div class="itemH2">
-                <div class="divInternoItemH2">
-                    <img src="@/assets/contrato.png" alt="menu lateral" class="iconeh2">
-                    <h2 class="textoH2">Observações</h2>
+            <router-link to="/observacao" class="link-item">
+                <div class="itemH2">
+                    <div class="divInternoItemH2">
+                        <img src="@/assets/contrato.png" alt="menu lateral" class="iconeh2">
+                        <h2 class="textoH2">Observações</h2>
+                    </div>
+                    <img src="@/assets/seta-direita.png" alt="menu lateral" class="setah2">
                 </div>
-                <img src="@/assets/seta-direita.png" alt="menu lateral" class="setah2">
-            </div>
-            <div class="itemH2">
-                <div class="divInternoItemH2">
-                    <img src="@/assets/etiqueta.png" alt="menu lateral" class="iconeh2">
-                    <h2 class="textoH2">Categorias</h2>
+            </router-link>
+
+            <router-link to="/categoriasProdutos" class="link-item">
+                <div class="itemH2">
+                    <div class="divInternoItemH2">
+                        <img src="@/assets/etiqueta.png" alt="menu lateral" class="iconeh2">
+                        <h2 class="textoH2">Categorias</h2>
+                    </div>
+                    <img src="@/assets/seta-direita.png" alt="menu lateral" class="setah2">
                 </div>
-                <img src="@/assets/seta-direita.png" alt="menu lateral" class="setah2">
-            </div>
-            <div class="itemH2">
-                <div class="divInternoItemH2">
-                    <img src="@/assets/tamanho.png" alt="menu lateral" class="iconeh2">
-                    <h2 class="textoH2">Tipos e Tamanhos</h2>
+            </router-link>
+            <router-link to="/tiposTamanhos" class="link-item">
+                <div class="itemH2">
+                    <div class="divInternoItemH2">
+                        <img src="@/assets/tamanho.png" alt="menu lateral" class="iconeh2">
+                        <h2 class="textoH2">Tipos e Tamanhos</h2>
+                    </div>
+                    <img src="@/assets/seta-direita.png" alt="menu lateral" class="setah2">
                 </div>
-                <img src="@/assets/seta-direita.png" alt="menu lateral" class="setah2">
-            </div>
+            </router-link>
+
+            <router-link to="/perguntas" class="link-item">
+                <div class="itemH2">
+                    <div class="divInternoItemH2">
+                        <img src="@/assets/perguntas.png" alt="menu lateral" class="iconeh2">
+                        <h2 class="textoH2">Perguntas</h2>
+                    </div>
+                    <img src="@/assets/seta-direita.png" alt="menu lateral" class="setah2">
+                </div>
+            </router-link>
+
+
         </div>
-        
+
         <div class="divisao-interna">
             <h1>ESTOQUE</h1>
-            <div class="itemH2Primeiro">
-                <div class="divInternoItemH2">
-                    <img src="@/assets/menu-aberto.png" alt="menu lateral" class="iconeh2">
-                    <h2 class="textoH2">Insumos</h2>
+            <router-link to="/insumos" class="link-item">
+                <div class="itemH2Primeiro">
+                    <div class="divInternoItemH2">
+                        <img src="@/assets/insumos.png" alt="menu lateral" class="iconeh2">
+                        <h2 class="textoH2">Insumos</h2>
+                    </div>
+                    <img src="@/assets/seta-direita.png" alt="menu lateral" class="setah2">
                 </div>
-                <img src="@/assets/seta-direita.png" alt="menu lateral" class="setah2">
-            </div>
-            <div class="itemH2">
-                <div class="divInternoItemH2">
-                    <img src="@/assets/menu-aberto.png" alt="menu lateral" class="iconeh2">
-                    <h2 class="textoH2">Categorias</h2>
+            </router-link>
+            <router-link to="/categoriasInsumo" class="link-item">
+                <div class="itemH2">
+                    <div class="divInternoItemH2">
+                        <img src="@/assets/etiqueta.png" alt="menu lateral" class="iconeh2">
+                        <h2 class="textoH2">Categorias Insumos</h2>
+                    </div>
+                    <img src="@/assets/seta-direita.png" alt="menu lateral" class="setah2">
                 </div>
-                <img src="@/assets/seta-direita.png" alt="menu lateral" class="setah2">
-            </div>
+            </router-link>
         </div>
     </aside>
 </template>

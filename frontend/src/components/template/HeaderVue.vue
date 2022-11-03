@@ -45,6 +45,7 @@ export default {
         flex-grow: 1;
         text-align: center;
         font-family: "Rubik";
+        margin-bottom: 0px;
     }
 
     .titulo a{

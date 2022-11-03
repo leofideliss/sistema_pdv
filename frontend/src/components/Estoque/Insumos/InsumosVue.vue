@@ -1,11 +1,11 @@
 <template>
-    <div class="complemento-pages">
-        <div class="header-complemento">
-            <div class="titulo-complemento">
-                <h1>Complementos</h1>
+    <div class="insumo-pages">
+        <div class="header-insumo">
+            <div class="titulo-insumo">
+                <h1>Insumos</h1>
                 <h2>(4)</h2>
             </div>
-            <router-link to="/novoComplemento" class="botao-novo">
+            <router-link to="/novoInsumos" class="botao-novo">
                 <img src="@/assets/mais.png" alt="Icone de somar">
                 <h1>Novo</h1>
             </router-link>
@@ -26,6 +26,21 @@
                 :items="itens"
                 :search="search"
             >
+                <template v-slot:[`item.actions`]="{ item }">
+                    <v-icon
+                        dense
+                        class="mr-2"
+                        @click="editItem(item)"
+                    >
+                        mdi-pencil
+                    </v-icon>
+                    <v-icon
+                        dense
+                        @click="deleteItem(item)"
+                    >
+                        mdi-delete
+                    </v-icon>
+                </template>
             </v-data-table>
         </v-card>
 
@@ -36,7 +51,7 @@
 <script>
 
     export default{
-    name: 'ComplementosVue',
+    name: 'InsumosVue',
     data: function(){
         return{
         
@@ -49,111 +64,51 @@
             value: 'id',
           },
           { text: 'Nome', value: 'nome' },
-          { text: 'Produtos Vinculados', value: 'prodVinculados' },
+          { text: 'Categoria', value: 'categoria' },
           { text: 'Preço Custo', value: 'precoCusto' },
-          { text: 'Preço Venda', value: 'precoVenda' },
-          { text: 'Status', value: 'status' },
+          { text: 'Medida', value: 'medida' },
           { text: 'Ações', value: 'actions' },
         ],
         itens: [
           {
             id: 13,
             nome: 'Frozen Yogurt',
-            prodVinculados: 'X-tudo, X-Frango, X-egg, X-Burger',
+            categoria: 'Bebida',
             precoCusto: 6.0,
-            precoVenda: 24,
+            medida: 'Litro',
             status: 'ativo',
-            
           },
           {
             id: 13,
             nome: 'Frozen Yogurt',
-            prodVinculados: 'X-tudo, X-Frango, X-egg, X-Burger',
+            categoria: 'Bebida',
             precoCusto: 6.0,
-            precoVenda: 24,
-            status: 'desativado',
-            
-          },
-          {
-            id: 2,
-            nome: 'Frozen Yogurt',
-            prodVinculados: 'X-tudo, X-Frango, X-egg, X-Burger',
-            precoCusto: 6.0,
-            precoVenda: 24,
+            medida: 'Litro',
             status: 'ativo',
-            
           },
           {
             id: 13,
             nome: 'Frozen Yogurt',
-            prodVinculados: 'X-tudo, X-Frango, X-egg, X-Burger',
+            categoria: 'Bebida',
             precoCusto: 6.0,
-            precoVenda: 24,
+            medida: 'Litro',
             status: 'ativo',
-            
           },
           {
-            id: 54,
+            id: 13,
             nome: 'Frozen Yogurt',
-            prodVinculados: 'X-tudo, X-Frango, X-egg, X-Burger',
+            categoria: 'Bebida',
             precoCusto: 6.0,
-            precoVenda: 24,
+            medida: 'Kg',
             status: 'ativo',
-            
           },
           {
-            id: 12,
+            id: 13,
             nome: 'Frozen Yogurt',
-            prodVinculados: 'X-tudo, X-Frango, X-egg, X-Burger',
+            categoria: 'Bebida',
             precoCusto: 6.0,
-            precoVenda: 24,
+            medida: 'Litro',
             status: 'ativo',
-            
-          },
-          {
-            id: 32,
-            nome: 'Frozen Yogurt',
-            prodVinculados: 'X-tudo, X-Frango, X-egg, X-Burger',
-            precoCusto: 6.0,
-            precoVenda: 24,
-            status: 'ativo',
-            
-          },
-          {
-            id: 13,
-            nome: 'Calabresa',
-            prodVinculados: 'X-tudo, X-Frango, X-egg, X-Burger',
-            precoCusto: 6.0,
-            precoVenda: 24,
-            status: 'ativo',
-            
-          },
-          {
-            id: 13,
-            nome: 'Cebola',
-            prodVinculados: 'X-tudo, X-Frango, X-egg, X-Burger',
-            precoCusto: 6.0,
-            precoVenda: 24,
-            status: 'ativo',
-            
-          },
-          {
-            id: 13,
-            nome: 'Alface',
-            prodVinculados: 'X-tudo, X-Frango, X-egg, X-Burger',
-            precoCusto: 6.0,
-            precoVenda: 24,
-            status: 'ativo',
-            
-          },
-          {
-            id: 13,
-            nome: 'Alface',
-            prodVinculados: 'X-tudo, X-Frango, X-egg, X-Burger',
-            precoCusto: 6.0,
-            precoVenda: 24,
-            status: 'ativo',
-            
           },
         ],
         }
@@ -168,26 +123,26 @@
         font-family: 'Poppins';
     }
 
-    .header-complemento{
+    .header-insumo{
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 25px;
     }
 
-    .titulo-complemento{
+    .titulo-insumo{
         display: flex;
         align-items: center;
     }
 
-    .titulo-complemento h1{
+    .titulo-insumo h1{
         font-family: 'Rubik';
         font-size: 1.5rem;
         margin-right: 10px;
         margin-bottom: 0px;
     }
 
-    .titulo-complemento h2{
+    .titulo-insumo h2{
         font-family: 'Rubik';
         font-size: 1.5rem;
         margin-bottom: 0px;
