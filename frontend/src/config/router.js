@@ -23,15 +23,17 @@ import NovoProdutosTamanho from '@/components/Tipos Produtos/ProdutosTamanho/nov
 import ListaProdutoCombo from '@/components/Tipos Produtos/ProdutosCombos/listaProdutoCombo.vue'
 import NovoProdutoCombo from '@/components/Tipos Produtos/ProdutosCombos/novoProdutoCombo.vue'
 
+import AutenticacaoVue from '@/components/Autenticacao/AutenticacaoVue.vue'
+
 
 
 Vue.use(VueRouter)
 
 const routes = [
     {
-    name: 'Home',
-    path: '/',
-    component: Home
+        name: 'Home',
+        path: '/',
+        component: Home
     },
     {
         name: 'Complemento',
@@ -50,42 +52,42 @@ const routes = [
     },
     {
         name: 'NovoInsumos',
-        path:'/novoInsumos',
+        path: '/novoInsumos',
         component: NovoInsumos
     },
     {
         name: 'CategoriasInsumos',
-        path:'/categoriasInsumo',
+        path: '/categoriasInsumo',
         component: CategoriasInsumos
     },
     {
         name: 'NovaCategoriaInsumos',
-        path:'/novaCategoriaInsumo',
+        path: '/novaCategoriaInsumo',
         component: NovaCategoriaInsumos
     },
     {
         name: 'CategoriasProdutos',
-        path:'/categoriasProdutos',
+        path: '/categoriasProdutos',
         component: CategoriasProdutos
     },
     {
         name: 'NovaCategoriaProdutos',
-        path:'/novaCategoriaProdutos',
+        path: '/novaCategoriaProdutos',
         component: NovaCategoriaProdutos
     },
     {
         name: 'ProdutosVue',
-        path:'/produtos',
+        path: '/produtos',
         component: ProdutosVue
     },
     {
         name: 'NovoProduto',
-        path:'/novoProduto',
+        path: '/novoProduto',
         component: NovoProduto
     },
     {
         name: 'QuantidadeItem',
-        path:'/quantidadeItem',
+        path: '/quantidadeItem',
         component: QuantidadeItem
     },
     {
@@ -132,6 +134,12 @@ const routes = [
         name: 'NovoProdutoCombo',
         path: '/novoProdutosCombo',
         component: NovoProdutoCombo
+    }, 
+    {
+        name: 'login',
+        path: '/login',
+        component: AutenticacaoVue
+
     },
 
 

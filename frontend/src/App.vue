@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="{ 'hide-menu': !isMenuVisible || !user }">
+  <div id="principal" :class="{ 'hide-menu': !isMenuVisible || !user }">
     <HeaderVue titulo="Sistema PDV" :hideToggle="user" />
     <MenuVue />
     <LoadingVue v-if="validatingToken" />

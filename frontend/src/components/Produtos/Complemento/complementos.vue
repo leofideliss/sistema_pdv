@@ -1,39 +1,15 @@
 <template>
 
-        <v-card>
-            <v-card-title>
-                <v-text-field
-                    v-model="search"
-                    append-icon="mdi-magnify"
-                    label="Buscar"
-                    single-line
-                    hide-details
-                ></v-text-field>
-            </v-card-title>
-            <v-data-table
-                :headers="headers"
-                :items="itens"
-                :search="search"
-            >
-              <template v-slot:[`item.actions`]="{ item }">
-                <v-icon
-                    dense
-                    class="mr-2"
-                    @click="editItem(item)"
-                >
-                    mdi-pencil
-                </v-icon>
-                <v-icon
-                    dense
-                    @click="deleteItem(item)"
-                >
-                    mdi-delete
-                </v-icon>
-            </template>
-            </v-data-table>
-        </v-card>
-
-        
+  <div class="complemento-pages">
+    <div class="header-complemento">
+      <div class="titulo-complemento">
+        <h1>Complementos</h1>
+        <h2>(4)</h2>
+      </div>
+      <router-link to="/novoComplemento" class="botao-novo">
+        <img src="@/assets/mais.png" alt="Icone de somar" />
+        <h1>Novo</h1>
+      </router-link>
     </div>
 
     <v-card>
@@ -77,7 +53,6 @@
       </v-data-table>
     </v-card>
   </div>
-
 </template>
 
 <script>
@@ -85,7 +60,7 @@ export default {
   name: "ComplementosVue",
   data: function () {
     return {
-      // CONTROLE DO DELETE 
+      // CONTROLE DO DELETE
       dialogDelete: false,
 
       search: "",
@@ -194,22 +169,20 @@ export default {
         },
       ],
     };
-    
   },
-  methods:{
-    closeDelete () {
-        this.dialogDelete = false
-     
-      },
-      deleteItem () {
-        this.dialogDelete = true
-      },
+  methods: {
+    closeDelete() {
+      this.dialogDelete = false;
+    },
+    deleteItem() {
+      this.dialogDelete = true;
+    },
   },
-  watch:{
-    dialogDelete (val) {
-        val || this.closeDelete()
-      },
-  }
+  watch: {
+    dialogDelete(val) {
+      val || this.closeDelete();
+    },
+  },
 };
 </script>
 

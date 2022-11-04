@@ -109,7 +109,7 @@
                     <img src="@/assets/seta-direita.png" alt="menu lateral" class="setah2">
                 </div>
                 <img src="@/assets/seta-direita.png" alt="menu lateral" class="setah2">
-            </div>
+            </router-link>
 
             <!-- ALTERAR O LAYOUT DO LOGOUT -->
             <div class="itemH2">
