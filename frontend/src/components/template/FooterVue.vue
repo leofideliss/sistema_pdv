@@ -1,12 +1,16 @@
 <template>
-    <footer class="footer">
+    <footer class="footer" v-show="user">
         <span>Copyright © 2022-2022</span>
     </footer>
 </template>
 
 <script>
 
+
+import { mapState } from "vuex";
+
 export default {
+    computed: mapState([ "user"]),
     name: 'FooterVue'
 }
 </script>
@@ -16,7 +20,6 @@ export default {
         grid-area: footer;
         background: #3decb1 72%;
         color: #4280e1;
-
         display: flex;
         justify-content: flex-end;
         align-items: center;

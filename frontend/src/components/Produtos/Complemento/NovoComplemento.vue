@@ -1,5 +1,5 @@
 <template>
-    <div class="NovoComplemento-pages">
+    <div class="NovoComplemento-pages espacamento20geral">
         <div class="headerNovoComplemento">
             <router-link to='/complemento' class="botaoVoltar">
                 <img src="@/assets/seta-esquerda.png" alt="Voltar para Página anterior">
@@ -93,6 +93,7 @@
 </script>
 
 <style>
+
     .headerNovoComplemento{
         display: flex;
         margin-bottom: 20px;

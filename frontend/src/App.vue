@@ -1,5 +1,6 @@
 <template>
-  <div id="principal" :class="{ 'hide-menu': !isMenuVisible || !user }">
+  <div id="principal" :class="{ 'hide-menu': !isMenuVisible || !user, 'teste': !user }">
+
     <HeaderVue titulo="Sistema PDV" :hideToggle="user" />
     <MenuVue />
     <LoadingVue v-if="validatingToken" />
@@ -14,6 +15,9 @@ import MenuVue from "./components/template/MenuVue.vue";
 import FooterVue from "./components/template/FooterVue.vue";
 import ConteudoVue from "./components/template/ConteudoVue.vue";
 import LoadingVue from "@/components/template/LoadingVue.vue";
+
+
+
 import { mapState } from "vuex";
 
 import { userKey, baseApiUrl } from "@/global.js";
@@ -27,6 +31,7 @@ export default {
     FooterVue,
     ConteudoVue,
     LoadingVue,
+ 
   },
   computed: mapState(["isMenuVisible", "user"]),
   methods: {
@@ -55,6 +60,15 @@ export default {
     },
   },
   created() {
+    // const user = {
+    //   email: "andre@gmail.com",
+    //   name: "andre",
+    //   password: "admin",
+    //   admin: true
+    // };
+    // axios.post(`${baseApiUrl}/signup`, user).then(() => {
+    //   console.log("criou usuario");
+    // });
     this.validateToken();
   },
 };
@@ -91,8 +105,15 @@ body {
 #principal.hide-menu{
   grid-template-areas:
     "header header"
-    "menu content"
+    "content content"
     "footer footer";
+}
+
+#principal.teste{
+  grid-template-areas:
+    "content content"
+    "content content"
+    "content content";
 }
 
 .v-application--wrap{
@@ -104,5 +125,12 @@ body {
         min-height: 0px !important;
     }
 
+    .espacamento20geral{
+      padding: 20px;
+    }
+
+    .botao-novo h1{
+      color: black;
+    }
 
 </style>

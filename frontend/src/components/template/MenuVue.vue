@@ -108,14 +108,15 @@
                     </div>
                     <img src="@/assets/seta-direita.png" alt="menu lateral" class="setah2">
                 </div>
-                <img src="@/assets/seta-direita.png" alt="menu lateral" class="setah2">
             </router-link>
 
             <!-- ALTERAR O LAYOUT DO LOGOUT -->
-            <div class="itemH2">
+            <div class="itemH2Primeiro espacamentoSairMenu" @click.prevent="logout" >
                 <div class="divInternoItemH2">
-                    <button @click.prevent="logout" class="textoH2">Sair</button>
+                    <img src="@/assets/sair.png" alt="menu lateral" class="iconeh2">
+                    <h2 class="textoH2">Sair</h2>
                 </div>
+                <img src="@/assets/seta-direita.png" alt="menu lateral" class="setah2">
             </div>
             <!-- ALTERAR O LAYOUT DO LOGOUT -->
 
@@ -229,5 +230,10 @@ export default {
 
     .teste{
         widows: 30px;
+    }
+
+
+    .espacamentoSairMenu{
+        margin-top: 20px;
     }
 </style>

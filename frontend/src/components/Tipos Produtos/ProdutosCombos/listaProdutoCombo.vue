@@ -6,7 +6,7 @@
                 <h2>(4)</h2>
             </div>
             <router-link to="/novoProdutosCombo" class="botao-novo">
-                <img src="@/assets/mais.png" alt="Icone de somar">
+                <img src="@/assets/mais preto.png" alt="Icone de somar">
                 <h1>Novo</h1>
             </router-link>
         </div>
@@ -102,6 +102,10 @@
 
     body{
         font-family: 'Poppins';
+    }
+
+    .produtosCombo-pages{
+        padding: 20px;
     }
 
     .header-produtosCombo{

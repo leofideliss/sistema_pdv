@@ -1,5 +1,5 @@
 <template>
-    <div class="perguntas-pages">
+    <div class="perguntas-pages espacamento20geral">
         <div class="header-perguntas">
             <div class="titulo-perguntas">
                 <h1>Perguntas</h1>

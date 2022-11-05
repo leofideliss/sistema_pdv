@@ -1,34 +1,40 @@
 <template>
-  <div class="conteudo">
-    <header>
-      <img src="@/assets/logo.svg" alt="Logo do Sistema PDV" />
-      <h1>Sistema PDV</h1>
-    </header>
-    <main>
-      <form action="">
-        <div class="campos-formulario">
-          <input id="email" type="email" placeholder="Email" v-model="user.email"/>
-          <label for="email">
-            <img src="@/assets/avatar.svg" alt="Email" />
-          </label>
+  <div class="fundoAutenticacao">
+    <form action="" class="conteudoAutenticacao">
+        <header class="headerAutenticacao">
+          <img src="@/assets/logo.svg" alt="Logo do Sistema PDV" />
+          <h1>Sistema PDV</h1>
+        </header>
+        <div>
+          <div class="campos-formularioAutenticacao campoEmailAutenticacao">
+            <input id="email" type="email" placeholder="Email" v-model="user.email"/>
+            <label for="email">
+              <img src="@/assets/avatar.svg" alt="Email" />
+            </label>
+          </div>
+          <div class="campos-formularioAutenticacao campoSenhaAutenticacao">
+            <input id="password" type="password" placeholder="Senha" v-model="user.password"/>
+            <label for="password">
+              <img src="@/assets/lock.svg" alt="Senha" />
+            </label>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" checked id="lembrar-senha" />
+            <label for="lembrar-senha"> Lembrar senha </label>
+          </div>
         </div>
-        <div class="campos-formulario">
-          <input id="password" type="password" placeholder="Senha" v-model="user.password"/>
-          <label for="password">
-            <img src="@/assets/lock.svg" alt="Senha" />
-          </label>
+        <div class="footerAutenticacao">
+          <button @click.prevent="signin" class="buttonAutenticacao">Login</button>
+          
+            <span class="esqueciSenhaAutenticacao">
+              <a href="#">Esqueci minha senha </a>
+            </span>
+
+
         </div>
-        <div class="checkbox">
-          <input type="checkbox" checked id="lembrar-senha" />
-          <label for="lembrar-senha"> Lembrar senha </label>
-        </div>
-        <button @click.prevent="signin">Login</button>
-      </form>
-    </main>
-    <footer>
-      <span><a href="#">Esqueci minha senha </a></span>
-    </footer>
+    </form>
   </div>
+
 </template>
 
 <script>
@@ -55,83 +61,92 @@ export default {
 </script>
 
 <style scoped>
-html {
-  font-size: 62.5%;
-}
 
-body,
-html {
-  height: 100vh;
+.fundoAutenticacao{
   background: linear-gradient(72deg, #4280e1 1%, #3decb1 72%);
+  height: 100vh;
   display: flex;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.conteudo {
-  display: flex;
-  flex-direction: column;
-  height: 480px;
-  min-height: 440px;
-  max-height: 500px;
+
+.conteudoAutenticacao {
+  font-size: 62.5%;
 }
 
-header {
+.conteudoAutenticacao {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 80%;
+  max-width: 800px;
+  height: 75%;
+  
+}
+
+.headerAutenticacao {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 30px;
 }
 
-header h1 {
+.headerAutenticacao h1 {
   font-family: "Rubik";
   font-weight: bold;
   color: #f0fbfa;
-  font-size: 6.4rem;
+  font-size: 3.5rem;
   margin-left: 25px;
 }
 
-main {
-  margin: auto;
-  width: 85%;
-  height: 70%;
+.headerAutenticacao img{
+  width: 50px;
+  height: 50px;
 }
 
-main form {
+/* .mainAutenticacao {
+  margin: auto;
+  width: 100%;
+  height: 70%;
+} */
+
+.mainAutenticacao form {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  justify-content: space-between;
+
 }
 
-.campos-formulario {
+.campos-formularioAutenticacao {
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-radius: 10px;
-  height: 5.5rem;
+  height: 4rem;
   border: 2px solid #def7f4;
   flex-direction: row-reverse;
   transition: 0.3s;
 }
 
-.campos-formulario:hover {
+.campos-formularioAutenticacao:hover {
   border: 2px solid #d5ecea;
 }
 
-.campos-formulario:hover > input {
+.campos-formularioAutenticacao:hover > input {
   background-color: #d5ecea;
   transition: 0.3s;
 }
 
-.campos-formulario input {
+.campos-formularioAutenticacao input {
   border: none;
   outline: none; /*borda que aparece quando clicamos*/
   background: #def7f4;
-  width: 82%;
-  height: 5.5rem;
+  width: 85%;
+  height: 4rem;
   padding-left: 20px;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-family: "Poppins";
   border-radius: 0 8px 8px 0;
 }
@@ -141,23 +156,23 @@ main form {
   font-weight: 300;
 }
 
-.campos-formulario label {
-  height: 5.5rem;
-  width: 18%;
+.campos-formularioAutenticacao label {
+  height: 4rem;
+  width: 15%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.campos-formulario label img {
-  width: 3.3rem;
-  height: 3.3rem;
+.campos-formularioAutenticacao label img {
+  width: 2rem;
+  height: 2rem;
 }
 
 .checkbox label {
   color: #def7f4;
   font-family: "Rubik";
-  font-size: 1.8rem;
+  font-size: 1.3rem;
   cursor: pointer;
   transition: 0.3s;
 }
@@ -173,8 +188,8 @@ main form {
 .checkbox input + label::before {
   content: "";
   display: inline-block;
-  width: 2.4rem;
-  height: 2.4rem;
+  width: 2rem;
+  height: 2rem;
   vertical-align: middle;
   border: 2px solid #def7f4;
   border-radius: 5px;
@@ -185,41 +200,73 @@ main form {
   background: url(@/assets/check.svg) no-repeat center;
 }
 
-form button {
-  height: 5.5rem;
+.formAutenticacao{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 90%;
+  width: 80%;
+  min-height: 440px;
+}
+
+.buttonAutenticacao {
+  height: 4rem;
   background-color: #447ce2;
   border: none;
   border-radius: 10px;
   color: #def7f4;
   outline: none;
   cursor: pointer;
-  font-size: 3rem;
+  font-size: 2rem;
   font-family: "Rubik";
   transition: 0.3s;
 }
 
-form button:hover {
+.buttonAutenticacao:hover {
   background: #3f72d1;
 }
 
-.conteudo footer {
-  margin: auto;
-  width: 85%;
+.footerAutenticacao{
   display: flex;
-  height: 20%;
-  align-items: center;
-  border-bottom: 2px solid #def7f478;
+  flex-direction: column;
 }
 
-.conteudo footer a {
+.esqueciSenhaAutenticacao{
+  margin-top: 10px;
+}
+
+.esqueciSenhaAutenticacao a {
   color: #cbf0ee;
   text-decoration: none;
-  font-size: 1.6rem;
+  font-size: 1rem;
   font-weight: 400;
   font-family: "Rubik";
   font-style: italic;
   transition: 0.3s;
 }
+
+.criarContaAutenticacao a{
+  color: #cbf0ee;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 400;
+  font-family: "Rubik";
+  font-style: italic;
+  transition: 0.3s;
+}
+
+.campoEmailAutenticacao{
+  margin-bottom: 50px;
+}
+
+.campoSenhaAutenticacao{
+  margin-bottom: 30px;
+}
+
+.criarContaAutenticacao{
+
+}
+
 
 .conteudo footer a:hover {
   color: #bee3e9;

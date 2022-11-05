@@ -1,5 +1,5 @@
 <template>
-    <div class="NovaPergunta-pages">
+    <div class="NovaPergunta-pages espacamento20geral">
         <div class="headerNovaPergunta">
             <router-link to='/perguntas' class="botaoVoltar">
                 <img src="@/assets/seta-esquerda.png" alt="Voltar para Página anterior">

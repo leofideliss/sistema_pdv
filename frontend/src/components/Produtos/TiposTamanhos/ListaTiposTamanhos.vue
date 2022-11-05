@@ -1,5 +1,5 @@
 <template>
-    <div class="tiposTamanhos-pages">
+    <div class="tiposTamanhos-pages espacamento20geral">
         <div class="header-tiposTamanhos">
             <div class="titulo-tiposTamanhos">
                 <h1>Tipos e Tamanhos</h1>

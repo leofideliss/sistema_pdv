@@ -1,5 +1,5 @@
 <template>
-    <div class="NovoInsumo-pages">
+    <div class="NovoInsumo-pages espacamento20geral">
         <div class="headerNovoInsumo">
             <router-link to='/insumos' class="botaoVoltar">
                 <img src="@/assets/seta-esquerda.png" alt="Voltar para Página anterior">

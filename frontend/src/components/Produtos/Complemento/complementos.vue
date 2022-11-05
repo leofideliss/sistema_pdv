@@ -7,7 +7,7 @@
         <h2>(4)</h2>
       </div>
       <router-link to="/novoComplemento" class="botao-novo">
-        <img src="@/assets/mais.png" alt="Icone de somar" />
+        <img src="@/assets/mais preto.png" alt="Icone de somar" />
         <h1>Novo</h1>
       </router-link>
     </div>
@@ -189,6 +189,10 @@ export default {
 <style>
 body {
   font-family: "Poppins";
+}
+
+.complemento-pages{
+  padding: 20px;
 }
 
 .header-complemento {

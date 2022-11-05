@@ -163,6 +163,10 @@
 </script>
 
 <style>
+    .NovoProdutoTamanho-pages{
+        padding: 20px;
+    }
+
     .headerNovoProdutoTamanho{
         display: flex;
         margin-bottom: 20px;

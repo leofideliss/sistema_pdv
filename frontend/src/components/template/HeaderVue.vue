@@ -1,7 +1,7 @@
 <template>
-    <header class="header">
+    <header class="header" v-show="user">
         <a class="toggle" @click="toggleMenu" v-if="hideToggle" >
-            <img src="@/assets/menu-aberto.png" alt="menu lateral" class="menu-lateral">
+            <img src="@/assets/menu.png" alt="menu lateral" class="menu-lateral">
         </a>
         <h1 class="titulo">
             <router-link to="/">
@@ -13,7 +13,10 @@
 
 <script>
 
+import { mapState } from "vuex";
+
 export default {
+    computed: mapState([ "user"]),
     name: 'HeaderVue',
     props:{
         titulo: String,

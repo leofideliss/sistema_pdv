@@ -1,5 +1,5 @@
 <template>
-    <div class="NovoProduto-pages">
+    <div class="NovoProduto-pages espacamento20geral">
         <div class="headerNovoProduto">
             <router-link to='/produtos' class="botaoVoltar">
                 <img src="@/assets/seta-esquerda.png" alt="Voltar para Página anterior">
@@ -167,6 +167,11 @@
 </script>
 
 <style>
+
+    .NovoProduto-pages{
+        padding: 20px;
+    }
+
     .headerNovoProduto{
         display: flex;
         margin-bottom: 20px;

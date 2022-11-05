@@ -1,12 +1,12 @@
 <template>
-    <div class="categoria-pages">
+    <div class="categoria-pages espacamento20geral">
         <div class="header-categoria">
             <div class="titulo-categoria">
                 <h1>Categorias Insumos</h1>
                 <h2>(4)</h2>
             </div>
             <router-link to="/novaCategoriaInsumo" class="botao-novo">
-                <img src="@/assets/mais.png" alt="Icone de somar">
+                <img src="@/assets/mais preto.png" alt="Icone de somar">
                 <h1>Novo</h1>
             </router-link>
         </div>

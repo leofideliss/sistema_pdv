@@ -1,5 +1,5 @@
 <template>
-    <div class="observacoes-pages">
+    <div class="observacoes-pages espacamento20geral">
         <div class="header-observacoes">
             <div class="titulo-observacoes">
                 <h1>Observações</h1>

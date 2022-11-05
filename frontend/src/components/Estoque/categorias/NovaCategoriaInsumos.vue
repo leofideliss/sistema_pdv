@@ -1,5 +1,5 @@
 <template>
-    <div class="NovaCategoria-pages">
+    <div class="NovaCategoria-pages espacamento20geral" >
         <div class="headerNovaCategoria">
             <router-link to='/categoriasInsumo' class="botaoVoltar">
                 <img src="@/assets/seta-esquerda.png" alt="Voltar para Página anterior">

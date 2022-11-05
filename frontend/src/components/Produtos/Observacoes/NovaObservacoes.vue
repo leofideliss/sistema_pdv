@@ -1,5 +1,5 @@
 <template>
-    <div class="NovaObservacao-pages">
+    <div class="NovaObservacao-pages espacamento20geral">
         <div class="headerNovaObservacao">
             <router-link to='/observacao' class="botaoVoltar">
                 <img src="@/assets/seta-esquerda.png" alt="Voltar para Página anterior">

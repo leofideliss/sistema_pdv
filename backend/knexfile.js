@@ -9,7 +9,7 @@
   connection: {
     database: 'sistema_pdv',
     user:     'postgres',
-    password: '123456'
+    password: 'admin'
   },
   pool: {
     min: 2,

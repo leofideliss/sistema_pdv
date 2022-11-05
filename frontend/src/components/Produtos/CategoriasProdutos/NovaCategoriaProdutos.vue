@@ -50,6 +50,11 @@
 </script>
 
 <style>
+
+    .NovaCategoria-pages{
+        padding: 20px;
+    }
+
     .headerNovaCategoria{
         display: flex;
         margin-bottom: 20px;
