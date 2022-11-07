@@ -1,12 +1,14 @@
 <template>
+  <v-app>
   <div id="principal" :class="{ 'hide-menu': !isMenuVisible || !user, 'teste': !user }">
 
     <HeaderVue titulo="Sistema PDV" :hideToggle="user" />
     <MenuVue />
-    <LoadingVue v-if="validatingToken" />
+    <LoadingVue v-if="validateToken" />
     <FooterVue />
     <ConteudoVue />
   </div>
+</v-app>
 </template>
 
 <script>
@@ -59,7 +61,7 @@ export default {
       this.validatingToken = false;
     },
   },
-  created() {
+  mounted() {
     // const user = {
     //   email: "andre@gmail.com",
     //   name: "andre",

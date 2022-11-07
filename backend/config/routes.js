@@ -7,4 +7,14 @@ module.exports = app =>{
     .all(app.config.passport.authenticate())
     .post(app.api.user.save)
 
+    
+    // *** INSUMO ***
+    app.route('/insumo/:id')
+    .get(app.api.insumo.getInsumoById)
+    .put(app.api.insumo.save)
+    .delete(app.api.insumo.deleteInsumo)
+
+    app.route('/insumo')
+    .post(app.api.insumo.save)
+    .get(app.api.insumo.getAllInsumos)
 }

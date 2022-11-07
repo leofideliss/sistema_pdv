@@ -5,6 +5,7 @@ import Home from '@/components/Home/Home.vue'
 import Complemento from '@/components/Produtos/Complemento/complementos.vue'
 import NovoComplemento from '@/components/Produtos/Complemento/NovoComplemento.vue'
 import Insumos from '@/components/Estoque/Insumos/InsumosVue.vue'
+import InsumoRouter from '@/components/Estoque/Insumos/InsumoRouter.vue'
 import NovoInsumos from '@/components/Estoque/Insumos/NovoInsumo.vue'
 import CategoriasInsumos from '@/components/Estoque/categorias/CategoriaInsumos.vue'
 import NovaCategoriaInsumos from '@/components/Estoque/categorias/NovaCategoriaInsumos.vue'
@@ -56,15 +57,31 @@ const routes = [
         component: NovoInsumos
     },
     {
-        name: 'CategoriasInsumos',
-        path: '/categoriasInsumo',
-        component: CategoriasInsumos
+        path: '/insumos',
+        name: 'insumos',
+        component: InsumoRouter,
+        children: [
+            {
+                name: 'CategoriasInsumos',
+                path: '/categoriasInsumo',
+                component: CategoriasInsumos,
+            },
+            {
+                name: 'NovaCategoriaInsumos',
+                path: '/novaCategoriaInsumo',
+                component: NovaCategoriaInsumos,
+
+            },
+            {
+                name: 'NovaCategoriaInsumos',
+                path: '/alterarCategoriaInsumo/:id',
+                component: NovaCategoriaInsumos,
+                props: true
+
+            },
+        ]
     },
-    {
-        name: 'NovaCategoriaInsumos',
-        path: '/novaCategoriaInsumo',
-        component: NovaCategoriaInsumos
-    },
+
     {
         name: 'CategoriasProdutos',
         path: '/categoriasProdutos',
@@ -134,7 +151,7 @@ const routes = [
         name: 'NovoProdutoCombo',
         path: '/novoProdutosCombo',
         component: NovoProdutoCombo
-    }, 
+    },
     {
         name: 'login',
         path: '/login',
