@@ -1,6 +1,6 @@
 module.exports = app => {
 
-    const save = (req, res) => {
+    const saveCategoria = (req, res) => {
         const insumo = { ...req.body }
 
         if (req.params.id) insumo.id = req.params.id
@@ -25,7 +25,7 @@ module.exports = app => {
         }
     }
 
-    const deleteInsumo = async (req,res) =>{
+    const deleteCategoriaInsumo = async (req,res) =>{
         await app.db('categoriaInsumo')
             .where({ id: req.params.id })
             .del()
@@ -33,14 +33,14 @@ module.exports = app => {
             .catch((err) => res.status(500).send(err))
     }
 
-    const getAllInsumos = (req, res) => {
+    const getAllCategoriaInsumos = (req, res) => {
         app.db('categoriaInsumo')
             .select()
             .then(insumos => res.json(insumos))
             .catch((err) => res.status(500).send(err))
     }
 
-    const getInsumoById = (req, res) => {
+    const getCategoriaInsumoById = (req, res) => {
         app.db('categoriaInsumo')
             .select()
             .where({ id: req.params.id })
@@ -49,5 +49,5 @@ module.exports = app => {
             .catch(err => res.status(500).send())
     }
 
-    return { save, getAllInsumos, getInsumoById ,deleteInsumo }
+    return { saveCategoria, getAllCategoriaInsumos, getCategoriaInsumoById ,deleteCategoriaInsumo }
 }

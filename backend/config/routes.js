@@ -10,11 +10,11 @@ module.exports = app =>{
     
     // *** INSUMO ***
     app.route('/insumo/:id')
-    .get(app.api.insumo.getInsumoById)
-    .put(app.api.insumo.save)
-    .delete(app.api.insumo.deleteInsumo)
+    .get(app.api.insumo.getCategoriaInsumoById)
+    .put(app.api.insumo.saveCategoria)
+    .delete(app.api.insumo.deleteCategoriaInsumo)
 
     app.route('/insumo')
-    .post(app.api.insumo.save)
-    .get(app.api.insumo.getAllInsumos)
+    .post(app.api.insumo.saveCategoria)
+    .get(app.api.insumo.getAllCategoriaInsumos)
 }
