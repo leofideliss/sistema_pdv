@@ -33,8 +33,8 @@
         </div>
       </div>
       <div class="botaos-form">
-        <button @click.prevent="voltar" class="botao-cancelar">Cancelar</button>
-        <button @click.prevent="salvar" class="botao-salvar">Salvar</button>
+        <button  @click.prevent="voltar" class="botao-cancelar">Cancelar</button>
+        <button  @click.prevent="salvar" class="botao-salvar">Salvar</button>
       </div>
     </v-form>
   </div>
@@ -55,16 +55,13 @@ export default {
       insumo: { nome: "" },
     };
   },
-  watch: {
-    alterarNome() {},
-  },
   methods: {
     salvar() {
       if (this.validate()) {
         const method = this.id ? "put" : "post";
         const id = this.id ? this.id : "";
 
-        axios[method](`${baseApiUrl}/insumo/${id}`, this.insumo)
+        axios[method](`${baseApiUrl}/categoriaInsumo/${id}`, this.insumo)
           .then(() => {
             this.$router.back();
           })
@@ -76,10 +73,10 @@ export default {
     voltar() {
       this.$router.back();
     },
-    getInsumoById() {
+    getCategoriaInsumoById() {
       if (this.id)
         axios
-          .get(`${baseApiUrl}/insumo/${this.id}`)
+          .get(`${baseApiUrl}/categoriaInsumo/${this.id}`)
           .then((res) => {
             this.insumo = res.data;
           })
@@ -91,7 +88,7 @@ export default {
     },
   },
   mounted() {
-    this.getInsumoById();
+    this.getCategoriaInsumoById();
   },
 };
 </script>

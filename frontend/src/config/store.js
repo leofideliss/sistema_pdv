@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+// import { baseApiUrl } from "@/global.js"
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -34,5 +34,17 @@ export default new Vuex.Store({
                 state.isMenuVisible = false
             }
         }
-    }
+    },
+    // getters: {
+    //     getAllCategoriaInsumo() {
+    //         console.log('entrei')
+    //         axios
+    //             .get(`${baseApiUrl}/insumo`)
+    //             .then((res) => {
+    //                 console.log(res.data)
+    //                 return res.data;
+    //             })
+    //             .catch(() => { return null });
+    //     },
+    // }
 })

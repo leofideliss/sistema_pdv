@@ -44,7 +44,7 @@ export default {
       this.$store.commit("setUser", null);
       if (!userData) {
         this.validatingToken = false;
-        this.$router.push({ name: "login" });
+        this.$router.push({ path: "/login" });
         return;
       }
       const res = await axios.post(`${baseApiUrl}/validateToken`, userData);
@@ -56,12 +56,13 @@ export default {
         }
       } else {
         localStorage.removeItem(userKey);
-        this.$router.push({ name: "login" });
+        this.$router.push({ path: "/login" });
+
       }
       this.validatingToken = false;
     },
   },
-  mounted() {
+  created() {
     // const user = {
     //   email: "andre@gmail.com",
     //   name: "andre",

@@ -79,7 +79,7 @@ export default {
   methods: {
     getAllCategoriaInsumo() {
       axios
-        .get(`${baseApiUrl}/insumo`)
+        .get(`${baseApiUrl}/categoriaInsumo`)
         .then((res) => {
           this.categoriasInsumo = res.data;
         })
@@ -95,7 +95,7 @@ export default {
     confirmDelete() {
       console.log(this.insumo.id);
       axios
-        .delete(`${baseApiUrl}/insumo/${this.insumo.id}`)
+        .delete(`${baseApiUrl}/categoriaInsumo/${this.insumo.id}`)
         .then(() => {
           this.getAllCategoriaInsumo();
           this.dialogDelete = false;

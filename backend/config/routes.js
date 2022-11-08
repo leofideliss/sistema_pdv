@@ -1,20 +1,36 @@
-module.exports = app =>{
-    app.post('/signup',app.api.user.save)
-    app.post('/login',app.api.auth.signIn)
-    app.post('/validateToken',app.api.auth.validateToken)
+module.exports = app => {
+    app.post('/signup', app.api.user.save)
+    app.post('/login', app.api.auth.signIn)
+    app.post('/validateToken', app.api.auth.validateToken)
 
     app.route('/users')
-    .all(app.config.passport.authenticate())
-    .post(app.api.user.save)
+        .all(app.config.passport.authenticate())
+        .post(app.api.user.save)
 
-    
-    // *** INSUMO ***
+
+    // *** CATEGORIA INSUMO ***
+    app.route('/categoriaInsumo/:id')
+        .get(app.api.insumo.getCategoriaInsumoById)
+        .put(app.api.insumo.saveCategoria)
+        .delete(app.api.insumo.deleteCategoriaInsumo)
+
+    app.route('/categoriaInsumo')
+        .post(app.api.insumo.saveCategoria)
+        .get(app.api.insumo.getAllCategoriaInsumos)
+
+    // *** FIM CATEGORIA INSUMO ***
+
+
+    // ***  INSUMO ***
     app.route('/insumo/:id')
-    .get(app.api.insumo.getCategoriaInsumoById)
-    .put(app.api.insumo.saveCategoria)
-    .delete(app.api.insumo.deleteCategoriaInsumo)
+        .get(app.api.insumo.getInsumoById)
+        .put(app.api.insumo.saveInsumo)
+        .delete(app.api.insumo.deleteInsumo)
 
     app.route('/insumo')
-    .post(app.api.insumo.saveCategoria)
-    .get(app.api.insumo.getAllCategoriaInsumos)
+        .post(app.api.insumo.saveInsumo)
+        .get(app.api.insumo.getAllInsumos)
+
+    // *** FIM  INSUMO ***
+
 }

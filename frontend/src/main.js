@@ -11,15 +11,20 @@ import { VTextField } from 'vuetify/lib'
 Vue.config.productionTip = false
 
 Vue.component('v-text-field', VTextField)
-Vue.use(VCurrencyField, { 
-	locale: 'pt-BR',
-	decimalLength: 2,
-	autoDecimalMode: true,
-	min: null,
-	max: null,
-	defaultValue: 0,
-    valueAsInteger: false,
-    allowNegative: true
+Vue.use(VCurrencyField, {
+  "locale": "pt-BR",
+  "currency": "BRL",
+  "currencyDisplay": "symbol",
+  "precision": {
+    "min": 2,
+    "max": 2
+  },
+  "hideCurrencySymbolOnFocus": true,
+  "hideGroupingSeparatorOnFocus": true,
+  "hideNegligibleDecimalDigitsOnFocus": true,
+  "autoDecimalDigits": false,
+  "useGrouping": true,
+  "accountingSign": false
 })
 
 new Vue({
