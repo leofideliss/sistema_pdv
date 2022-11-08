@@ -1,298 +1,336 @@
 <template>
-    <div class="NovaCategoria-pages">
-        <div class="headerNovaCategoria">
-            <router-link to='/categoriasProdutos' class="botaoVoltar">
-                <img src="@/assets/seta-esquerda.png" alt="Voltar para Página anterior">
-                <h1>Voltar</h1>
-            </router-link>
+  <div class="NovaCategoria-pages espacamento20geral">
+    <div class="headerNovaCategoria">
+      <router-link to="/categoriasProdutos" class="botaoVoltar">
+        <img
+          src="@/assets/seta-esquerda.png"
+          alt="Voltar para Página anterior"
+        />
+        <h1>Voltar</h1>
+      </router-link>
 
-            <h1>
-                Adicionar Nova Categoria de Produtos
-            </h1>
-        </div>
-
-        <form action="" class="fomularioComplemento">
-            <div class="primeiraLinha">
-                <div class="personalizarCampos">
-                    <div class="campos-formulario campoNome">
-                        <label for="nomeComplemento">
-                            Nome
-                        </label>
-                        <input id="nomeComplemento" type="text">
-                    </div>
-                </div>
-            </div>
-            <div class="botaos-form">
-                <button class="botao-cancelar">
-                    Cancelar
-                </button>
-                <button class="botao-salvar">
-                    Salvar
-                </button>
-                
-            </div>
-
-        </form>
+      <h1 v-if="id">Alterar Categoria de Produto</h1>
+      <h1 v-else>Adicionar Nova Categoria de Produto</h1>
     </div>
+
+    <v-form
+      ref="form"
+      class="fomularioComplemento"
+      v-model="valid"
+      lazy-validation
+    >
+      <div class="primeiraLinha">
+        <div class="personalizarCampos">
+          <div class="campos-formulario campoNome">
+            <label for="nomeComplemento"> Nome </label>
+            <v-text-field
+              label="Nome *"
+              v-model="produto.nome"
+              :rules="nameRules"
+              required
+            ></v-text-field>
+          </div>
+        </div>
+      </div>
+      <div class="botaos-form">
+        <button @click.prevent="voltar" class="botao-cancelar">Cancelar</button>
+        <button @click.prevent="salvar" class="botao-salvar">Salvar</button>
+      </div>
+    </v-form>
+  </div>
 </template>
+  
+  <script>
+import axios from "axios";
+import { baseApiUrl } from "@/global";
+export default {
+  name: "NovaCategoriaProdutos",
+  props: ["id"],
+  data() {
+    return {
+      nameRules: [(v) => !!v || "Nome é obrigatório"],
+      switch1: true,
+      switch2: false,
+      valid: true,
+      produto: { nome: "" },
+    };
+  },
+  methods: {
+    salvar() {
+      if (this.validate()) {
+        const method = this.id ? "put" : "post";
+        const id = this.id ? this.id : "";
 
-<script>
+        axios[method](`${baseApiUrl}/categoriaProduto/${id}`, this.produto)
+          .then(() => {
+            this.$router.back();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+    voltar() {
+      this.$router.back();
+    },
+    getCategoriaProdutoById() {
+      if (this.id)
+        axios
+          .get(`${baseApiUrl}/categoriaProduto/${this.id}`)
+          .then((res) => {
+            this.produto = res.data;
+          })
+          .catch();
+    },
 
-    export default{
-    name: 'NovaCategoriaProdutos',
-    data(){
-        return{
-            switch1: true,
-            switch2: false
-        }
-    }
-    }
+    validate() {
+      return this.$refs.form.validate();
+    },
+  },
+  mounted() {
+    this.getCategoriaProdutoById();
+  },
+};
 </script>
+  
+  <style>
+.headerNovaCategoria {
+  display: flex;
+  margin-bottom: 20px;
+}
 
-<style>
+.headerNovaCategoria a {
+  width: 80px;
+}
 
-    .NovaCategoria-pages{
-        padding: 20px;
-    }
+.headerNovaCategoria h1 {
+  font-size: 1.6rem;
+  width: 90%;
+  text-align: center;
+  margin-bottom: 0px;
+}
 
-    .headerNovaCategoria{
-        display: flex;
-        margin-bottom: 20px;
-    }
+.botaoVoltar {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
 
-    .headerNovaCategoria a{
-        width: 80px;
-    }
+.botaoVoltar:hover {
+  text-decoration: none;
+}
 
-    .headerNovaCategoria h1{
-        font-size: 1.6rem;
-        width: 90%;
-        text-align: center;
-        margin-bottom: 0px;
-    }
+.botaoVoltar img {
+  width: 13px;
+  height: 13px;
+  margin-right: 10px;
+}
 
-    .botaoVoltar{
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-    }
+.botaoVoltar h1 {
+  color: black;
+  font-family: "Rubik";
+  font-size: 1.3rem;
+  margin-bottom: 0px;
+}
 
-    .botaoVoltar:hover{
-        text-decoration: none;
-    }
+.fomularioComplemento {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  background-color: #f2f2f2;
+  border-radius: 20px;
+}
 
-    .botaoVoltar img{
-        width: 13px;
-        height: 13px;
-        margin-right: 10px;
-    }
+.primeiraLinha {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
 
-    .botaoVoltar h1{
-        color: black;
-        font-family: 'Rubik';
-        font-size: 1.3rem;
-        margin-bottom: 0px;
-    }
+.personalizarCampos {
+  display: flex;
+  width: 100%;
+}
 
-    .fomularioComplemento{
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        background-color: #f2f2f2;
-        border-radius: 20px;
-    }
+.campos-formulario {
+  display: flex;
+  flex-direction: column;
+  transition: 0.3s;
+  margin: 10px;
+}
 
-    .primeiraLinha{
-        display: flex;
-        width: 100%;
-        justify-content: space-between;
-    }
+.campos-formulario label {
+  font-family: "Poppins";
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+}
 
-    .personalizarCampos{
-        display: flex;
-        width: 100%;
-    }
+.campos-formulario input {
+  border: 1px solid black;
+  outline: none; /*borda que aparece quando clicamos*/
+  padding: 5px;
+  background: white;
+  font-size: 0.8rem;
+  font-family: "Poppins";
+  border-radius: 5px;
+}
 
-    .campos-formulario{
-        display: flex;
-        flex-direction: column;
-        transition: .3s;
-        margin: 10px
-    }
+.campoNome {
+  width: 100%;
+}
 
-    .campos-formulario label{
-        font-family: 'Poppins';
-        margin-bottom: 5px;
-        font-size: 0.9rem;
+.botaos-form {
+  display: flex;
+  justify-content: end;
+  margin-top: 50px;
+}
 
-    }
+.botaos-form button {
+  padding: 10px 15px 10px 15px;
+  border: none;
+  border-radius: 10px;
+  color: #def7f4;
+  outline: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: "Rubik";
+  transition: 0.3s;
+}
 
-    .campos-formulario input{
-        border: 1px solid black;
-        outline: none; /*borda que aparece quando clicamos*/
-        padding: 5px;
-        background:white;
-        font-size: 0.8rem;
-        font-family: 'Poppins';
-        border-radius: 5px;
-    }
+.botao-cancelar {
+  background-color: #ff3131;
+  margin-right: 15px;
+}
 
-    .campoNome{
-        width: 100%;
-    }
+.botao-cancelar:hover {
+  background-color: #f95858;
+}
 
-    .botaos-form{
-        display: flex;
-        justify-content: end;
-        margin-top: 50px;
-    }
+.botao-salvar {
+  background-color: #008000;
+}
 
-    .botaos-form button{
-        padding: 10px 15px 10px 15px;
-        border: none;
-        border-radius: 10px;
-        color: #def7f4;
-        outline: none;
-        cursor: pointer;
-        font-size: 1rem;
-        font-family: "Rubik";
-        transition: .3s;
-    }
+.botao-salvar:hover {
+  background-color: #00b300;
+}
 
-    .botao-cancelar{
-        background-color: #ff3131;
-        margin-right: 15px;
-    }
+.v-text-field {
+  padding-top: 0px !important;
+  margin-top: 0px !important;
+}
 
-    .botao-cancelar:hover{
-        background-color: #f95858;
-    }
+.v-text-field input {
+  padding: 5px !important;
+}
 
-    .botao-salvar{
-        background-color: #008000;
-    }
+.v-text-field > .v-input__control > .v-input__slot:before {
+  border-style: none !important;
+}
 
-    .botao-salvar:hover{
-        background-color: #00b300;
-    }
+.input-select {
+  border: 1px solid black;
+  outline: none; /*borda que aparece quando clicamos*/
+  padding: 5px;
+  background: white;
+  font-size: 0.8rem;
+  font-family: "Poppins";
+  border-radius: 5px;
+}
 
-    .v-text-field{
-        padding-top: 0px !important;
-        margin-top: 0px !important;
-    }
+.opcoes-medidas {
+  display: flex;
+  width: 100%;
+}
 
-    .v-text-field input{
-        padding: 5px !important;
-    }
+.opcoes-medidas div {
+  margin-right: 15px;
+}
 
-    .v-text-field > .v-input__control > .v-input__slot:before{
-        border-style: none !important;
-    }
+.radio-medidas {
+  margin-right: 4px;
+}
 
-    .input-select{
-        border: 1px solid black;
-        outline: none; /*borda que aparece quando clicamos*/
-        padding: 5px;
-        background:white;
-        font-size: 0.8rem;
-        font-family: 'Poppins';
-        border-radius: 5px;
-    }
+.custom-radio {
+  display: flex;
+  align-items: center;
+}
 
-    .opcoes-medidas{
-        display: flex;
-        width: 100%;
-    }
+.custom-radio label {
+  cursor: pointer;
+  margin-bottom: 0px !important;
+}
 
-    .opcoes-medidas div{
-        margin-right: 15px;
-    }
+.radio-medidas {
+  cursor: pointer !important;
+  appearance: none !important;
+  width: 25px !important;
+  height: 25px !important;
+  border-radius: 50% !important;
+  outline: none !important;
+  border: 2px solid #3decb1 !important;
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0px !important;
+}
 
-    .radio-medidas{
-        margin-right: 4px;
-    }
+.radio-medidas:before {
+  content: "";
+  position: absolute;
+  height: 11px;
+  width: 11px;
+  background: #3decb1;
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 300ms ease-in-out;
+}
 
-    .custom-radio{
-        display: flex;
-        align-items: center;
-    }
+.radio-medidas:checked:before {
+  opacity: 1;
+}
 
-    .custom-radio label{
-        cursor: pointer;
-        margin-bottom: 0px !important;
-    }
+.radio-medidas:focus {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 1);
+}
 
-    .radio-medidas{
-        cursor:pointer !important;
-        appearance: none !important;
-        width: 25px !important;
-        height: 25px !important;
-        border-radius: 50% !important;
-        outline: none !important;
-        border: 2px solid #3decb1 !important;
-        position: relative !important;;
-        display: flex !important;;
-        align-items: center !important;;
-        justify-content: center !important;
-        padding: 0px !important;
-    }
+/** 
+      .custom-radio input{
+          display: none;
+          
+      }
+  
+      .custom-radio input + label:before{
+          content: '';
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background-color: white;
+          border: 1px solid gray;
+          display: inline-block;
+          vertical-align: middle;
+          margin-right: 4px;
+      }
+  
+      .custom-radio input:checked + label:before{
+          
+          background-color: #3decb1;
+          border: none;
+          
+      }
+      **/
 
-    .radio-medidas:before{
-        content: '';
-        position: absolute;
-        height: 11px;
-        width: 11px;
-        background: #3decb1;
-        border-radius: 50%;
-        opacity: 0;
-        transition: all 300ms ease-in-out;
-    }
+/** TESTE **/
 
-    .radio-medidas:checked:before{
-        opacity: 1;
-    }
+.custom-switch.b-custom-control-lg .custom-control-label::before,
+.input-group-lg .custom-switch .custom-control-label::before {
+  height: 2rem;
+  width: 4rem;
+}
 
-    .radio-medidas:focus{
-        box-shadow: 0 0 5px rgba(0, 0, 0, 1);
-    }
-
-
-    /** 
-    .custom-radio input{
-        display: none;
-        
-    }
-
-    .custom-radio input + label:before{
-        content: '';
-        width: 16px;
-        height: 16px;
-        border-radius: 50%;
-        background-color: white;
-        border: 1px solid gray;
-        display: inline-block;
-        vertical-align: middle;
-        margin-right: 4px;
-    }
-
-    .custom-radio input:checked + label:before{
-        
-        background-color: #3decb1;
-        border: none;
-        
-    }
-    **/
-
-    /** TESTE **/
-
-    .custom-switch.b-custom-control-lg .custom-control-label::before, .input-group-lg .custom-switch .custom-control-label::before{
-        height: 2rem;
-        width: 4rem;
-        
-    }
-
-    .custom-switch.b-custom-control-lg .custom-control-label::after, .input-group-lg .custom-switch .custom-control-label::after{
-        width: calc(2rem - 4px);
-        height: calc(2rem - 4px) !important;
-    }
+.custom-switch.b-custom-control-lg .custom-control-label::after,
+.input-group-lg .custom-switch .custom-control-label::after {
+  width: calc(2rem - 4px);
+  height: calc(2rem - 4px) !important;
+}
 </style>

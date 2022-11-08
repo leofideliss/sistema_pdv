@@ -14,6 +14,7 @@ import CategoriasProdutos from '@/components/Produtos/CategoriasProdutos/Categor
 import NovaCategoriaProdutos from '@/components/Produtos/CategoriasProdutos/NovaCategoriaProdutos.vue'
 import ProdutosVue from '@/components/Produtos/ProdutosVue.vue'
 import NovoProduto from '@/components/Produtos/NovoProduto.vue'
+import ProdutoRouter from '@/components/Produtos/ProdutoRouter.vue'
 import QuantidadeItem from '@/components/Produtos/Tabs Produtos/QuantidadeItem.vue'
 import TiposTamanhos from '@/components/Produtos/TiposTamanhos/ListaTiposTamanhos.vue'
 import NovaObservacao from '@/components/Produtos/Observacoes/NovaObservacoes.vue'
@@ -91,25 +92,39 @@ const routes = [
         ]
     },
 
-    {
-        name: 'CategoriasProdutos',
-        path: '/categoriasProdutos',
-        component: CategoriasProdutos
-    },
-    {
-        name: 'NovaCategoriaProdutos',
-        path: '/novaCategoriaProdutos',
-        component: NovaCategoriaProdutos
-    },
+
     {
         name: 'ProdutosVue',
         path: '/produtos',
-        component: ProdutosVue
-    },
-    {
-        name: 'NovoProduto',
-        path: '/novoProduto',
-        component: NovoProduto
+        component: ProdutoRouter,
+        children: [
+            {
+                name: 'ProdutosVue',
+                path: '/produtos',
+                component: ProdutosVue
+            },
+            {
+                name: 'CategoriasProdutos',
+                path: '/categoriasProdutos',
+                component: CategoriasProdutos
+            },
+            {
+                name: 'NovaCategoriaProdutos',
+                path: '/novaCategoriaProdutos',
+                component: NovaCategoriaProdutos
+            },
+            {
+                name: 'NovaCategoriaProdutos',
+                path: '/alterarCategoriaProduto/:id',
+                component: NovaCategoriaProdutos,
+                props: true
+            },
+            {
+                name: 'NovoProduto',
+                path: '/novoProduto',
+                component: NovoProduto
+            },
+        ]
     },
     {
         name: 'QuantidadeItem',

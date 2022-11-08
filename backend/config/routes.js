@@ -33,4 +33,16 @@ module.exports = app => {
 
     // *** FIM  INSUMO ***
 
+
+    // *** CATEGORIA PRODUTO ***
+    app.route('/categoriaProduto/:id')
+        .get(app.api.produto.getCategoriaProdutoById)
+        .put(app.api.produto.saveCategoria)
+        .delete(app.api.produto.deleteCategoriaProduto)
+
+    app.route('/categoriaProduto')
+        .post(app.api.produto.saveCategoria)
+        .get(app.api.produto.getAllCategoriaProdutos)
+
+    // *** FIM CATEGORIA PRODUTO ***
 }
