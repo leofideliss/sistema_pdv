@@ -45,4 +45,28 @@ module.exports = app => {
         .get(app.api.produto.getAllCategoriaProdutos)
 
     // *** FIM CATEGORIA PRODUTO ***
+
+    // *** TIPOS PRODUTO ***
+    app.route('/tiposProdutos/:id')
+        .get(app.api.tipos_tamanhos.getTiposProdutoById)
+        .put(app.api.tipos_tamanhos.saveTipos)
+        .delete(app.api.tipos_tamanhos.deleteTiposProduto)
+
+    app.route('/tiposProdutos')
+        .post(app.api.tipos_tamanhos.saveTipos)
+        .get(app.api.tipos_tamanhos.getAllTiposProdutos)
+
+    // *** FIM TIPOS PRODUTO ***
+
+    // *** TAMANHOS PRODUTO ***
+    app.route('/tamanhosProdutos/:id')
+        .get(app.api.tipos_tamanhos.getTamanhosProdutoById)
+        .put(app.api.tipos_tamanhos.saveTamanhos)
+        .delete(app.api.tipos_tamanhos.deleteTamanhosProduto)
+
+    app.route('/tamanhosProdutos')
+        .post(app.api.tipos_tamanhos.saveTamanhos)
+        .get(app.api.tipos_tamanhos.getAllTamanhosProdutos)
+
+    // *** FIM TAMANHOS PRODUTO ***
 }
