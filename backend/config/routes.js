@@ -69,4 +69,16 @@ module.exports = app => {
         .get(app.api.tipos_tamanhos.getAllTamanhosProdutos)
 
     // *** FIM TAMANHOS PRODUTO ***
+    
+    // *** COMPLEMENTO ***
+    app.route('/complemento/:id')
+        .get(app.api.complemento.getComplementoById)
+        .put(app.api.complemento.saveComplemento)
+        .delete(app.api.complemento.deleteComplemento)
+
+    app.route('/complemento')
+        .post(app.api.complemento.saveComplemento)
+        .get(app.api.complemento.getAllComplementos)
+
+    // *** FIM COMPLEMENTO  ***
 }

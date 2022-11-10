@@ -26,6 +26,16 @@ module.exports = app => {
     }
 
     const deleteTiposProduto = async (req, res) => {
+
+        const tamanhos = await app.db('tamanhos')
+        .where({ id_tipo: req.params.id })
+        try{
+
+            if(tamanhos.length > 0) throw "ERRO: Tipo possuí tamanhos vinculados"
+        }catch (err) {
+            return res.status(400).send(err)
+        }
+
         await app.db('tiposProduto')
             .where({ id: req.params.id })
             .del()

@@ -26,6 +26,16 @@ module.exports = app => {
     }
 
     const deleteCategoriaInsumo = async (req, res) => {
+
+        const insumos = await app.db('insumo')
+        .where({ id_categoria: req.params.id })
+        try{
+
+            if(insumos.length > 0) throw "ERRO: Categoria possuí insumos vinculados"
+        }catch (err) {
+            return res.status(400).send(err)
+        }
+
         await app.db('categoriaInsumo')
             .where({ id: req.params.id })
             .del()
@@ -63,7 +73,7 @@ module.exports = app => {
             if (insumo.nome.length == 0) throw "Nome inválido"
 
         } catch (err) {
-            return res.status(400).send(err.msg)
+            return res.status(400).send(err)
         }
         if (insumo.id) {
             app.db('insumo')

@@ -1,10 +1,9 @@
 <template>
-
   <div class="complemento-pages">
     <div class="header-complemento">
       <div class="titulo-complemento">
         <h1>Complementos</h1>
-        <h2>(4)</h2>
+        <h2>({{ complementos.length }})</h2>
       </div>
       <router-link to="/novoComplemento" class="botao-novo">
         <img src="@/assets/mais preto.png" alt="Icone de somar" />
@@ -22,33 +21,34 @@
           hide-details
         ></v-text-field>
       </v-card-title>
-      <v-data-table :headers="headers" :items="itens" :search="search">
+      <v-data-table
+        :headers="headers"
+        :items="complementos"
+        :search="search"
+        no-data-text="Nenhum registro encontrado!"
+        no-results-text="Nenhum complemento encontrado!"
+      >
         <template v-slot:[`item.actions`]="{ item }">
-          <router-link to="/novoComplemento">
             <v-icon small class="mr-2" @click="editItem(item)">
               mdi-pencil
             </v-icon>
-          </router-link>
           <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
 
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
               <v-card-title class="text-h5"
-                >Are you sure you want to delete this item?</v-card-title
+                >Tem certeza que deseja excluir este complemento?</v-card-title
               >
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="closeDelete"
                   >Cancelar</v-btn
                 >
-                <v-btn color="blue darken-1" text 
-                  >Confirmar</v-btn
-                >
+                <v-btn color="blue darken-1" @click="confirmDelete" text>Confirmar</v-btn>
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
           </v-dialog>
-
         </template>
       </v-data-table>
     </v-card>
@@ -56,6 +56,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+import { baseApiUrl } from '@/global';
 export default {
   name: "ComplementosVue",
   data: function () {
@@ -72,110 +74,53 @@ export default {
           value: "id",
         },
         { text: "Nome", value: "nome" },
-        { text: "Produtos Vinculados", value: "prodVinculados" },
-        { text: "Preço Custo", value: "precoCusto" },
-        { text: "Preço Venda", value: "precoVenda" },
+        { text: "Preço Custo", value: "preco_custo" },
+        { text: "Preço Venda", value: "preco_venda" },
         { text: "Status", value: "status" },
         { text: "Ações", value: "actions" },
       ],
-      itens: [
-        {
-          id: 13,
-          nome: "Frozen Yogurt",
-          prodVinculados: "X-tudo, X-Frango, X-egg, X-Burger",
-          precoCusto: 6.0,
-          precoVenda: 24,
-          status: "ativo",
-        },
-        {
-          id: 13,
-          nome: "Frozen Yogurt",
-          prodVinculados: "X-tudo, X-Frango, X-egg, X-Burger",
-          precoCusto: 6.0,
-          precoVenda: 24,
-          status: "desativado",
-        },
-        {
-          id: 2,
-          nome: "Frozen Yogurt",
-          prodVinculados: "X-tudo, X-Frango, X-egg, X-Burger",
-          precoCusto: 6.0,
-          precoVenda: 24,
-          status: "ativo",
-        },
-        {
-          id: 13,
-          nome: "Frozen Yogurt",
-          prodVinculados: "X-tudo, X-Frango, X-egg, X-Burger",
-          precoCusto: 6.0,
-          precoVenda: 24,
-          status: "ativo",
-        },
-        {
-          id: 54,
-          nome: "Frozen Yogurt",
-          prodVinculados: "X-tudo, X-Frango, X-egg, X-Burger",
-          precoCusto: 6.0,
-          precoVenda: 24,
-          status: "ativo",
-        },
-        {
-          id: 12,
-          nome: "Frozen Yogurt",
-          prodVinculados: "X-tudo, X-Frango, X-egg, X-Burger",
-          precoCusto: 6.0,
-          precoVenda: 24,
-          status: "ativo",
-        },
-        {
-          id: 32,
-          nome: "Frozen Yogurt",
-          prodVinculados: "X-tudo, X-Frango, X-egg, X-Burger",
-          precoCusto: 6.0,
-          precoVenda: 24,
-          status: "ativo",
-        },
-        {
-          id: 13,
-          nome: "Calabresa",
-          prodVinculados: "X-tudo, X-Frango, X-egg, X-Burger",
-          precoCusto: 6.0,
-          precoVenda: 24,
-          status: "ativo",
-        },
-        {
-          id: 13,
-          nome: "Cebola",
-          prodVinculados: "X-tudo, X-Frango, X-egg, X-Burger",
-          precoCusto: 6.0,
-          precoVenda: 24,
-          status: "ativo",
-        },
-        {
-          id: 13,
-          nome: "Alface",
-          prodVinculados: "X-tudo, X-Frango, X-egg, X-Burger",
-          precoCusto: 6.0,
-          precoVenda: 24,
-          status: "ativo",
-        },
-        {
-          id: 13,
-          nome: "Alface",
-          prodVinculados: "X-tudo, X-Frango, X-egg, X-Burger",
-          precoCusto: 6.0,
-          precoVenda: 24,
-          status: "ativo",
-        },
-      ],
+      complemento:{},
+      complementos: [],
     };
   },
   methods: {
+    getAllComplementos() {
+      axios
+        .get(`${baseApiUrl}/complemento`)
+        .then((res) => {
+          this.complementos = res.data;
+          this.complementos.forEach(element => {
+            element.preco_venda = element.preco_venda.toLocaleString("pt-br", {
+              style: "currency",
+              currency: "BRL",
+            });
+            element.preco_custo = element.preco_custo.toLocaleString("pt-br", {
+              style: "currency",
+              currency: "BRL",
+            });
+            element.status ? element.status = 'Ativo' : element.status = "Destivado"
+          });
+        })
+        .catch();
+    },
+    editItem(item) {
+      this.$router.push({ path: `/novoComplemento/${item.id}` });
+    },
+    deleteItem(item) {
+      this.dialogDelete = true;
+      this.complemento.id = item.id;
+    },
+    confirmDelete() {
+      axios
+        .delete(`${baseApiUrl}/complemento/${this.complemento.id}`)
+        .then(() => {
+          this.getAllComplementos();
+          this.dialogDelete = false;
+        })
+        .catch();
+    },
     closeDelete() {
       this.dialogDelete = false;
-    },
-    deleteItem() {
-      this.dialogDelete = true;
     },
   },
   watch: {
@@ -183,6 +128,9 @@ export default {
       val || this.closeDelete();
     },
   },
+  created(){
+    this.getAllComplementos()
+  }
 };
 </script>
 
@@ -191,7 +139,7 @@ body {
   font-family: "Poppins";
 }
 
-.complemento-pages{
+.complemento-pages {
   padding: 20px;
 }
 

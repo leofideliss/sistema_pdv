@@ -7,7 +7,7 @@ import router from './config/router'
 import vuetify from './plugins/vuetify'
 import VCurrencyField from 'v-currency-field'
 import { VTextField } from 'vuetify/lib'
-
+import './config/msg.js'
 Vue.config.productionTip = false
 
 Vue.component('v-text-field', VTextField)

@@ -61,7 +61,7 @@
 
 <script>
 import axios from "axios";
-import { baseApiUrl } from "@/global";
+import { baseApiUrl, showError } from "@/global";
 export default {
   name: "CategoriaInsumos",
   data: function () {
@@ -100,7 +100,7 @@ export default {
           this.getAllCategoriaInsumo();
           this.dialogDelete = false;
         })
-        .catch();
+        .catch(showError);
     },
     closeDelete() {
       this.dialogDelete = false;

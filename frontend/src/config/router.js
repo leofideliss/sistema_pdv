@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 import Home from '@/components/Home/Home.vue'
 import Complemento from '@/components/Produtos/Complemento/complementos.vue'
+import ComplementoRouter from '@/components/Produtos/Complemento/ComplementoRouter.vue'
 import NovoComplemento from '@/components/Produtos/Complemento/NovoComplemento.vue'
 import InsumoRouter from '@/components/Estoque/Insumos/InsumoRouter.vue'
 import Insumos from '@/components/Estoque/Insumos/InsumosVue.vue'
@@ -39,19 +40,33 @@ const routes = [
         component: Home
     },
     {
-        name: 'Complemento',
+        name: 'ComplementoRouter',
         path: '/complemento',
-        component: Complemento
+        component: ComplementoRouter,
+        children: [
+            {
+                name: 'Complemento',
+                path: '/complemento',
+                component: Complemento
+            },
+            {
+                name: 'NovoComplemento',
+                path: '/novoComplemento',
+                component: NovoComplemento
+            },
+            {
+                name: 'AlterarComplemento',
+                path: '/novoComplemento/:id',
+                component: NovoComplemento,
+                props: true
+            },
+        ]
     },
-    {
-        name: 'NovoComplemento',
-        path: '/novoComplemento',
-        component: NovoComplemento
-    },
+
 
     {
         path: '/insumos',
-        name: 'insumos',
+        name: 'insumosRouter',
         component: InsumoRouter,
         children: [
             {
@@ -66,7 +81,7 @@ const routes = [
 
             },
             {
-                name: 'NovaCategoriaInsumos',
+                name: 'AlterarCategoriaInsumos',
                 path: '/alterarCategoriaInsumo/:id',
                 component: NovaCategoriaInsumos,
                 props: true
@@ -83,7 +98,7 @@ const routes = [
                 component: NovoInsumos
             },
             {
-                name: 'NovoInsumos',
+                name: 'AlterarInsumos',
                 path: '/alterarInsumo/:id',
                 component: NovoInsumos,
                 props: true
@@ -94,7 +109,7 @@ const routes = [
 
 
     {
-        name: 'ProdutosVue',
+        name: 'ProdutosVueRouter',
         path: '/produtos',
         component: ProdutoRouter,
         children: [
@@ -114,7 +129,7 @@ const routes = [
                 component: NovaCategoriaProdutos
             },
             {
-                name: 'NovaCategoriaProdutos',
+                name: 'AlterarCategoriaProdutos',
                 path: '/alterarCategoriaProduto/:id',
                 component: NovaCategoriaProdutos,
                 props: true

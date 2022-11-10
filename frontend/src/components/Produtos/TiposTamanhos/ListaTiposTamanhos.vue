@@ -219,7 +219,7 @@
 
 <script>
 import axios from "axios";
-import { baseApiUrl } from "@/global";
+import { baseApiUrl , showError } from "@/global";
 export default {
   name: "TiposTamanhos",
   data: function () {
@@ -310,7 +310,7 @@ export default {
           this.getAllTiposProdutos();
           this.dialogTipoDelete = false;
         })
-        .catch();
+        .catch(showError);
     },
 
     // *** FIM TIPOS ***
@@ -375,7 +375,7 @@ export default {
 
           this.dialogTamanhoDelete = false;
         })
-        .catch();
+        .catch(showError);
     },
 
     // *** FIM TAMANHOS
