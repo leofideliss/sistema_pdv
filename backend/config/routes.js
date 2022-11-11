@@ -81,4 +81,16 @@ module.exports = app => {
         .get(app.api.complemento.getAllComplementos)
 
     // *** FIM COMPLEMENTO  ***
+
+        // *** OBSERVAÇÃO ***
+        app.route('/observacao/:id')
+        .get(app.api.observacao.getObservacaoById)
+        .put(app.api.observacao.saveObservacao)
+        .delete(app.api.observacao.deleteObservacao)
+
+    app.route('/observacao')
+        .post(app.api.observacao.saveObservacao)
+        .get(app.api.observacao.getAllObservacaos)
+
+    // *** FIM OBSERVAÇÃO  ***
 }

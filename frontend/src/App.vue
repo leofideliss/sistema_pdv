@@ -1,14 +1,16 @@
 <template>
   <v-app>
-  <div id="principal" :class="{ 'hide-menu': !isMenuVisible || !user, 'teste': !user }">
-
-    <HeaderVue titulo="Sistema PDV" :hideToggle="user" />
-    <MenuVue />
-    <LoadingVue v-if="validateToken" />
-    <FooterVue />
-    <ConteudoVue />
-  </div>
-</v-app>
+    <div
+      id="principal"
+      :class="{ 'hide-menu': !isMenuVisible || !user, teste: !user }"
+    >
+      <HeaderVue titulo="Sistema PDV" :hideToggle="user" />
+      <MenuVue />
+      <LoadingVue v-if="validateToken" />
+      <FooterVue />
+      <ConteudoVue />
+    </div>
+  </v-app>
 </template>
 
 <script>
@@ -17,8 +19,6 @@ import MenuVue from "./components/template/MenuVue.vue";
 import FooterVue from "./components/template/FooterVue.vue";
 import ConteudoVue from "./components/template/ConteudoVue.vue";
 import LoadingVue from "@/components/template/LoadingVue.vue";
-
-
 
 import { mapState } from "vuex";
 
@@ -33,7 +33,6 @@ export default {
     FooterVue,
     ConteudoVue,
     LoadingVue,
- 
   },
   computed: mapState(["isMenuVisible", "user"]),
   methods: {
@@ -57,7 +56,6 @@ export default {
       } else {
         localStorage.removeItem(userKey);
         this.$router.push({ path: "/login" });
-
       }
       this.validatingToken = false;
     },
@@ -91,7 +89,7 @@ body {
   font-family: "Roboto", sans-serif;
 }
 
-#principal{
+#principal {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
@@ -99,41 +97,39 @@ body {
   display: grid;
   grid-template-rows: 60px 1fr 40px;
   grid-template-columns: 300px 1fr;
-  grid-template-areas: 
-  "header header"
-  "menu content"
-  "footer footer";
+  grid-template-areas:
+    "header header"
+    "menu content"
+    "footer footer";
 }
 
-#principal.hide-menu{
+#principal.hide-menu {
   grid-template-areas:
     "header header"
     "content content"
     "footer footer";
 }
 
-#principal.teste{
+#principal.teste {
   grid-template-areas:
     "content content"
     "content content"
     "content content";
 }
 
-.v-application--wrap{
-            min-height: 0px !important;
-    }
+.v-application--wrap {
+  min-height: 0px !important;
+}
 
+.v-text-field__details {
+  min-height: 0px !important;
+}
 
-    .v-text-field__details{
-        min-height: 0px !important;
-    }
+.espacamento20geral {
+  padding: 20px;
+}
 
-    .espacamento20geral{
-      padding: 20px;
-    }
-
-    .botao-novo h1{
-      color: black;
-    }
-
+.botao-novo h1 {
+  color: black;
+}
 </style>

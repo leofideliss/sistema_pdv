@@ -98,7 +98,7 @@ export default {
               style: "currency",
               currency: "BRL",
             });
-            element.status ? element.status = 'Ativo' : element.status = "Destivado"
+            element.status ? element.status = 'Ativo' : element.status = "Pausado"
           });
         })
         .catch();
