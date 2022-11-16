@@ -88,9 +88,13 @@ module.exports = app => {
         .put(app.api.observacao.saveObservacao)
         .delete(app.api.observacao.deleteObservacao)
 
-    app.route('/observacao')
+        app.route('/observacao')
         .post(app.api.observacao.saveObservacao)
         .get(app.api.observacao.getAllObservacaos)
-
-    // *** FIM OBSERVAÇÃO  ***
-}
+        
+        // *** FIM OBSERVAÇÃO  ***
+        app.route('/observacaoCategorias')
+        .post(app.api.observacao.saveObsCatProd)
+        .get(app.api.observacao.getAllObsCatProd)
+        
+    }

@@ -12,7 +12,12 @@
       <h1>Adicionar Nova Observação</h1>
     </div>
 
-    <v-form ref="form" v-model="valid" lazy-validation class="fomularioComplemento">
+    <v-form
+      ref="form"
+      v-model="valid"
+      lazy-validation
+      class="fomularioComplemento"
+    >
       <div class="primeiraLinha">
         <div class="personalizarCampos">
           <div class="campos-formulario campoObservacao">
@@ -31,9 +36,16 @@
       <div class="selecionarCategorias">
         <h1>Categorias de Produto vinculadas a sua observação</h1>
         <div class="divCheckboxCategorias">
-          <div class="checkboxItem" v-for="categoria in categoriaProduto" :key="categoria.id">
-            <v-checkbox v-model="observacao.id_categoria_prod" :value="categoria.id"></v-checkbox>
-            <span>{{categoria.nome}}</span>
+          <div
+            class="checkboxItem"
+            v-for="categoria in categoriaProduto"
+            :key="categoria.id"
+          >
+            <v-checkbox
+              v-model="observacao.id_categoria_prod"
+              :value="categoria.id"
+            ></v-checkbox>
+            <span>{{ categoria.nome }}</span>
           </div>
         </div>
       </div>
@@ -56,24 +68,33 @@ export default {
   props: ["id"],
   data() {
     return {
-        img: '',
+      img: "",
       selected: [],
       categoriaProduto: [],
       valid: true,
-      observacao: {id_categoria_prod:[]},
+      observacao: { id_categoria_prod: [] },
       descricaoRules: [(v) => !!v || "Nome é obrigatório"],
     };
   },
   methods: {
     salvar() {
-        console.log(this.observacao)
       if (this.validate()) {
         const method = this.id ? "put" : "post";
         const id = this.id ? this.id : "";
 
         axios[method](`${baseApiUrl}/observacao/${id}`, this.observacao)
-          .then(() => {
-            this.$router.back();
+          .then((res) => {
+            // ID QUE RETORNOU DO REGISTRO INSERIDO
+            let obs_catProd = {
+              id_obs: res.data[0].id,
+              id_categoria_prod: this.observacao.id_categoria_prod,
+            };
+            axios
+              .post(`${baseApiUrl}/observacaoCategorias`, obs_catProd)
+              .then(() => {
+                this.$router.back();
+              })
+              .catch();
           })
           .catch((err) => {
             console.log(err);
@@ -107,7 +128,7 @@ export default {
   },
   created() {
     this.getObservacaoById();
-    this.getAllCategoriaProduto()
+    this.getAllCategoriaProduto();
   },
 };
 </script>
@@ -127,7 +148,6 @@ export default {
   width: 90%;
   text-align: center;
   margin-bottom: 0px;
-  
 }
 
 .botaoVoltar {
