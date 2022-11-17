@@ -73,33 +73,40 @@ export default {
   },
   methods: {
     getAllObservacoes() {
+      this.observacoes = []
       axios
         .get(`${baseApiUrl}/observacaoCategorias`)
         .then((res) => {
-          this.observacoes = res.data;
-          console.log(this.observacoes)
-          const grouped = this.observacoes.reduce((acumulador, obs) => {
+          const grouped = res.data.reduce((acumulador, obs) => {
             if (!acumulador[obs.descricao]) {
               acumulador[obs.descricao] = [];
             }
             acumulador[obs.descricao].push(obs.categoria);
             return acumulador;
-            
           }, {});
-          console.log(grouped);
+          this.tabelaFormatada(grouped);
         })
         .catch();
     },
+    tabelaFormatada(grouped) {
+      for (let i = 0; i < Object.keys(grouped).length; i++) {
+        let obj = {
+          descricao: Object.keys(grouped)[i],
+          categoria: Object.values(grouped)[i],
+        };
+        this.observacoes.push(obj);
+      }
+    },
     editItem(item) {
-      this.$router.push({ path: `/novoComplemento/${item.id}` });
+      this.$router.push({ path: `/alteraObservacao/${item.descricao}` });
     },
     deleteItem(item) {
       this.dialogDelete = true;
-      this.observacao.id = item.id;
+      this.observacao.descricao = item.descricao;
     },
     confirmDelete() {
       axios
-        .delete(`${baseApiUrl}/observacao/${this.observacao.id}`)
+        .delete(`${baseApiUrl}/observacao/${this.observacao.descricao}`)
         .then(() => {
           this.getAllObservacoes();
           this.dialogDelete = false;

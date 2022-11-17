@@ -69,7 +69,7 @@ module.exports = app => {
         .get(app.api.tipos_tamanhos.getAllTamanhosProdutos)
 
     // *** FIM TAMANHOS PRODUTO ***
-    
+
     // *** COMPLEMENTO ***
     app.route('/complemento/:id')
         .get(app.api.complemento.getComplementoById)
@@ -82,19 +82,22 @@ module.exports = app => {
 
     // *** FIM COMPLEMENTO  ***
 
-        // *** OBSERVAÇÃO ***
-        app.route('/observacao/:id')
+    // *** OBSERVAÇÃO ***
+    app.route('/observacao/:descricao')
         .get(app.api.observacao.getObservacaoById)
         .put(app.api.observacao.saveObservacao)
         .delete(app.api.observacao.deleteObservacao)
 
-        app.route('/observacao')
+    app.route('/observacao')
         .post(app.api.observacao.saveObservacao)
         .get(app.api.observacao.getAllObservacaos)
+
+    // *** FIM OBSERVAÇÃO  ***
+    app.route('/observacaoCategorias/:descricao')
+        .put(app.api.observacao.saveObsCatProd)
         
-        // *** FIM OBSERVAÇÃO  ***
-        app.route('/observacaoCategorias')
+    app.route('/observacaoCategorias')
         .post(app.api.observacao.saveObsCatProd)
         .get(app.api.observacao.getAllObsCatProd)
-        
-    }
+
+}

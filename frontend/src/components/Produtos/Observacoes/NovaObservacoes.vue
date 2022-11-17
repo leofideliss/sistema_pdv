@@ -8,8 +8,8 @@
         />
         <h1>Voltar</h1>
       </router-link>
-
-      <h1>Adicionar Nova Observação</h1>
+      <h1 v-if="descricao">Alterar Observação</h1>
+      <h1 v-else>Adicionar Nova Observação</h1>
     </div>
 
     <v-form
@@ -44,6 +44,7 @@
             <v-checkbox
               v-model="observacao.id_categoria_prod"
               :value="categoria.id"
+              :rules="categoriaRule"
             ></v-checkbox>
             <span>{{ categoria.nome }}</span>
           </div>
@@ -65,7 +66,7 @@ import axios from "axios";
 import { baseApiUrl } from "@/global";
 export default {
   name: "NovaObservacao",
-  props: ["id"],
+  props: ["descricao"],
   data() {
     return {
       img: "",
@@ -74,23 +75,30 @@ export default {
       valid: true,
       observacao: { id_categoria_prod: [] },
       descricaoRules: [(v) => !!v || "Nome é obrigatório"],
+      categoriaRule: [
+        (v) => !!v || "Categoria é obrigatório",
+        (v) => (v.length > 0) || "Categoria é obrigatório",
+      ],
     };
   },
   methods: {
     salvar() {
       if (this.validate()) {
-        const method = this.id ? "put" : "post";
-        const id = this.id ? this.id : "";
+        const method = this.descricao ? "put" : "post";
+        const descricao = this.descricao ? this.descricao : "";
 
-        axios[method](`${baseApiUrl}/observacao/${id}`, this.observacao)
+        axios[method](`${baseApiUrl}/observacao/${descricao}`, this.observacao)
           .then((res) => {
             // ID QUE RETORNOU DO REGISTRO INSERIDO
             let obs_catProd = {
               id_obs: res.data[0].id,
               id_categoria_prod: this.observacao.id_categoria_prod,
+              descricao_cat: this.observacao.descricao,
             };
-            axios
-              .post(`${baseApiUrl}/observacaoCategorias`, obs_catProd)
+            axios[method](
+              `${baseApiUrl}/observacaoCategorias/${descricao}`,
+              obs_catProd
+            )
               .then(() => {
                 this.$router.back();
               })
@@ -127,6 +135,9 @@ export default {
     },
   },
   created() {
+    if(this.descricao){
+      this.observacao.descricao = this.descricao
+    }
     this.getObservacaoById();
     this.getAllCategoriaProduto();
   },
