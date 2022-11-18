@@ -50,7 +50,6 @@
           </div>
         </div>
       </div>
-
       <div class="botaos-form">
         <button class="botao-cancelar" @click.prevent="cancelar">
           Cancelar
@@ -77,7 +76,7 @@ export default {
       descricaoRules: [(v) => !!v || "Nome é obrigatório"],
       categoriaRule: [
         (v) => !!v || "Categoria é obrigatório",
-        (v) => (v.length > 0) || "Categoria é obrigatório",
+        (v) => v.length > 0 || "Categoria é obrigatório",
       ],
     };
   },
@@ -135,8 +134,15 @@ export default {
     },
   },
   created() {
-    if(this.descricao){
-      this.observacao.descricao = this.descricao
+    if (this.descricao) {
+      this.observacao.descricao = this.descricao;
+      axios
+        .get(`${baseApiUrl}/observacaoCategorias/${this.descricao}`)
+        .then((res)=>{
+        res.data.forEach(element => {
+          this.observacao.id_categoria_prod.push(element.id)
+        });})
+        .catch();
     }
     this.getObservacaoById();
     this.getAllCategoriaProduto();

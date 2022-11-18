@@ -95,9 +95,10 @@ module.exports = app => {
     // *** FIM OBSERVAÇÃO  ***
     app.route('/observacaoCategorias/:descricao')
         .put(app.api.observacao.saveObsCatProd)
+        .get(app.api.observacao.getObsCatProdByDesc)
         
     app.route('/observacaoCategorias')
         .post(app.api.observacao.saveObsCatProd)
         .get(app.api.observacao.getAllObsCatProd)
-
+        
 }

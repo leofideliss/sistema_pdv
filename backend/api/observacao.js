@@ -73,12 +73,11 @@ module.exports = app => {
             const obs = await app.db('observacao')
                 .where({ descricao: reg.descricao_cat })
                 .first()
-                console.log(obs.id)
 
             await app.db('obs_catProd')
                 .where({ id_obs: obs.id })
                 .del()
-      
+
             app.db('obs_catProd')
                 .insert(fieldsToInsert)
                 .then(() => res.status(204).send())
@@ -101,5 +100,23 @@ module.exports = app => {
 
     }
 
-    return { saveObservacao, deleteObservacao, getAllObservacaos, getObservacaoById, saveObsCatProd, getAllObsCatProd }
+    const getObsCatProdByDesc = async (req, res) => {
+
+        const obs = await app.db('observacao')
+            .where({ descricao: req.params.descricao })
+            .first()
+      
+
+        await app.db('obs_catProd')
+        .join('categoriaProduto', 'obs_catProd.id_catProd', '=', 'categoriaProduto.id')
+            .where({ id_obs: obs.id })
+            .select('categoriaProduto.id','categoriaProduto.nome')
+            .then(categorias => res.json(categorias))
+            .catch(err => res.status(500).send(err))
+
+
+
+    }
+
+    return { saveObservacao, deleteObservacao, getAllObservacaos, getObservacaoById, saveObsCatProd, getAllObsCatProd, getObsCatProdByDesc }
 }
