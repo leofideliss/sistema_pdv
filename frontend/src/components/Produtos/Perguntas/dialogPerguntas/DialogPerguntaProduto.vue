@@ -38,8 +38,10 @@
                             </div>
                         </div>
                         <div class="interiorTabelaProduto">
+                            <div v-for="n in 6" :key="n">
                             <ItemTabelaProduto></ItemTabelaProduto>
-                            <ItemTabelaProduto></ItemTabelaProduto>
+                        </div>
+                            <!-- <ItemTabelaProduto></ItemTabelaProduto>
                             <ItemTabelaProduto></ItemTabelaProduto>
 
                             <ItemTabelaProduto></ItemTabelaProduto>
@@ -50,7 +52,7 @@
                             <ItemTabelaProduto></ItemTabelaProduto>
                             <ItemTabelaProduto></ItemTabelaProduto>
                             <ItemTabelaProduto></ItemTabelaProduto>
-                            <ItemTabelaProduto></ItemTabelaProduto>
+                            <ItemTabelaProduto></ItemTabelaProduto> -->
 
                         </div>
 
