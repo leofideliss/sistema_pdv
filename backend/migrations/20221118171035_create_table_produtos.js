@@ -13,6 +13,7 @@ exports.up = function(knex) {
     table.float('preco_custo').notNullable()
     table.float('preco_venda').notNullable()
     table.string('descricao')
+    table.binary('imagem_prod')
   })
 };
 
@@ -21,5 +22,5 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-  
+  return knex.schema.dropTable('produtos')
 };
