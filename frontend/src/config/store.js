@@ -7,7 +7,11 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         isMenuVisible: false,
-        user: null
+        user: null,
+
+        // PERGUNTAS
+
+        complementosPerguntas: [],
     },
     mutations: {
         toggleMenu(state, isVisible) {
@@ -33,6 +37,25 @@ export default new Vuex.Store({
                 delete axios.defaults.headers.common['Authorization']
                 state.isMenuVisible = false
             }
+        },
+
+        setComplementosPerg(state, value) {
+            if (state.complementosPerguntas.length == 0) {
+                state.complementosPerguntas.push(value)
+            } else {
+                var objBusca = state.complementosPerguntas.findIndex(({ id }) => id == value.id) 
+                if (objBusca == -1)
+                    state.complementosPerguntas.push(value)
+                    else
+                    if(objBusca > -1)
+                    {
+                        state.complementosPerguntas[objBusca].preco_promo = value.preco_promo
+                        state.complementosPerguntas[objBusca].qtdPermitida = value.qtdPermitida
+                    }
+            }
+        },
+        RemoveComplementosPerg(state, value) {
+            state.complementosPerguntas.splice(state.complementosPerguntas.findIndex(({ id }) => id == value.id), 1)
         }
     },
     // getters: {

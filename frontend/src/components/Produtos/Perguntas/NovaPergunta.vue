@@ -57,47 +57,36 @@
               ></DialogPerguntaProduto>
             </div>
 
-              <v-card>
-
-                <v-data-table
+            <v-card>
+              <v-data-table
                 v-if="tipo == 'produto'"
-                  :headers="headersProduto"
-                  :items="itens"
-                  :search="search"
-                >
-                  <template v-slot:[`item.actions`]="{ item }">
-                    <v-icon dense @click="deleteItem(item)">
-                      mdi-delete
-                    </v-icon>
-                  </template>
-                </v-data-table>
+                :headers="headersProduto"
+                :search="search"
+              >
+                <template v-slot:[`item.actions`]="{ item }">
+                  <v-icon dense @click="deleteItem(item)"> mdi-delete </v-icon>
+                </template>
+              </v-data-table>
 
-                <v-data-table
+              <v-data-table
                 v-if="tipo == 'complemento'"
-                  :headers="headersComplemento"
-                  :items="itens"
-                  :search="search"
-                >
-                  <template v-slot:[`item.actions`]="{ item }">
-                    <v-icon dense @click="deleteItem(item)">
-                      mdi-delete
-                    </v-icon>
-                  </template>
-                </v-data-table>
+                :headers="headersComplemento"
+                :items="itensComplemento"
+                :search="search"
+              >
+               
+              </v-data-table>
 
-                <v-data-table
+              <v-data-table
                 v-if="tipo == 'observacao'"
-                  :headers="headersObservacao"
-                  :items="itens"
-                  :search="search"
-                >
-                  <template v-slot:[`item.actions`]="{ item }">
-                    <v-icon dense @click="deleteItem(item)">
-                      mdi-delete
-                    </v-icon>
-                  </template>
-                </v-data-table>
-              </v-card>
+                :headers="headersObservacao"
+                :search="search"
+              >
+                <template v-slot:[`item.actions`]="{ item }">
+                  <v-icon dense @click="deleteItem(item)"> mdi-delete </v-icon>
+                </template>
+              </v-data-table>
+            </v-card>
           </div>
 
           <div class="respostaObrigatoria">
@@ -163,7 +152,6 @@
           </div>
         </div>
       </div>
-
       <div class="botaos-form">
         <button class="botao-cancelar">Cancelar</button>
         <button class="botao-salvar">Salvar</button>
@@ -186,6 +174,7 @@ export default {
   },
   data() {
     return {
+      search: "",
       tipo: "observacao",
       obrigatorio: false,
       dialog: false,
@@ -199,8 +188,10 @@ export default {
         { text: "Tipo", value: "tipo" },
         { text: "Opção", value: "opcao" },
         { text: "Qtde Permitida", value: "qtdPermitida" },
-        { text: "Excluir", value: "actions", sortable: false },
+        { text: "Preço Venda", value: "preco_venda" },
+        { text: "Preco Promo.", value: "preco_promo" },
       ],
+      itensComplemento: this.$store.state.complementosPerguntas,
       headersProduto: [
         { text: "Tipo", value: "tipo" },
         { text: "Opção", value: "opcao" },
@@ -236,6 +227,12 @@ export default {
       ],
     };
   },
+  computed: {
+    
+  },
+  methods:{
+   
+  }
 };
 </script>
 
