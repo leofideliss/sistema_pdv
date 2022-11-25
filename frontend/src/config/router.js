@@ -22,6 +22,7 @@ import NovaObservacao from '@/components/Produtos/Observacoes/NovaObservacoes.vu
 import Observacao from '@/components/Produtos/Observacoes/ListaObservacoes.vue'
 import ObservacoesRouter from '@/components/Produtos/Observacoes/ObservacoesRouter.vue'
 import Perguntas from '@/components/Produtos/Perguntas/ListaPerguntas.vue'
+import PerguntaRouter from '@/components/Produtos/Perguntas/PerguntaRouter.vue'
 import NovaPergunta from '@/components/Produtos/Perguntas/NovaPergunta.vue'
 import ListaProdutosTamanho from '@/components/Tipos Produtos/ProdutosTamanho/ListaProdutosTamanho.vue'
 import NovoProdutosTamanho from '@/components/Tipos Produtos/ProdutosTamanho/novoProdutoTamanho.vue'
@@ -176,15 +177,29 @@ const routes = [
             },
         ]
     },
+  
     {
-        name: 'NovaPergunta',
-        path: '/novaPergunta',
-        component: NovaPergunta
-    },
-    {
-        name: 'Perguntas',
+        name: 'PerguntasRouter',
         path: '/perguntas',
-        component: Perguntas
+        component: PerguntaRouter,
+        children:[
+            {
+                name: 'NovaPergunta',
+                path: '/novaPergunta',
+                component: NovaPergunta
+            },
+            {
+                name: 'Perguntas',
+                path: '/perguntas',
+                component: Perguntas,
+            },
+            {
+                name: 'AlterarPergunta',
+                path: '/alterarPergunta/:id',
+                component: NovaPergunta,
+                props:true
+            },
+        ]
     },
     {
         name: 'ListaProdutosTamanho',

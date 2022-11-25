@@ -43,19 +43,26 @@ export default new Vuex.Store({
             if (state.complementosPerguntas.length == 0) {
                 state.complementosPerguntas.push(value)
             } else {
-                var objBusca = state.complementosPerguntas.findIndex(({ id }) => id == value.id) 
+
+                var objBusca = state.complementosPerguntas.findIndex(({ id }) => id == value.id)
                 if (objBusca == -1)
                     state.complementosPerguntas.push(value)
-                    else
-                    if(objBusca > -1)
-                    {
+                else
+                    if (objBusca > -1) {
                         state.complementosPerguntas[objBusca].preco_promo = value.preco_promo
                         state.complementosPerguntas[objBusca].qtdPermitida = value.qtdPermitida
+                        // Só para atualizar a lista , até eu descobrir outra forma =)
+                        state.complementosPerguntas.push({})
+                        state.complementosPerguntas.pop()
+
                     }
             }
         },
         RemoveComplementosPerg(state, value) {
             state.complementosPerguntas.splice(state.complementosPerguntas.findIndex(({ id }) => id == value.id), 1)
+        },
+        resetComplementosPerg(state) {
+            state.complementosPerguntas = []
         }
     },
     // getters: {

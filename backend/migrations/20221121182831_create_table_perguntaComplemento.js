@@ -8,6 +8,8 @@
       table.integer('id_pergunta').unsigned()
       table.foreign('id_complemento').references('id').inTable('complemento')
       table.foreign('id_pergunta').references('id').inTable('perguntas')
+      table.integer('qtdPermitida')
+      table.string('preco_promo')
     })
   };
   

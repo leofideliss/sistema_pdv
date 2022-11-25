@@ -12,7 +12,7 @@
           alt="Voltar para Página anterior"
           class="imgTipoTamanho"
         />
-        <span v-if="itensComplementoExiste">Editar</span>
+        <span v-if="(itensComplemento.length != 0)">Editar</span>
         <span v-else>Adicionar</span>
         
       </v-btn>
@@ -44,6 +44,7 @@
               <div v-for="comp in complementos" :key="comp.id">
                 <ItemTabelaComplemento
                   :complemento="comp"
+                  :itensComplemento="itensComplemento"
                 ></ItemTabelaComplemento>
               </div>
             </div>
@@ -65,6 +66,7 @@ import axios from "axios";
 import { baseApiUrl } from "@/global";
 export default {
   name: "DialogPerguntaComplemento",
+  props:['itensComplemento'],
   components: {
     ItemTabelaComplemento,
   },

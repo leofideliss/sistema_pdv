@@ -96,9 +96,24 @@ module.exports = app => {
     app.route('/observacaoCategorias/:descricao')
         .put(app.api.observacao.saveObsCatProd)
         .get(app.api.observacao.getObsCatProdByDesc)
-        
+
     app.route('/observacaoCategorias')
         .post(app.api.observacao.saveObsCatProd)
         .get(app.api.observacao.getAllObsCatProd)
-        
+
+    // *** PERGUNTAS ***
+
+    app.route('/perguntas')
+        .post(app.api.perguntas.savePergunta)
+        .get(app.api.perguntas.getAllPerguntas)
+
+
+    app.route('/perguntas/:id')
+        .get(app.api.perguntas.getPerguntaById)
+
+    app.route('/perguntasComplemento')
+        .post(app.api.perguntas.savePerguntaComplemento)
+
+    // *** FIM PERGUNTAS ***
+
 }

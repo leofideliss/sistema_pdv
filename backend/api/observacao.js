@@ -66,7 +66,7 @@ module.exports = app => {
         const id_obs = reg.id_obs
         const fieldsToInsert = reg.id_categoria_prod.map(field =>
             ({ id_catProd: field, id_obs }));
-
+        console.log(fieldsToInsert)
         if (req.params.descricao) reg.descricao_alterar = req.params.descricao
 
         if (reg.descricao_alterar) {
@@ -105,12 +105,12 @@ module.exports = app => {
         const obs = await app.db('observacao')
             .where({ descricao: req.params.descricao })
             .first()
-      
+
 
         await app.db('obs_catProd')
-        .join('categoriaProduto', 'obs_catProd.id_catProd', '=', 'categoriaProduto.id')
+            .join('categoriaProduto', 'obs_catProd.id_catProd', '=', 'categoriaProduto.id')
             .where({ id_obs: obs.id })
-            .select('categoriaProduto.id','categoriaProduto.nome')
+            .select('categoriaProduto.id', 'categoriaProduto.nome')
             .then(categorias => res.json(categorias))
             .catch(err => res.status(500).send(err))
 

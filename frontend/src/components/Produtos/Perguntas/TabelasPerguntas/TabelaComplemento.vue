@@ -14,7 +14,8 @@
         class="textoQtdeMaxima"
         id="qtdeMaxima"
         type="number"
-        v-model="item.qtdPermitida"
+        v-model="qtdPermitida"
+        @blur="atualizaItem"
       />
     </div>
     <div class="inputValorVenda">
@@ -25,6 +26,7 @@
         placeholder="R$0,00"
         id="precoCustoTamanho"
         v-model="promocao"
+        @blur="atualizaItem"
       />
     </div>
   </div>
@@ -33,14 +35,14 @@
  <script>
 export default {
   name: "TabelaComplemento",
-  props: ["complemento"],
+  props: ["complemento", "itensComplemento"],
   data() {
     return {
       teste: true,
       select: "",
-      promocao: '',
+      promocao: "0",
+      qtdPermitida: "0",
       item: {
-        qtdPermitida: "",
         id: "",
       },
     };
@@ -50,22 +52,45 @@ export default {
     adicionarItem() {
       if (this.select) {
         this.item.id = this.select;
+        this.item.qtdPermitida = this.qtdPermitida;
         this.item.tipo = "Complemento";
         this.item.opcao = this.complemento.nome;
         this.item.preco_venda = this.complemento.preco_venda;
-        this.item.preco_promo = this.promocao.toLocaleString("pt-br", {
-          style: "currency",
-          currency: "BRL",
-        })
+        this.item.preco_promo = this.promocao
+          ? this.promocao.toLocaleString("pt-br", {
+              style: "currency",
+              currency: "BRL",
+            })
+          : "";
         this.$store.commit("setComplementosPerg", this.item);
       } else {
         this.$store.commit("RemoveComplementosPerg", this.item);
-        this.item = {
-          qtdPermitida: "",
-          id: "",
-        }
+        this.qtdPermitida = 0;
+        this.promocao = 0;
       }
     },
+    atualizaItem() {
+      if (this.select) {
+        console.log("chamei atualizar");
+        this.adicionarItem();
+      }
+    },
+  },
+  mounted() {
+    if (this.itensComplemento) {
+      var objBusca = this.itensComplemento.findIndex(
+        ({ id }) => id == this.complemento.id
+      );
+      if (objBusca != -1) {
+        console.log(this.itensComplemento);
+        this.select = this.itensComplemento[objBusca].id;
+        this.qtdPermitida = this.itensComplemento[objBusca].qtdPermitida;
+        var valorFormatado = this.itensComplemento[objBusca].preco_promo;
+        valorFormatado = valorFormatado.replace("R$", "");
+        valorFormatado = valorFormatado.replace(",", ".");
+        this.promocao = parseFloat(valorFormatado);
+      }
+    }
   },
 };
 </script>

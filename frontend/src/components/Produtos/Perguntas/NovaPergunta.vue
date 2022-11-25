@@ -9,24 +9,30 @@
         <h1>Voltar</h1>
       </router-link>
 
-      <h1>Adicionar Nova Pergunta</h1>
+      <h1 v-if="id">Alterar Pergunta</h1>
+      <h1 v-else>Adicionar Nova Pergunta</h1>
     </div>
 
-    <form action="" class="fomularioComplemento">
+    <v-form v-model="valid" ref="form" class="fomularioComplemento">
       <div class="divPerguntas">
         <div class="divFormPerguntas">
           <div class="primeiraLinha">
             <div class="personalizarCampos">
               <div class="campos-formulario campoPergunta">
                 <label for="nomePergunta"> Pergunta </label>
-                <input id="nomePergunta" type="text" />
+                <v-text-field
+                  id="nomePergunta"
+                  type="text"
+                  v-model="reg.pergunta"
+                  :rules="perguntaRules"
+                ></v-text-field>
               </div>
             </div>
           </div>
 
           <div class="tipoResposta">
             <label class="labelTipoResposta">Tipo da resposta</label>
-            <v-radio-group v-model="tipo" row>
+            <v-radio-group v-model="reg.tipo" row>
               <div class="radioTipoResposta">
                 <v-radio value="observacao"></v-radio>
                 <span>Observação</span>
@@ -47,19 +53,20 @@
               <span>Opções de Respostas</span>
 
               <DialogPerguntaComplemento
-                v-if="tipo == 'complemento'"
+                :itensComplemento="itensComplemento"
+                v-if="reg.tipo == 'complemento'"
               ></DialogPerguntaComplemento>
               <DialogPerguntaObservacao
-                v-if="tipo == 'observacao'"
+                v-if="reg.tipo == 'observacao'"
               ></DialogPerguntaObservacao>
               <DialogPerguntaProduto
-                v-if="tipo == 'produto'"
+                v-if="reg.tipo == 'produto'"
               ></DialogPerguntaProduto>
             </div>
 
             <v-card>
               <v-data-table
-                v-if="tipo == 'produto'"
+                v-if="reg.tipo == 'produto'"
                 :headers="headersProduto"
                 :search="search"
               >
@@ -69,16 +76,15 @@
               </v-data-table>
 
               <v-data-table
-                v-if="tipo == 'complemento'"
+                v-if="reg.tipo == 'complemento'"
                 :headers="headersComplemento"
                 :items="itensComplemento"
                 :search="search"
               >
-               
               </v-data-table>
 
               <v-data-table
-                v-if="tipo == 'observacao'"
+                v-if="reg.tipo == 'observacao'"
                 :headers="headersObservacao"
                 :search="search"
               >
@@ -91,7 +97,7 @@
 
           <div class="respostaObrigatoria">
             <label class="labelTipoResposta">Resposta Obrigatória</label>
-            <v-radio-group v-model="obrigatorio" row>
+            <v-radio-group v-model="reg.obrigatorio" row>
               <div class="radioTipoResposta">
                 <v-radio :value="true"></v-radio>
                 <span>Sim</span>
@@ -118,6 +124,7 @@
                   min="0"
                   max="5"
                   class="inputMinMax"
+                  v-model="reg.min"
                 />
               </div>
               <div>
@@ -129,6 +136,7 @@
                   min="0"
                   max="5"
                   class="inputMinMax"
+                  v-model="reg.max"
                 />
               </div>
             </div>
@@ -153,10 +161,14 @@
         </div>
       </div>
       <div class="botaos-form">
-        <button class="botao-cancelar">Cancelar</button>
-        <button class="botao-salvar">Salvar</button>
+        <button class="botao-cancelar" @click.prevent="cancelar">
+          Cancelar
+        </button>
+        <button class="botao-salvar" @click.prevent="salvarPergunta">
+          Salvar
+        </button>
       </div>
-    </form>
+    </v-form>
   </div>
 </template>
 
@@ -164,19 +176,30 @@
 import DialogPerguntaObservacao from "@/components/Produtos/Perguntas/dialogPerguntas/DialogPerguntaObservacao.vue";
 import DialogPerguntaComplemento from "@/components/Produtos/Perguntas/dialogPerguntas/DialogPerguntaComplemento.vue";
 import DialogPerguntaProduto from "@/components/Produtos/Perguntas/dialogPerguntas/DialogPerguntaProduto.vue";
-
+import axios from "axios";
+import { baseApiUrl } from "@/global";
 export default {
-  name: "NovaObservacao",
   components: {
     DialogPerguntaComplemento,
     DialogPerguntaObservacao,
     DialogPerguntaProduto,
   },
+  name: "NovaObservacao",
+  props: ["id"],
+
   data() {
     return {
+      valid: true,
       search: "",
-      tipo: "observacao",
-      obrigatorio: false,
+      reg: {
+        tipo: "observacao",
+        obrigatorio: false,
+        pergunta: "",
+        max: "",
+        min: "",
+      },
+      perguntaRules: [(v) => !!v || "Nome da pergunta é obrigatório"],
+
       dialog: false,
       headersObservacao: [
         { text: "Tipo", value: "tipo" },
@@ -227,12 +250,87 @@ export default {
       ],
     };
   },
-  computed: {
-    
+  computed: {},
+  methods: {
+    salvarPergunta() {
+      if (this.validate()) {
+        const method = this.id ? "put" : "post";
+        const id = this.id ? this.id : "";
+        axios[method](`${baseApiUrl}/perguntas/${id}`, this.reg)
+          .then((res) => {
+            if (this.itensComplemento.length != 0) {
+              let perg_complementos = {
+                id_pergunta: res.data[0].id,
+                complementos: this.itensComplemento,
+              };
+              axios[method](
+                `${baseApiUrl}/perguntasComplemento/${id}`,
+                perg_complementos
+              )
+                .then(() => {
+                  this.$router.back();
+                })
+                .catch();
+            } else this.$router.back();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+
+    getPerguntaById() {
+      axios
+        .get(`${baseApiUrl}/perguntas/${this.id}`)
+        .then((res) => {
+          this.reg.pergunta = res.data[0].pergunta;
+          this.reg.tipo = res.data[0].tipo;
+          this.reg.obrigatorio = res.data[0].obrigatorio;
+          this.reg.max = res.data[0].max;
+          this.reg.min = res.data[0].min;
+
+          res.data.forEach((element) => {
+            let obj = {
+              id: element.id,
+              qtdPermitida: element.qtdPermitida,
+              tipo: element.tipo,
+              opcao: element.nome,
+              preco_venda: element.preco_venda.toLocaleString("pt-br", {
+              style: "currency",
+              currency: "BRL",
+            }),
+              preco_promo: element.preco_promo.toLocaleString("pt-br", {
+              style: "currency",
+              currency: "BRL",
+            }),
+            };
+            this.itensComplemento.push(obj);
+          });
+          /* 
+id
+qtdPermitida
+tipo
+opcao = nome
+preco_venda
+preco_promo
+*/
+          console.log(res.data);
+        })
+        .catch();
+    },
+    validate() {
+      return this.$refs.form.validate();
+    },
+    cancelar() {
+      this.$router.back();
+    },
   },
-  methods:{
-   
-  }
+  created() {
+    if (this.id) {
+      this.getPerguntaById();
+    }  
+  },
+ 
 };
 </script>
 
