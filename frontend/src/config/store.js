@@ -12,6 +12,9 @@ export default new Vuex.Store({
         // PERGUNTAS
 
         complementosPerguntas: [],
+        observacaoPerguntas: [],
+        produtosPerguntas: []
+
     },
     mutations: {
         toggleMenu(state, isVisible) {
@@ -59,11 +62,21 @@ export default new Vuex.Store({
             }
         },
         RemoveComplementosPerg(state, value) {
-            state.complementosPerguntas.splice(state.complementosPerguntas.findIndex(({ id }) => id == value.id), 1)
+            state.complementosPerguntas.splice(state.complementosPerguntas.findIndex(({ id }) => id == value), 1)
         },
         resetComplementosPerg(state) {
             state.complementosPerguntas = []
-        }
+        },
+
+        setObservacaoPerg(state, value) {
+            state.observacaoPerguntas.push(value)
+        },
+        RemoveObservacaoPerg(state, value) {
+            state.observacaoPerguntas.splice(state.observacaoPerguntas.findIndex(({ descricao }) => descricao == value.descricao), 1)
+        },
+        resetObservacaoPerg(state) {
+            state.observacaoPerguntas = []
+        },
     },
     // getters: {
     //     getAllCategoriaInsumo() {

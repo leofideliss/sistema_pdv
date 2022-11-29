@@ -12,9 +12,8 @@
           alt="Voltar para Página anterior"
           class="imgTipoTamanho"
         />
-        <span v-if="(itensComplemento.length != 0)">Editar</span>
+        <span v-if="itensComplemento.length != 0">Editar</span>
         <span v-else>Adicionar</span>
-        
       </v-btn>
     </template>
     <v-card class="centralizarCard">
@@ -53,8 +52,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="red" text @click="dialog = false"> Fechar </v-btn>
-        <v-btn color="green" text @click="salvarTabela"> Salvar </v-btn>
+        <v-btn color="green" text @click="salvarTabela"> Confirmar </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -66,7 +64,7 @@ import axios from "axios";
 import { baseApiUrl } from "@/global";
 export default {
   name: "DialogPerguntaComplemento",
-  props:['itensComplemento'],
+  props: ["itensComplemento"],
   components: {
     ItemTabelaComplemento,
   },
@@ -79,8 +77,8 @@ export default {
   },
   computed: {
     itensComplementoExiste() {
-      if(this.$store.state.complementosPerguntas.length == 0) return false
-      return true 
+      if (this.$store.state.complementosPerguntas.length == 0) return false;
+      return true;
     },
   },
   methods: {
@@ -106,7 +104,6 @@ export default {
         .catch();
     },
     salvarTabela() {
-
       this.dialog = false;
     },
   },

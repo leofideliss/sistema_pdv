@@ -2,7 +2,7 @@
   <div class="divComplemento">
     <div class="checkboxItemComplemento">
       <v-checkbox
-        @click="adicionarItem"
+        @click="adicionarItem(complemento.id)"
         v-model="select"
         :value="complemento.id"
         style="margin-top: 0px !important"
@@ -49,8 +49,9 @@ export default {
   },
 
   methods: {
-    adicionarItem() {
+    adicionarItem(value) {
       if (this.select) {
+
         this.item.id = this.select;
         this.item.qtdPermitida = this.qtdPermitida;
         this.item.tipo = "Complemento";
@@ -64,14 +65,16 @@ export default {
           : "";
         this.$store.commit("setComplementosPerg", this.item);
       } else {
-        this.$store.commit("RemoveComplementosPerg", this.item);
+
+
+        this.$store.commit("RemoveComplementosPerg", value);
         this.qtdPermitida = 0;
         this.promocao = 0;
       }
     },
     atualizaItem() {
       if (this.select) {
-        console.log("chamei atualizar");
+        console.log('atualizar')
         this.adicionarItem();
       }
     },
@@ -82,7 +85,6 @@ export default {
         ({ id }) => id == this.complemento.id
       );
       if (objBusca != -1) {
-        console.log(this.itensComplemento);
         this.select = this.itensComplemento[objBusca].id;
         this.qtdPermitida = this.itensComplemento[objBusca].qtdPermitida;
         var valorFormatado = this.itensComplemento[objBusca].preco_promo;

@@ -28,7 +28,25 @@
               mdi-pencil
             </v-icon>
             <v-icon dense @click="deleteItem(item)"> mdi-delete </v-icon>
+            <v-dialog v-model="dialogDelete" max-width="600px">
+              <v-card>
+                <v-card-title class="text-h5"
+                  >Tem certeza que deseja excluir esta pergunta?</v-card-title
+                >
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" text @click="closeDelete"
+                    >Cancelar</v-btn
+                  >
+                  <v-btn color="blue darken-1" @click="confirmDelete" text
+                    >Confirmar</v-btn
+                  >
+                  <v-spacer></v-spacer>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </template>
+          
         </v-data-table>
       </v-card>
     </v-app>
@@ -50,6 +68,7 @@ export default {
         { text: "Ações", value: "actions", sortable: false },
       ],
       perguntas: [],
+      pergunta:{},
       dialogDelete : false,
     };
   },
@@ -67,13 +86,13 @@ export default {
     },
     deleteItem(item) {
       this.dialogDelete = true;
-      this.observacao.descricao = item.descricao;
+      this.pergunta.id = item.id;
     },
     confirmDelete() {
       axios
-        .delete(`${baseApiUrl}/observacao/${this.observacao.descricao}`)
+        .delete(`${baseApiUrl}/perguntas/${this.pergunta.id}`)
         .then(() => {
-          this.getAllObservacoes();
+          this.getAllPerguntas();
           this.dialogDelete = false;
         })
         .catch();
@@ -87,6 +106,7 @@ export default {
   },
   updated(){
     this.$store.commit("resetComplementosPerg");
+    this.$store.commit("resetObservacaoPerg");
 
   }
 };

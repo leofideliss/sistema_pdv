@@ -30,7 +30,7 @@
             </div>
           </div>
 
-          <div class="tipoResposta">
+          <div v-if="!id" class="tipoResposta">
             <label class="labelTipoResposta">Tipo da resposta</label>
             <v-radio-group v-model="reg.tipo" row>
               <div class="radioTipoResposta">
@@ -48,6 +48,26 @@
               </div>
             </v-radio-group>
           </div>
+
+          <div v-else class="tipoResposta">
+            <label class="labelTipoResposta">Tipo da resposta</label>
+            <v-radio-group v-model="reg.tipo" row>
+              <div class="radioTipoResposta" v-if="reg.tipo == 'observacao'">
+                <v-radio :disabled="true" value="observacao"></v-radio>
+                <span>Observação</span>
+              </div>
+
+              <div class="radioTipoResposta" v-if="reg.tipo == 'complemento'">
+                <v-radio :disabled="true" value="complemento"></v-radio>
+                <span>Complemento</span>
+              </div>
+              <div class="radioTipoResposta" v-if="reg.tipo == 'produto'">
+                <v-radio :disabled="true" value="produto"></v-radio>
+                <span>Produto</span>
+              </div>
+            </v-radio-group>
+          </div>
+
           <div class="divOpcoesRespostas">
             <div class="headerDivOpcoesRespostas">
               <span>Opções de Respostas</span>
@@ -69,6 +89,7 @@
                 v-if="reg.tipo == 'produto'"
                 :headers="headersProduto"
                 :search="search"
+                :items="itensProduto"
               >
                 <template v-slot:[`item.actions`]="{ item }">
                   <v-icon dense @click="deleteItem(item)"> mdi-delete </v-icon>
@@ -87,9 +108,12 @@
                 v-if="reg.tipo == 'observacao'"
                 :headers="headersObservacao"
                 :search="search"
+                :items="itensObservacao"
               >
                 <template v-slot:[`item.actions`]="{ item }">
-                  <v-icon dense @click="deleteItem(item)"> mdi-delete </v-icon>
+                  <v-icon dense @click="deleteItemObs(item)">
+                    mdi-delete
+                  </v-icon>
                 </template>
               </v-data-table>
             </v-card>
@@ -189,6 +213,7 @@ export default {
 
   data() {
     return {
+      pergunta: {},
       valid: true,
       search: "",
       reg: {
@@ -203,7 +228,7 @@ export default {
       dialog: false,
       headersObservacao: [
         { text: "Tipo", value: "tipo" },
-        { text: "Opção", value: "opcao" },
+        { text: "Opção", value: "descricao" },
         // { text: "Qtde Permitida", value: "qtdPermitida" },
         { text: "Excluir", value: "actions", sortable: false },
       ],
@@ -215,6 +240,9 @@ export default {
         { text: "Preco Promo.", value: "preco_promo" },
       ],
       itensComplemento: this.$store.state.complementosPerguntas,
+      itensObservacao: this.$store.state.observacaoPerguntas,
+      itensProduto: this.$store.state.produtosPerguntas,
+
       headersProduto: [
         { text: "Tipo", value: "tipo" },
         { text: "Opção", value: "opcao" },
@@ -258,7 +286,7 @@ export default {
         const id = this.id ? this.id : "";
         axios[method](`${baseApiUrl}/perguntas/${id}`, this.reg)
           .then((res) => {
-            if (this.itensComplemento.length != 0) {
+            if (this.reg.tipo == "complemento") {
               let perg_complementos = {
                 id_pergunta: res.data[0].id,
                 complementos: this.itensComplemento,
@@ -271,7 +299,20 @@ export default {
                   this.$router.back();
                 })
                 .catch();
-            } else this.$router.back();
+            }
+            if (this.reg.tipo == "observacao") {
+              let obs = {
+                id_pergunta: res.data[0].id,
+                observacoes: this.itensObservacao,
+              };
+              axios[method](`${baseApiUrl}/perguntasObservacao/${id}`, obs)
+                .then(() => {
+                  this.$router.back();
+                })
+                .catch();
+            }
+            // if (this.reg.tipo == "produto") {
+            // }
           })
           .catch((err) => {
             console.log(err);
@@ -279,16 +320,10 @@ export default {
       }
     },
 
-    getPerguntaById() {
+    getPerguntaByIdComp() {
       axios
-        .get(`${baseApiUrl}/perguntas/${this.id}`)
+        .get(`${baseApiUrl}/perguntasComplemento/${this.id}`)
         .then((res) => {
-          this.reg.pergunta = res.data[0].pergunta;
-          this.reg.tipo = res.data[0].tipo;
-          this.reg.obrigatorio = res.data[0].obrigatorio;
-          this.reg.max = res.data[0].max;
-          this.reg.min = res.data[0].min;
-
           res.data.forEach((element) => {
             let obj = {
               id: element.id,
@@ -296,25 +331,32 @@ export default {
               tipo: element.tipo,
               opcao: element.nome,
               preco_venda: element.preco_venda.toLocaleString("pt-br", {
-              style: "currency",
-              currency: "BRL",
-            }),
+                style: "currency",
+                currency: "BRL",
+              }),
               preco_promo: element.preco_promo.toLocaleString("pt-br", {
-              style: "currency",
-              currency: "BRL",
-            }),
+                style: "currency",
+                currency: "BRL",
+              }),
             };
             this.itensComplemento.push(obj);
           });
-          /* 
-id
-qtdPermitida
-tipo
-opcao = nome
-preco_venda
-preco_promo
-*/
-          console.log(res.data);
+        })
+        .catch();
+    },
+    getPerguntaByIdObs() {
+      axios
+        .get(`${baseApiUrl}/perguntasObservacao/${this.id}`)
+        .then((res) => {
+          res.data.forEach(element => {
+            let objObs = {
+              descricao: element.descricao,
+              tipo: element.tipoObs,
+            };
+            
+            this.itensObservacao.push(objObs);
+          });
+         
         })
         .catch();
     },
@@ -324,13 +366,30 @@ preco_promo
     cancelar() {
       this.$router.back();
     },
+
+    deleteItemObs(item) {
+      this.$store.commit("RemoveObservacaoPerg", item);
+    },
   },
   created() {
     if (this.id) {
-      this.getPerguntaById();
-    }  
+      axios
+        .get(`${baseApiUrl}/perguntas/${this.id}`)
+        .then((res) => {
+          this.pergunta = { ...res.data };
+
+          this.reg.pergunta = this.pergunta.pergunta;
+          this.reg.tipo = this.pergunta.tipo;
+          this.reg.obrigatorio = this.pergunta.obrigatorio;
+          this.reg.max = this.pergunta.max;
+          this.reg.min = this.pergunta.min;
+
+          if (this.pergunta.tipo == "complemento") this.getPerguntaByIdComp();
+          if (this.pergunta.tipo == "observacao") this.getPerguntaByIdObs();
+        })
+        .catch();
+    }
   },
- 
 };
 </script>
 

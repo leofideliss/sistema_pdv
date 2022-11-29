@@ -109,10 +109,23 @@ module.exports = app => {
 
 
     app.route('/perguntas/:id')
+        .put(app.api.perguntas.savePergunta)
+        .delete(app.api.perguntas.deletePergunta)
         .get(app.api.perguntas.getPerguntaById)
 
     app.route('/perguntasComplemento')
         .post(app.api.perguntas.savePerguntaComplemento)
+
+    app.route('/perguntasComplemento/:id')
+        .get(app.api.perguntas.getPerguntaByIdComp)
+        .put(app.api.perguntas.savePerguntaComplemento)
+        
+        app.route('/perguntasObservacao')
+        .post(app.api.perguntas.savePerguntaObservacao)
+        
+        app.route('/perguntasObservacao/:id')
+        .put(app.api.perguntas.savePerguntaObservacao)
+        .get(app.api.perguntas.getPerguntaByIdObs)
 
     // *** FIM PERGUNTAS ***
 
