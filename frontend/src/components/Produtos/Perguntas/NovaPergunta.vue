@@ -348,15 +348,15 @@ export default {
       axios
         .get(`${baseApiUrl}/perguntasObservacao/${this.id}`)
         .then((res) => {
-          res.data.forEach(element => {
-            let objObs = {
-              descricao: element.descricao,
-              tipo: element.tipoObs,
-            };
-            
-            this.itensObservacao.push(objObs);
-          });
-         
+            res.data.forEach((element) => {
+              let objObs = {
+                descricao: element.descricao,
+                tipo: element.tipoObs,
+              };
+
+              this.itensObservacao.push(objObs);
+            });
+          
         })
         .catch();
     },

@@ -52,17 +52,17 @@ export default {
   data() {
     return {
       desc: "",
-
       valid: true,
       descRules: [(v) => !!v || "Descrição é obrigatório"],
-
       dialog: false,
     };
   },
   methods: {
     addObservacao() {
-
-      this.$store.commit("setObservacaoPerg",{tipo:'Observação',descricao: this.desc});
+      let obj = { tipo: "Observação", descricao: this.desc };
+      this.$store.commit("setObservacaoPerg",obj);
+      this.desc=""
+      
       this.dialog = false;
     },
   },

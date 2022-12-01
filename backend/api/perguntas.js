@@ -112,26 +112,13 @@ module.exports = app => {
 
     const getPerguntaByIdObs = async (req, res) => {
 
-        const pergunta = await app.db('perguntas')
-            .where({ id: req.params.id })
-            .first()
-
-
         const pergunta_obs = await app.db('pergunta_observacao')
             .join('perguntas', 'pergunta_observacao.id_pergunta', '=', 'perguntas.id')
 
-            .where({ id_pergunta: pergunta.id })
+            .where({ id_pergunta: req.params.id })
             .select('perguntas.id', 'perguntas.tipo', 'perguntas.pergunta', 'perguntas.obrigatorio', 'perguntas.max', 'perguntas.min', 'pergunta_observacao.descricao', 'pergunta_observacao.tipo as tipoObs')
-
-        if (pergunta_obs.length != 0) {
-            return res.json(pergunta_obs)
-        }
-        else {
-            let arr = []
-            arr.push(pergunta)
-            return res.json(arr)
-
-        }
+            .then(perguntas => res.json(perguntas))
+            .catch((err) => res.status(500).send(err))
     }
 
 
