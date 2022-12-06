@@ -7,9 +7,11 @@ export default {
             medida: '',
             preco_custo: '',
             preco_venda: '',
-            descricao:'',
-            image:'',
-            categoria:'',
+            descricao: '',
+            image: '',
+            categoria: '',
+            complementos: [],
+            selectInsumo:[],
         }
     },
     getters: {},
@@ -40,8 +42,17 @@ export default {
         },
         alteraCategoriaProduto(state, value) {
             state.item.categoria = value
-        }
-        
+        },
+        alteraComplementosProduto(state, value) {
+            state.item.complementos = value
+
+        },
+        alteraInsumoProduto(state, value) {
+            state.item.selectInsumo = value
+        },
+
+       
+
 
     },
     actions: {},

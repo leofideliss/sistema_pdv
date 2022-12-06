@@ -31,7 +31,7 @@ export default {
   name: "TabComplemento",
   data() {
     return {
-      complementos: [],
+    
       listaComplementos: [
        
       ],
@@ -43,7 +43,6 @@ export default {
         .get(`${baseApiUrl}/complemento`)
         .then((res) => {
           this.listaComplementos = res.data;
-          console.log(this.listaComplementos)
           this.listaComplementos.forEach(element => {
             element.preco_venda = element.preco_venda.toLocaleString("pt-br", {
               style: "currency",
@@ -57,6 +56,16 @@ export default {
           });
         })
         .catch();
+    },
+  },
+  computed:{
+    complementos: {
+      get() {
+        return this.$store.state.produto.item.complementos;
+      },
+      set(value) {
+        this.$store.commit("alteraComplementosProduto", value);
+      },
     },
   },
   created(){

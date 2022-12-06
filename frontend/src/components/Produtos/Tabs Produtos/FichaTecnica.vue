@@ -26,11 +26,30 @@
                 ></v-text-field>
 
                 <v-data-table
+                  v-model="selectInsumo"
                   :headers="cabecalhoFicha"
                   :items="itensFicha"
                   :search="search2"
+                  show-select
                 >
-                  <template v-slot:[`item.actions`]>
+                  <template v-slot:[`item.qtd`]="props">
+                    <v-edit-dialog
+                      :return-value.sync="props.item.qtd"
+                      @save="save"
+                      @cancel="cancel"
+                      @open="open"
+                      @close="close"
+                    >
+                      {{ props.item.qtd }}
+                      <template v-slot:input>
+                        <v-text-field
+                          v-model="props.item.qtd"
+                          label="Edit"
+                        ></v-text-field>
+                      </template>
+                    </v-edit-dialog>
+                  </template>
+                  <!-- <template v-slot:[`item.actions`]>
                     <v-icon
                       dense
                       color="red"
@@ -39,12 +58,21 @@
                     >
                       mdi-pencil
                     </v-icon>
-                  </template>
+                  </template> -->
                 </v-data-table>
+
+                <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
+                  {{ snackText }}
+
+                  <template v-slot:action="{ attrs }">
+                    <v-btn v-bind="attrs" text @click="snack = false">
+                      FECHAR
+                    </v-btn>
+                  </template>
+                </v-snackbar>
               </v-card-title>
             </div>
-
-            <v-expand-transition>
+            <!-- <v-expand-transition>
               <v-card
                 v-if="reveal"
                 class="transition-fast-in-fast-out v-card--reveal"
@@ -60,6 +88,7 @@
                       >Informe a quantidade em gramas (g)</label
                     >
                     <input
+                      v-model="quantidade"
                       type="number"
                       id="quantG"
                       name="quantG"
@@ -77,7 +106,7 @@
                   </v-btn>
                 </v-card-actions>
               </v-card>
-            </v-expand-transition>
+            </v-expand-transition> -->
           </v-card>
         </v-dialog>
       </v-app>
@@ -93,7 +122,7 @@
           hide-details
         ></v-text-field>
       </v-card-title>
-      <v-data-table :headers="headers" :items="itens" :search="search">
+      <v-data-table :headers="headers" :items="selectInsumo" :search="search">
       </v-data-table>
     </v-card>
   </div>
@@ -108,24 +137,27 @@ export default {
     return {
       dialog: false,
       reveal: false,
-      search: "",
+          search: "",
       search2: "",
       headers: [
-        { text: "Nome do Item", value: "nome" },
-        { text: "Qtde.", value: "qtde" },
+        { text: "Nome do Item", value: "nomeInsumo" },
+        { text: "Qtde.", value: "qtd" },
         { text: "Medida", value: "medida" },
-        { text: "Custo", value: "custo" },
-        { text: "Ações", value: "actions" },
+        { text: "Custo", value: "preco" },
+        // { text: "Ações", value: "actions" },
       ],
 
       cabecalhoFicha: [
         { text: "Insumos", value: "nomeInsumo" },
         { text: "Medida", value: "medida" },
         { text: "Preço Custo", value: "preco" },
-        { text: "Ações", value: "actions" },
+        { text: "Quantidade (g)", value: "qtd" },
+        // { text: "Ações", value: "actions" },
       ],
-      itens: [],
       itensFicha: [],
+      snack: false,
+      snackColor: "",
+      snackText: "",
     };
   },
   methods: {
@@ -133,16 +165,58 @@ export default {
       axios
         .get(`${baseApiUrl}/insumo`)
         .then((res) => {
-          this.itensFicha = res.data;
-          console.log(this.itensFicha);
-          this.itensFicha.forEach((element) => {
-            element.preco = element.preco.toLocaleString("pt-br", {
-              style: "currency",
-              currency: "BRL",
-            });
+          var itens;
+
+          itens = res.data;
+          itens.forEach((element) => {
+            var obj = {
+              id:element.id,
+              preco: element.preco.toLocaleString("pt-br", {
+                style: "currency",
+                currency: "BRL",
+              }),
+              nomeInsumo: element.nomeInsumo,
+              medida: element.medida,
+              qtd: 0,
+            };
+
+            this.itensFicha.push(obj);
           });
         })
         .catch();
+    },
+
+    save() {
+      // var objBusca = this.itensFicha.findIndex(({ id }) => id == item.id);
+      // this.itensFicha[objBusca].qtd = item.qtd;
+
+      this.snack = true;
+      this.snackColor = "success";
+      this.snackText = "Quantidade adicionada";
+    },
+    cancel() {
+      this.snack = true;
+      this.snackColor = "error";
+      this.snackText = "Cancelado";
+    },
+    open() {
+      this.snack = true;
+      this.snackColor = "info";
+      this.snackText = "Insira a quantidade";
+    },
+    close() {
+      // console.log("Dialog closed");
+    },
+
+  },
+  computed:{
+    selectInsumo: {
+      get() {
+        return this.$store.state.produto.item.selectInsumo;
+      },
+      set(value) {
+        this.$store.commit("alteraInsumoProduto", value);
+      },
     },
   },
   created() {
