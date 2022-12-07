@@ -10,8 +10,9 @@ export default {
             descricao: '',
             image: '',
             categoria: '',
-            complementos: [],
+            selectComplementos: [],
             selectInsumo:[],
+            selectPerguntas :[],
         }
     },
     getters: {},
@@ -44,11 +45,14 @@ export default {
             state.item.categoria = value
         },
         alteraComplementosProduto(state, value) {
-            state.item.complementos = value
+            state.item.selectComplementos = value
 
         },
         alteraInsumoProduto(state, value) {
             state.item.selectInsumo = value
+        },
+        alteraPerguntasProduto(state, value) {
+            state.item.selectPerguntas = value
         },
 
        

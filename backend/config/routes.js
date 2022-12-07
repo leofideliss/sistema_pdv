@@ -33,6 +33,13 @@ module.exports = app => {
 
     // *** FIM  INSUMO ***
 
+    // ***  PRODUTO ***
+
+    app.route('/produto')
+        .post(app.api.produto.saveProduto)
+    app.route('/produto/:id')
+        .put(app.api.produto.saveProduto)
+    // ***  PRODUTO ***
 
     // *** CATEGORIA PRODUTO ***
     app.route('/categoriaProduto/:id')
@@ -119,11 +126,11 @@ module.exports = app => {
     app.route('/perguntasComplemento/:id')
         .get(app.api.perguntas.getPerguntaByIdComp)
         .put(app.api.perguntas.savePerguntaComplemento)
-        
-        app.route('/perguntasObservacao')
+
+    app.route('/perguntasObservacao')
         .post(app.api.perguntas.savePerguntaObservacao)
-        
-        app.route('/perguntasObservacao/:id')
+
+    app.route('/perguntasObservacao/:id')
         .put(app.api.perguntas.savePerguntaObservacao)
         .get(app.api.perguntas.getPerguntaByIdObs)
 

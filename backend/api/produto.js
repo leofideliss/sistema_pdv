@@ -50,8 +50,38 @@ module.exports = app => {
     }
     // ***  FIM CATEGORIAS ***
 
+
+    // *** PRODUTOS ***
+    const saveProduto = (req, res) => {
+        const produto = { ...req.body }
+        console.log(req.files)
+        if (req.params.id) produto.id = req.params.id
+
+        try {
+            if (produto.nome.length == 0) throw "Nome inválido"
+
+        } catch (err) {
+            return res.status(400).send(err.msg)
+        }
+        if (produto.id) {
+            app.db('produtos')
+                .update(produto)
+                .where({ id: produto.id })
+                .then(() => res.status(204).send())
+                .catch((err) => res.status(500).send(err))
+        } else {
+            app.db('produtos')
+                .insert(produto)
+                .then(() => res.status(204).send())
+                .catch((err) => res.status(500).send(err))
+        }
+    }
+
+    // *** FIM PRODUTOS ***
+
+
     return {
         saveCategoria, getAllCategoriaProdutos, getCategoriaProdutoById, deleteCategoriaProduto,
-   
+        saveProduto,
     }
 }

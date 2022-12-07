@@ -17,6 +17,8 @@
         "consign": "0.1.6",
         "cors": "2.8.4",
         "express": "4.16.3",
+        "express-fileupload": "^1.4.0",
+        "form-data": "^4.0.0",
         "jwt-simple": "^0.5.6",
         "knex": "^2.3.0",
         "moment": "^2.29.4",

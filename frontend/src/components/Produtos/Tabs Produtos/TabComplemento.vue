@@ -61,7 +61,7 @@ export default {
   computed:{
     complementos: {
       get() {
-        return this.$store.state.produto.item.complementos;
+        return this.$store.state.produto.item.selectComplementos;
       },
       set(value) {
         this.$store.commit("alteraComplementosProduto", value);

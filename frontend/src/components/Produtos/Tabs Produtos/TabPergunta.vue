@@ -32,12 +32,10 @@
               ></v-text-field>
               <template>
                 <v-data-table
-                  v-model="selected"
+                  v-model="selectPerguntas"
                   :headers="headersPerguntas"
                   :items="perguntas"
                   :search="search2"
-                  :single-select="singleSelect"
-                  item-key="codigo"
                   show-select
                   class="elevation-1"
                 >
@@ -65,7 +63,11 @@
             hide-details
           ></v-text-field>
         </v-card-title>
-        <v-data-table :headers="headers" :items="itens" :search="search">
+        <v-data-table
+          :headers="headers"
+          :items="selectPerguntas"
+          :search="search"
+        >
           <template v-slot:[`item.actions`]="{ item }">
             <v-icon dense @click="deleteItem(item)"> mdi-delete </v-icon>
           </template>
@@ -76,8 +78,8 @@
 </template>
  
  <script>
- import axios from 'axios';
- import { baseApiUrl } from '@/global';
+import axios from "axios";
+import { baseApiUrl } from "@/global";
 export default {
   name: "TabPergunta",
   data() {
@@ -88,13 +90,12 @@ export default {
       search2: "",
       headers: [
         { text: "Tipo", value: "tipo" },
-        { text: "Ordem", value: "ordem" },
+        // { text: "Ordem", value: "ordem" },
         { text: "Pergunta", value: "pergunta" },
-        { text: "Opções de Resposta", value: "opcoesResposta" },
+        { text: "Opções de Resposta", value: "opcoesRespostas" },
         { text: "Excluir", value: "actions", sortable: false },
       ],
       itens: [],
-
       singleSelect: true,
       selected: [],
       headersPerguntas: [
@@ -109,22 +110,70 @@ export default {
         { text: "Opções de Respostas", value: "opcoesRespostas" },
       ],
       perguntas: [],
+      perguntasObs: [],
     };
   },
-  methods:{
+  computed: {
+    selectPerguntas: {
+      get() {
+        return this.$store.state.produto.item.selectPerguntas;
+      },
+      set(value) {
+        this.$store.commit("alteraPerguntasProduto", value);
+      },
+    },
+  },
+  methods: {
     getAllPerguntas() {
       axios
         .get(`${baseApiUrl}/perguntas`)
         .then((res) => {
-          this.perguntas = res.data;
+          res.data.forEach((element) => {
+            var respostas = {};
+            if (element.tipo == "observacao")
+              respostas = this.getPerguntaByIdObs(element.id);
+            if (element.tipo == "complemento")
+              respostas = this.getPerguntaByIdComp(element.id);
+            var objPergunta = {
+              id: element.id,
+              tipo: element.tipo,
+              pergunta: element.pergunta,
+              opcoesRespostas: respostas,
+            };
+            this.perguntas.push(objPergunta);
+          });
         })
         .catch();
     },
+    getPerguntaByIdObs(id) {
+      var respostas = [];
+      axios
+        .get(`${baseApiUrl}/perguntasObservacao/${id}`)
+        .then((res) => {
+          res.data.forEach((element) => {
+            respostas.push(element.descricao);
+          });
+        })
+        .catch();
+      return respostas;
+    },
+    getPerguntaByIdComp(id) {
+      var respostas = [];
+      axios
+        .get(`${baseApiUrl}/perguntasComplemento/${id}`)
+        .then((res) => {
+          res.data.forEach((element) => {
+            respostas.push(element.nome);
+          });
+        })
+        .catch();
+      return respostas;
+    },
   },
-  created(){
-    this.getAllPerguntas()
-  }
-
+  created() {
+    this.getAllPerguntas();
+    // this.getPerguntaByIdObs();
+  },
 };
 </script>
  

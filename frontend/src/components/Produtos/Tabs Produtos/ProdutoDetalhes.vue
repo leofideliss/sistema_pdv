@@ -19,6 +19,7 @@
       ></div>
       <label for="arquivo" class="labelInputFile">Selecionar Foto</label>
       <input
+        name="imgProd"
         id="arquivo"
         ref="fileInput"
         type="file"
@@ -37,7 +38,7 @@ export default {
       previewImage: null,
     };
   },
-  computed:{
+  computed: {
     descricao: {
       get() {
         return this.$store.state.produto.item.descricao;
@@ -52,7 +53,6 @@ export default {
       let input = this.$refs.fileInput;
       let file = input.files;
       this.$store.commit("alteraImageProduto", file[0]);
-
       if (file && file[0]) {
         let reader = new FileReader();
         reader.onload = (e) => {
@@ -65,7 +65,6 @@ export default {
     selectImage() {
       this.$refs.fileInput.click();
     },
-    
   },
 };
 </script>

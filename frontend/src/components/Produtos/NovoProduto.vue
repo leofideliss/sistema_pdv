@@ -45,7 +45,13 @@
           <div class="campos-formulario campoCategoria">
             <label for="precoCategoria"> Categoria </label>
 
-            <v-select v-model="categoria" :items="categoriaProduto" item-text="nome" item-value="id" label="Categoria"></v-select>
+            <v-select
+              v-model="categoria"
+              :items="categoriaProduto"
+              item-text="nome"
+              item-value="id"
+              label="Categoria"
+            ></v-select>
           </div>
           <div class="campos-formulario campoMedida">
             <label for="produtosVinculados"> Medida do Produto </label>
@@ -149,10 +155,11 @@
           <TabPergunta v-if="teste4"></TabPergunta>
         </div>
       </div>
-
       <div class="botaos-form">
-        <button class="botao-cancelar">Cancelar</button>
-        <button class="botao-salvar">Salvar</button>
+        <button class="botao-cancelar" @click.prevent="voltar">Cancelar</button>
+        <button class="botao-salvar" @click.prevent="salvarProduto">
+          Salvar
+        </button>
       </div>
     </form>
   </div>
@@ -174,9 +181,10 @@ export default {
     FichaTecnica,
     TabPergunta,
   },
+  props: ["id"],
   data() {
     return {
-      categoriaProduto:[],
+      categoriaProduto: [],
       teste: true,
       teste2: false,
       teste3: false,
@@ -185,6 +193,9 @@ export default {
     };
   },
   computed: {
+    item() {
+      return this.$store.state.produto.item;
+    },
     nome: {
       get() {
         return this.$store.state.produto.item.nome;
@@ -251,10 +262,67 @@ export default {
         })
         .catch();
     },
+    salvarProduto() {
+      console.log(this.item);
+      /**
+       * nome = nome
+       * status = status
+       * id_categoria = categoria
+       * medida = medida
+       * preco_custo =
+       * preco_venda =
+       * descricao =
+       * imagem_prod = image
+       *
+       */
+      const method = this.id ? "put" : "post";
+      const id = this.id ? this.id : "";
+      var objProduto = {
+        nome: this.item.nome,
+        status: this.item.status,
+        id_categoria: this.item.categoria,
+        medida: this.item.medida,
+        preco_custo: this.item.preco_custo,
+        preco_venda: this.item.preco_venda,
+        descricao: this.item.descricao,
+        imagem_prod: this.item.image,
+      };
+      axios[method](`${baseApiUrl}/produto/${id}`, objProduto)
+        .then(() => {
+          this.$router.back();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      // console.log(this.item.image);
+      // console.log("nome arquivo", this.item.image.name);
+      // let data = new FormData();
+      // data.append("file", this.item.image, this.image.name);
+
+      // const method = this.id ? "put" : "post";
+      // const id = this.id ? this.id : "";
+      // axios[method](`${baseApiUrl}/produto/${id}`, this.item, {
+      //   headers: {
+      //     accept: "application/json",
+      //     "Accept-Language": "en-US,en;q=0.8",
+      //     "Content-Type": `multipart/form-data; boundary=${data._boundary}`,
+      //   },
+      // })
+      //   .then(() => {
+      //     this.$router.back();
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
+    },
+    voltar() {
+      this.$router.back();
+    },
   },
-  created(){
-    this.getAllCategoriaProduto()
-  }
+  created() {
+    this.getAllCategoriaProduto();
+  },
 };
 </script>
 
