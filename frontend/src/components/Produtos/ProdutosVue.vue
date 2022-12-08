@@ -40,6 +40,7 @@ export default {
   name: "ProdutosVue",
   data: function () {
     return {
+
       produtos: [],
       search: "",
       headers: [
