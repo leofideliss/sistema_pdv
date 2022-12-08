@@ -141,6 +141,12 @@ const routes = [
                 path: '/novoProduto',
                 component: NovoProduto
             },
+            {
+                name: 'AlteraProduto',
+                path: '/alteraProduto/:id',
+                component: NovoProduto,
+                props:true,
+            },
         ]
     },
     {

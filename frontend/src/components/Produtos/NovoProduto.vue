@@ -9,7 +9,8 @@
         <h1>Voltar</h1>
       </router-link>
 
-      <h1>Adicionar Novo Produto</h1>
+      <h1 v-if="id">Altera Produto</h1>
+      <h1 v-else>Adicionar Novo Produto</h1>
     </div>
 
     <form action="" class="fomularioComplemento">
@@ -263,7 +264,6 @@ export default {
         .catch();
     },
     salvarProduto() {
-      console.log(this.item);
       /**
        * nome = nome
        * status = status
@@ -316,12 +316,30 @@ export default {
       //     console.log(err);
       //   });
     },
+    getProdutoById() {
+      axios
+        .get(`${baseApiUrl}/produto/${this.id}`)
+        .then((res) => {
+          console.log(res.data);
+         this.nome = res.data.prodNome
+         this.status = res.data.status
+         this.codigo = res.data.getProdutoById
+         this.categoria = res.data.id_categoria
+         this.medida = res.data.medida
+         this.preco_custo = res.data.preco_custo
+         this.preco_venda = res.data.preco_venda
+
+        })
+        .catch();
+    },
     voltar() {
       this.$router.back();
     },
   },
+
   created() {
     this.getAllCategoriaProduto();
+    if (this.id) this.getProdutoById();
   },
 };
 </script>

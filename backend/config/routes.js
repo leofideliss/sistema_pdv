@@ -37,8 +37,11 @@ module.exports = app => {
 
     app.route('/produto')
         .post(app.api.produto.saveProduto)
+        .get(app.api.produto.getAllProdutos)
+
     app.route('/produto/:id')
         .put(app.api.produto.saveProduto)
+        .get(app.api.produto.getProdutoById)
     // ***  PRODUTO ***
 
     // *** CATEGORIA PRODUTO ***

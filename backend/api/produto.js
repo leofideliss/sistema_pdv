@@ -77,11 +77,27 @@ module.exports = app => {
         }
     }
 
+    const getAllProdutos = (req,res)=>{
+        app.db('produtos')
+        .join('categoriaProduto','produtos.id_categoria','=','categoriaProduto.id')
+        .select('produtos.nome as prodNome' ,'produtos.id as prodID' , 'categoriaProduto.nome as nomeCategoria' , '*')
+        .then(produtos=> res.json(produtos))
+        .catch()
+    }
+
+    const getProdutoById = (req,res)=>{
+        app.db('produtos')
+        .join('categoriaProduto','produtos.id_categoria','=','categoriaProduto.id')
+        .first('produtos.nome as prodNome','produtos.id as prodID' , 'categoriaProduto.nome as nomeCategoria' , '*')
+        .where({'produtos.id': req.params.id})
+        .then(produto=> res.json(produto))
+        .catch()
+    }
     // *** FIM PRODUTOS ***
 
 
     return {
         saveCategoria, getAllCategoriaProdutos, getCategoriaProdutoById, deleteCategoriaProduto,
-        saveProduto,
+        saveProduto, getAllProdutos,getProdutoById,
     }
 }
