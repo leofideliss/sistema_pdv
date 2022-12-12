@@ -22,11 +22,32 @@
         ></v-text-field>
       </v-card-title>
       <v-data-table :headers="headers" :items="produtos" :search="search">
+        <template v-slot:top>
+          <v-dialog v-model="dialogDelete" max-width="600px">
+            <v-card>
+              <v-card-title class="text-h5"
+                >Tem certeza que deseja excluir este produto?</v-card-title
+              >
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="closeDelete"
+                  >Cancelar</v-btn
+                >
+
+                <v-btn color="blue darken-1" @click="confirmDelete" text
+                  >Confirmar</v-btn
+                >
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </template>
         <template v-slot:[`item.actions`]="{ item }">
           <v-icon dense class="mr-2" @click="editItem(item)">
             mdi-pencil
           </v-icon>
           <v-icon dense @click="deleteItem(item)"> mdi-delete </v-icon>
+          
         </template>
       </v-data-table>
     </v-card>
@@ -40,8 +61,9 @@ export default {
   name: "ProdutosVue",
   data: function () {
     return {
-
+      dialogDelete: false,
       produtos: [],
+      produto: {},
       search: "",
       headers: [
         { text: "Cod.", value: "id" },
@@ -87,6 +109,22 @@ export default {
     },
     editItem(item) {
       this.$router.push({ path: `/alteraProduto/${item.prodID}` });
+    },
+    deleteItem(item) {
+      this.dialogDelete = true;
+      this.produto.id = item.prodID;
+    },
+    confirmDelete() {
+      axios
+        .delete(`${baseApiUrl}/produto/${this.produto.id}`)
+        .then(() => {
+          this.getAllProdutos();
+          this.dialogDelete = false;
+        })
+        .catch();
+    },
+    closeDelete() {
+      this.dialogDelete = false;
     },
   },
   created() {

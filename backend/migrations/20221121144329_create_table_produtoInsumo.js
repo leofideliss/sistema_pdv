@@ -8,6 +8,8 @@ exports.up = function(knex) {
     table.integer('id_insumo').unsigned()
     table.foreign('id_produto').references('id').inTable('produtos').onUpdate('CASCADE').onDelete('CASCADE')
     table.foreign('id_insumo').references('id').inTable('insumo').onUpdate('CASCADE').onDelete('CASCADE')
+    table.integer('qtd').defaultTo(0)
+
   })
 };
 

@@ -42,7 +42,19 @@ module.exports = app => {
     app.route('/produto/:id')
         .put(app.api.produto.saveProduto)
         .get(app.api.produto.getProdutoById)
-    // ***  PRODUTO ***
+        .delete(app.api.produto.deleteProduto)
+
+    app.route('/produtoInsumo/:id')
+    .get(app.api.produto.getProdutoInsumos)
+ 
+    app.route('/produtoComplemento/:id')
+    .get(app.api.produto.getProdutoComplementos)
+
+    app.route('/produtoPergunta/:id')
+    .get(app.api.produto.getProdutoPergunta)
+
+
+    // ***  FIM PRODUTO ***
 
     // *** CATEGORIA PRODUTO ***
     app.route('/categoriaProduto/:id')

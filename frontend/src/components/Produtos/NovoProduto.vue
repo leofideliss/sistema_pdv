@@ -447,7 +447,6 @@
         </button>
       </div>
     </form>
-  {{selectInsumo}}
   </div>
 </template>
 
@@ -654,6 +653,9 @@ export default {
         preco_venda: this.item.preco_venda,
         descricao: this.item.descricao,
         imagem_prod: this.item.image,
+        complementos: this.item.selectComplementos,
+        insumos: this.item.selectInsumo,
+        perguntas: this.item.selectPerguntas,
       };
       axios[method](`${baseApiUrl}/produto/${id}`, objProduto)
         .then(() => {
@@ -671,11 +673,11 @@ export default {
       // const method = this.id ? "put" : "post";
       // const id = this.id ? this.id : "";
       // axios[method](`${baseApiUrl}/produto/${id}`, this.item, {
-      //   headers: {
-      //     accept: "application/json",
-      //     "Accept-Language": "en-US,en;q=0.8",
-      //     "Content-Type": `multipart/form-data; boundary=${data._boundary}`,
-      //   },
+      // headers: {
+      //   accept: "application/json",
+      //   "Accept-Language": "en-US,en;q=0.8",
+      //   "Content-Type": `multipart/form-data; boundary=${data._boundary}`,
+      // },
       // })
       //   .then(() => {
       //     this.$router.back();
@@ -688,7 +690,6 @@ export default {
       axios
         .get(`${baseApiUrl}/produto/${this.id}`)
         .then((res) => {
-          console.log(res.data);
           this.nome = res.data.prodNome;
           this.status = res.data.status;
           this.codigo = res.data.prodID;
@@ -833,11 +834,70 @@ export default {
         .catch();
       return respostas;
     },
+
+    getInsumosSelect(id) {
+      var respostas = [];
+
+      axios
+        .get(`${baseApiUrl}/produtoInsumo/${id}`)
+        .then((res) => {
+          res.data.forEach((element) => {
+            var objInsumo = {
+              nomeInsumo: element.nome,
+              qtd: element.qtd,
+              medida: element.medida,
+              preco: element.preco,
+            };
+            respostas.push(objInsumo);
+          });
+          this.selectInsumo = respostas;
+        })
+        .catch();
+    },
+    getComplementoSelect(id) {
+      var respostas = [];
+
+      axios
+        .get(`${baseApiUrl}/produtoComplemento/${id}`)
+        .then((res) => {
+          res.data.forEach((element) => {
+            var objComplemento = {
+              id: element.id,
+              nome: element.nome,
+            };
+            respostas.push(objComplemento);
+          });
+          this.complementos = respostas;
+        })
+        .catch();
+    },
+    getPerguntasSelect(id) {
+      // var respostas = [];
+
+      axios
+        .get(`${baseApiUrl}/produtoPergunta/${id}`)
+        .then((res) => {
+          // res.data.forEach((element) => {
+          //   var objComplemento = {
+          //     id: element.id,
+          //     nome: element.nome,
+          //   };
+          //   respostas.push(objComplemento);
+          // });
+          // this.complementos = respostas;
+          console.log(res.data)
+        })
+        .catch();
+    },
   },
 
   created() {
-    if (this.id) this.getProdutoById();
-
+    if (this.id) {
+      this.getProdutoById();
+      this.getInsumosSelect(this.id);
+      this.getComplementoSelect(this.id);
+      this.getPerguntasSelect(this.id);
+    }
     this.getAllCategoriaProduto();
     this.getAllComplementos();
     this.getAllInsumos();
