@@ -74,8 +74,75 @@ module.exports = app => {
             app.db('produtos')
                 .update(produto)
                 .where({ id: produto.id })
-                .then(() => res.status(204).send())
+                .then()
                 .catch((err) => res.status(500).send(err))
+
+            if (complementos.length == 0) {
+                app.db('produto_complemento')
+                    .where({ id_produto: produto.id })
+                    .del()
+                    .catch((err) => res.status(500).send(err))
+            }
+            else {
+                app.db('produto_complemento')
+                    .where({ id_produto: produto.id })
+                    .del()
+                    .catch((err) => res.status(500).send(err))
+
+                const fieldsToInsertComplementos = complementos.map(field =>
+                    ({ id_produto: produto.id, id_complemento: field }));
+
+
+                app.db('produto_complemento')
+                    .insert(fieldsToInsertComplementos)
+                    .then()
+                    .catch((err) => res.status(500).send(err))
+            }
+
+            if (insumos.length == 0) {
+                app.db('produto_insumo')
+                    .where({ id_produto: produto.id })
+                    .del()
+                    .catch((err) => res.status(500).send(err))
+            }
+            else {
+
+                app.db('produto_insumo')
+                    .where({ id_produto: produto.id })
+                    .del()
+                    .catch((err) => res.status(500).send(err))
+
+
+                const fieldsToInsertInsumos = insumos.map(field =>
+                    ({ id_produto: produto.id, id_insumo: field.id, qtd: field.qtd }));
+
+                app.db('produto_insumo')
+                    .insert(fieldsToInsertInsumos)
+                    .then()
+                    .catch((err) => res.status(500).send(err))
+            }
+            if (perguntas.length == 0) {
+                app.db('produto_perguntas')
+                    .where({ id_produto: produto.id })
+                    .del()
+                    .catch((err) => res.status(500).send(err))
+            }
+            else {
+                app.db('produto_perguntas')
+                    .where({ id_produto: produto.id })
+                    .del()
+                    .catch((err) => res.status(500).send(err))
+
+                const fieldsToInsertPerguntas = perguntas.map(field =>
+                    ({ id_produto: produto.id, id_pergunta: field.id }));
+
+
+                app.db('produto_perguntas')
+                    .insert(fieldsToInsertPerguntas)
+                    .then()
+                    .catch((err) => res.status(500).send(err))
+            }
+
         } else {
 
             const id_prod = await app.db('produtos')
@@ -187,6 +254,6 @@ module.exports = app => {
 
     return {
         saveCategoria, getAllCategoriaProdutos, getCategoriaProdutoById, deleteCategoriaProduto,
-        saveProduto, getAllProdutos, getProdutoById, deleteProduto,getProdutoInsumos,getProdutoComplementos,getProdutoPergunta,
+        saveProduto, getAllProdutos, getProdutoById, deleteProduto, getProdutoInsumos, getProdutoComplementos, getProdutoPergunta,
     }
 }

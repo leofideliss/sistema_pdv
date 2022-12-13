@@ -631,17 +631,7 @@ export default {
         .catch();
     },
     salvarProduto() {
-      /**
-       * nome = nome
-       * status = status
-       * id_categoria = categoria
-       * medida = medida
-       * preco_custo =
-       * preco_venda =
-       * descricao =
-       * imagem_prod = image
-       *
-       */
+      console.log('salvar produto',this.id)
       const method = this.id ? "put" : "post";
       const id = this.id ? this.id : "";
       var objProduto = {
@@ -665,26 +655,6 @@ export default {
           console.log(err);
         });
 
-      // console.log(this.item.image);
-      // console.log("nome arquivo", this.item.image.name);
-      // let data = new FormData();
-      // data.append("file", this.item.image, this.image.name);
-
-      // const method = this.id ? "put" : "post";
-      // const id = this.id ? this.id : "";
-      // axios[method](`${baseApiUrl}/produto/${id}`, this.item, {
-      // headers: {
-      //   accept: "application/json",
-      //   "Accept-Language": "en-US,en;q=0.8",
-      //   "Content-Type": `multipart/form-data; boundary=${data._boundary}`,
-      // },
-      // })
-      //   .then(() => {
-      //     this.$router.back();
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
     },
     getProdutoById() {
       axios
@@ -769,9 +739,6 @@ export default {
     },
 
     save() {
-      // var objBusca = this.itensFicha.findIndex(({ id }) => id == item.id);
-      // this.itensFicha[objBusca].qtd = item.qtd;
-
       this.snack = true;
       this.snackColor = "success";
       this.snackText = "Quantidade adicionada";
@@ -872,20 +839,26 @@ export default {
         .catch();
     },
     getPerguntasSelect(id) {
-      // var respostas = [];
+      var perguntas_selecionadas = [];
 
       axios
         .get(`${baseApiUrl}/produtoPergunta/${id}`)
         .then((res) => {
-          // res.data.forEach((element) => {
-          //   var objComplemento = {
-          //     id: element.id,
-          //     nome: element.nome,
-          //   };
-          //   respostas.push(objComplemento);
-          // });
-          // this.complementos = respostas;
-          console.log(res.data)
+          res.data.forEach((element) => {
+            var respostas = {};
+            if (element.tipo == "observacao")
+              respostas = this.getPerguntaByIdObs(element.id_pergunta);
+            if (element.tipo == "complemento")
+              respostas = this.getPerguntaByIdComp(element.id_pergunta);
+            var objPergunta = {
+              id: element.id,
+              tipo: element.tipo,
+              pergunta: element.pergunta,
+              opcoesRespostas: respostas,
+            };
+            perguntas_selecionadas.push(objPergunta);
+          });
+          this.selectPerguntas = perguntas_selecionadas;
         })
         .catch();
     },
