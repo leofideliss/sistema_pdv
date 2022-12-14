@@ -138,7 +138,7 @@ const routes = [
             },
             {
                 name: 'NovoProduto',
-                path: '/novoProduto',
+                path: '/novoproduto',
                 component: NovoProduto
             },
             {

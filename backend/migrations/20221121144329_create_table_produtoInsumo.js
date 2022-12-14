@@ -4,6 +4,7 @@
  */
 exports.up = function(knex) {
   return knex.schema.createTable('produto_insumo',table=>{
+    table.increments('id').primary()
     table.integer('id_produto').unsigned()
     table.integer('id_insumo').unsigned()
     table.foreign('id_produto').references('id').inTable('produtos').onUpdate('CASCADE').onDelete('CASCADE')

@@ -245,7 +245,7 @@
                           :search="searchFicha"
                           show-select
                         >
-                          <template v-slot:[`item.qtd`]="props">
+                          <!-- <template v-slot:[`item.qtd`]="props">
                             <v-edit-dialog
                               :return-value.sync="props.item.qtd"
                               @save="save"
@@ -261,7 +261,7 @@
                                 ></v-text-field>
                               </template>
                             </v-edit-dialog>
-                          </template>
+                          </template> -->
                           <!-- <template v-slot:[`item.actions`]>
                     <v-icon
                       dense
@@ -274,7 +274,7 @@
                   </template> -->
                         </v-data-table>
 
-                        <v-snackbar
+                        <!-- <v-snackbar
                           v-model="snack"
                           :timeout="3000"
                           :color="snackColor"
@@ -286,7 +286,7 @@
                               FECHAR
                             </v-btn>
                           </template>
-                        </v-snackbar>
+                        </v-snackbar> -->
                       </v-card-title>
                     </div>
                     <!-- <v-expand-transition>
@@ -344,7 +344,33 @@
                 :items="selectInsumo"
                 :search="searchFichaSelect"
               >
+                <template v-slot:[`item.qtd`]="props">
+                  <v-edit-dialog
+                    :return-value.sync="props.item.qtd"
+                    @save="save"
+                    @cancel="cancel"
+                    @open="open"
+                    @close="close"
+                  >
+                    {{ props.item.qtd }}
+                    <template v-slot:input>
+                      <v-text-field
+                        v-model="props.item.qtd"
+                        label="Edit"
+                      ></v-text-field>
+                    </template>
+                  </v-edit-dialog>
+                </template>
               </v-data-table>
+              <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
+                {{ snackText }}
+
+                <template v-slot:action="{ attrs }">
+                  <v-btn v-bind="attrs" text @click="snack = false">
+                    FECHAR
+                  </v-btn>
+                </template>
+              </v-snackbar>
             </v-card>
           </div>
 
@@ -512,7 +538,7 @@ export default {
         { text: "Insumos", value: "nomeInsumo" },
         { text: "Medida", value: "medida" },
         { text: "Preço Custo", value: "preco" },
-        { text: "Quantidade (g)", value: "qtd" },
+        // { text: "Quantidade (g)", value: "qtd" },
         // { text: "Ações", value: "actions" },
       ],
       itensFicha: [],
@@ -631,7 +657,7 @@ export default {
         .catch();
     },
     salvarProduto() {
-      console.log('salvar produto',this.id)
+      console.log("salvar produto", this.id);
       const method = this.id ? "put" : "post";
       const id = this.id ? this.id : "";
       var objProduto = {
@@ -654,7 +680,6 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-
     },
     getProdutoById() {
       axios
@@ -810,10 +835,14 @@ export default {
         .then((res) => {
           res.data.forEach((element) => {
             var objInsumo = {
-              nomeInsumo: element.nome,
-              qtd: element.qtd,
+              id: element.id,
+              preco: element.preco.toLocaleString("pt-br", {
+                style: "currency",
+                currency: "BRL",
+              }),
+              nomeInsumo: element.nomeInsumo,
               medida: element.medida,
-              preco: element.preco,
+              qtd: element.qtd,
             };
             respostas.push(objInsumo);
           });

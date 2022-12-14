@@ -5,7 +5,7 @@
         <h1>Produtos</h1>
         <h2>({{ produtos.length }})</h2>
       </div>
-      <router-link to="/novoProduto" class="botao-novo">
+      <router-link to="/novoproduto" class="botao-novo">
         <img src="@/assets/mais preto.png" alt="Icone de somar" />
         <h1>Novo</h1>
       </router-link>
@@ -47,7 +47,6 @@
             mdi-pencil
           </v-icon>
           <v-icon dense @click="deleteItem(item)"> mdi-delete </v-icon>
-          
         </template>
       </v-data-table>
     </v-card>
@@ -108,7 +107,10 @@ export default {
         .catch();
     },
     editItem(item) {
-      this.$router.push({ path: `/alteraProduto/${item.prodID}` });
+      console.log(item.prodID);
+      this.$router.push({
+        path: `/alteraProduto/${item.prodID}`,
+      });
     },
     deleteItem(item) {
       this.dialogDelete = true;
