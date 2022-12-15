@@ -21,7 +21,13 @@
           hide-details
         ></v-text-field>
       </v-card-title>
-      <v-data-table :headers="headers" :items="produtos" :search="search">
+      <v-data-table
+        :headers="headers"
+        :items="produtos"
+        :search="search"
+        no-data-text="Nenhum item encontrado"
+        no-results-text="Nenhum item encontrado"
+      >
         <template v-slot:top>
           <v-dialog v-model="dialogDelete" max-width="600px">
             <v-card>
@@ -107,7 +113,6 @@ export default {
         .catch();
     },
     editItem(item) {
-      console.log(item.prodID);
       this.$router.push({
         path: `/alteraProduto/${item.prodID}`,
       });
@@ -131,6 +136,7 @@ export default {
   },
   created() {
     this.getAllProdutos();
+    this.$store.commit("resetProduto");
   },
 };
 </script>

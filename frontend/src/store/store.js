@@ -30,7 +30,7 @@ export default new Vuex.Store({
                 state.isMenuVisible = isVisible
             }
 
-            console.log(state.isMenuVisible);
+            // console.log(state.isMenuVisible);
         },
         setUser(state, user) {
             state.user = user

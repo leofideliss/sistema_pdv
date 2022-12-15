@@ -247,6 +247,9 @@
                           :items="itensFicha"
                           :search="searchFicha"
                           show-select
+                          no-data-text="Nenhum item selecionado"
+                  no-results-text="Nenhum item encontrado"
+
                         >
                           <!-- <template v-slot:[`item.qtd`]="props">
                             <v-edit-dialog
@@ -346,6 +349,9 @@
                 :headers="headersFicha"
                 :items="selectInsumo"
                 :search="searchFichaSelect"
+                no-data-text="Nenhum item selecionado"
+                no-results-text="Nenhum item encontrado"
+
               >
                 <template v-slot:[`item.qtd`]="props">
                   <v-edit-dialog
@@ -422,6 +428,9 @@
                           :search="search2"
                           show-select
                           class="elevation-1"
+                          no-data-text="Nenhum item selecionado"
+                          no-results-text="Nenhum item encontrado"
+
                         >
                         </v-data-table>
                       </template>
@@ -455,6 +464,8 @@
                   :headers="headers"
                   :items="selectPerguntas"
                   :search="search"
+                  no-data-text="Nenhum item selecionado"
+                  no-results-text="Nenhum item encontrado"
                 >
                   <template v-slot:[`item.actions`]="{ item }">
                     <v-icon dense @click="deleteItem(item)">
@@ -660,7 +671,6 @@ export default {
         .catch();
     },
     salvarProduto() {
-      console.log("salvar produto", this.id);
       const method = this.id ? "put" : "post";
       const id = this.id ? this.id : "";
       var objProduto = {
@@ -757,7 +767,7 @@ export default {
               }),
               nomeInsumo: element.nomeInsumo,
               medida: element.medida,
-              qtd: 0,
+              qtd: 1,
             };
 
             this.itensFicha.push(obj);

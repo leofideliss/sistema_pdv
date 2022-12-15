@@ -3,7 +3,7 @@
         <div class="header-produtosCombo">
             <div class="titulo-produtosCombo">
                 <h1>Combos de Produtos</h1>
-                <h2>(4)</h2>
+                <h2>({{combos.length}})</h2>
             </div>
             <router-link to="/novoProdutosCombo" class="botao-novo">
                 <img src="@/assets/mais preto.png" alt="Icone de somar">
@@ -25,8 +25,10 @@
                 </v-card-title>
                 <v-data-table
                     :headers="headers"
-                    :items="itens"
+                    :items="combos"
                     :search="search"
+                    no-data-text="Nenhum item encontrado"
+                  no-results-text="Nenhum item encontrado"
                 >
                     <template v-slot:[`item.actions`]="{ item }">
                         <v-icon
@@ -66,32 +68,7 @@
             { text: 'Status', value: 'status' },
             { text: 'Ações', value: 'actions' },
         ],
-        itens: [
-          {
-            codigo: '10',
-            categoria: 'Lanches',
-            nome: 'Frios',
-            precoCusto: '10,50',
-            precoVenda: '30',
-            status: 'Ativo',
-          },
-          {
-            codigo: '10',
-            categoria: 'Lanches',
-            nome: 'Frios',
-            precoCusto: '10,50',
-            precoVenda: '30',
-            status: 'Ativo',
-          },
-          {
-            codigo: '10',
-            categoria: 'Lanches',
-            nome: 'Frios',
-            precoCusto: '10,50',
-            precoVenda: '30',
-            status: 'Ativo',
-          },
-        ],
+        combos: [],
         }
     },
     
