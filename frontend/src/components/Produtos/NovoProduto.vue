@@ -221,7 +221,10 @@
               <v-app>
                 <v-dialog v-model="dialogFicha" max-width="600px">
                   <template v-slot:activator="{ on, attrs }">
-                    <v-btn v-bind="attrs" v-on="on" class="botaoAdicionarItem">
+                    <v-btn v-if="selectInsumo.length" v-bind="attrs" v-on="on" class="botaoAdicionarItem">
+                      Editar item
+                    </v-btn>
+                    <v-btn v-else v-bind="attrs" v-on="on" class="botaoAdicionarItem">
                       Adicionar item
                     </v-btn>
                   </template>
@@ -890,6 +893,10 @@ export default {
           this.selectPerguntas = perguntas_selecionadas;
         })
         .catch();
+    },
+    deleteItem(item) {
+      this.$store.commit("removePerguntasProduto", item.id);
+
     },
   },
 

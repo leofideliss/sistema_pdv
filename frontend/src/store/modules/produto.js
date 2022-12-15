@@ -55,7 +55,9 @@ export default {
             state.item.selectPerguntas = value
         },
 
-       
+        removePerguntasProduto(state, value) {
+            state.item.selectPerguntas.splice(state.item.selectPerguntas.findIndex(({ id }) => id == value), 1)
+        },
 
 
     },
