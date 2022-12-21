@@ -1,450 +1,596 @@
 <template>
-    <div class="NovoProdutoTamanho-pages">
-        <div class="headerNovoProdutoTamanho">
-            <router-link to='/produtosTamanho' class="botaoVoltar">
-                <img src="@/assets/seta-esquerda.png" alt="Voltar para Página anterior">
-                <h1>Voltar</h1>
-            </router-link>
+  <div class="NovoProdutoTamanho-pages">
+    <div class="headerNovoProdutoTamanho">
+      <router-link to="/produtosTamanho" class="botaoVoltar">
+        <img
+          src="@/assets/seta-esquerda.png"
+          alt="Voltar para Página anterior"
+        />
+        <h1>Voltar</h1>
+      </router-link>
 
-            <h1>
-                Adicionar Novo Produto por Tamanho
-            </h1>
-        </div>
-
-
-        <form action="" class="fomularioComplemento">
-            <div class="primeiraLinha">
-                <div class="personalizarCampos space">
-                    <div class="campoNomeSwitch">
-                        <div class="campos-formulario campoNomeProduto">
-                            <label for="nomeComplemento">
-                                Nome
-                            </label>
-                            <input id="nomeComplemento" type="text">
-                        </div>
-                        <v-app class="appSwitch">
-                            <label class="labelStatus">Status do Produto</label>
-                            <div class="camposSwitch">
-                                <v-switch
-                                v-model="switch1"
-                                inset
-                                
-                                ></v-switch>
-                                <div v-if="switch1" class="textoSwitch">Ativo</div>
-                                <div v-else class="textoSwitch">Pausado</div>
-                            </div>
-                        </v-app>
-
-                    </div>
-
-                    <div class="campos-formulario campoCodigo">
-                        <label for="codigoAcompanhamento">
-                            Código
-                        </label>
-                        <input id="codigoAcompanhamento" type="number">
-                    </div>
-                </div>
-
-            </div>
-            <div class="primeiraLinha espacamentoBottom">
-                <div class="personalizarCampos">
-
-                    <div class="campos-formulario campoCategoria">
-                        <label for="precoCategoria">
-                            Categoria
-                        </label>
-
-                        <select class="input-select">
-                            <option value="valor1">Bebidas</option>
-                            <option value="valor2">Condimentos</option>
-                            <option value="valor3">Frios</option>
-                            <option value="valor4">Embalagens</option>
-                        </select>
-                        
-                    </div>    
-                    <div class="campos-formulario campoCategoria">
-                        <label for="precoCategoria">
-                            Tipo
-                        </label>
-
-                        <select class="input-select">
-                            <option value="valor1">Bebidas</option>
-                            <option value="valor2">Condimentos</option>
-                            <option value="valor3">Frios</option>
-                            <option value="valor4">Embalagens</option>
-                        </select>
-                        
-                    </div>                          
-                    <div class="campos-formulario campoMedida">
-                        <label for="produtosVinculados">
-                            Medida do Produto
-                        </label>
-                        
-                        <div class="opcoes-medidas">
-                            <div class="custom-radio">
-                                <input type="radio" id="un" name="medida" value="un" class="radio-medidas" checked>
-                                <label for="un">UN</label>
-                            </div>
-
-                            <div class="custom-radio">
-                                <input type="radio" id="kg" name="medida" value="kg" class="radio-medidas">
-                                <label for="kg">KG</label>
-                            </div>
-
-                            <div class="custom-radio">
-                                <input type="radio" id="lt" name="medida" value="lt" class="radio-medidas">
-                                <label for="lt">LT</label>
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
-                </div>
-            </div>
-
-            <div>
-                    <v-tabs>
-                        <v-tab @click="teste=true; teste2=false; teste3=false; teste4=false">Mais Detalhes</v-tab>
-                        <v-tab @click="teste=false; teste2=false; teste3=true;teste4=false">Ficha Técnica</v-tab>
-                        <v-tab @click="teste=false; teste2=true; teste3=false;teste4=false">Complementos</v-tab>
-                        <v-tab @click="teste=false; teste2=false; teste3=false; teste4=true">Pergunta</v-tab>
-                        
-                    </v-tabs>
-                    <div>
-                        <Detalhes v-if="teste"></Detalhes>
-                        <TabComplementos v-if="teste2"></TabComplementos>
-                        <FichaTecnica v-if="teste3"></FichaTecnica>
-                        <Pergunta v-if="teste4"></Pergunta>
-                    </div>
-            </div>
-
-            <div class="botaos-form">
-                <button class="botao-cancelar">
-                    Cancelar
-                </button>
-                <button class="botao-salvar">
-                    Salvar
-                </button>
-                
-            </div>
-
-        </form>
+      <h1 v-if="id">Alterar Produto por Tamanho</h1>
+      <h1 v-else>Adicionar Novo Produto por Tamanho</h1>
     </div>
+
+    <form action="" class="fomularioComplemento">
+      <div class="primeiraLinha">
+        <div class="personalizarCampos space">
+          <div class="campoNomeSwitch">
+            <div class="campos-formulario campoNomeProduto">
+              <label for="nomeComplemento"> Nome </label>
+              <input id="nomeComplemento" type="text" v-model="nome" />
+            </div>
+            <v-app class="appSwitch">
+              <label class="labelStatus">Status do Produto</label>
+              <div class="camposSwitch">
+                <v-switch v-model="status" inset></v-switch>
+                <div v-if="status" class="textoSwitch">Ativo</div>
+                <div v-else class="textoSwitch">Pausado</div>
+              </div>
+            </v-app>
+          </div>
+
+          <div class="campos-formulario campoCodigo">
+            <label for="codigoAcompanhamento"> Código </label>
+            <input id="codigoAcompanhamento" type="number" v-model="codigo" />
+          </div>
+        </div>
+      </div>
+      <div class="primeiraLinha espacamentoBottom">
+        <div class="personalizarCampos">
+          <div class="campos-formulario campoCategoria">
+            <label for="precoCategoria"> Categoria </label>
+
+            <v-select
+              v-model="categoria"
+              :items="categoriaProduto"
+              item-text="nome"
+              item-value="id"
+              label="Categoria"
+            ></v-select>
+          </div>
+          <div class="campos-formulario campoCategoria">
+            <label for="precoCategoria"> Tipo </label>
+
+            <v-select
+              v-model="tipo"
+              :items="tipoProduto"
+              item-text="nome"
+              item-value="id"
+              label="Tipo"
+            ></v-select>
+          </div>
+          <div class="campos-formulario campoMedida">
+            <label for="produtosVinculados"> Medida do Produto </label>
+
+            <div class="opcoes-medidas">
+              <v-radio-group class="custom-radio" row v-model="medida">
+                <v-radio
+                  type="radio"
+                  id="un"
+                  name="medida"
+                  value="UN"
+                  class="radio-medidas"
+                  color="#3decb1"
+                  checked
+                ></v-radio>
+                <label for="un">UN</label>
+
+                <div class="custom-radio">
+                  <v-radio
+                    type="radio"
+                    id="kg"
+                    name="medida"
+                    value="KG"
+                    color="#3decb1"
+                    class="radio-medidas"
+                  ></v-radio>
+                  <label for="kg">KG</label>
+                </div>
+
+                <div class="custom-radio">
+                  <v-radio
+                    type="radio"
+                    id="lt"
+                    color="#3decb1"
+                    name="medida"
+                    value="LT"
+                    class="radio-medidas"
+                  ></v-radio>
+                  <label for="lt">LT</label>
+                </div>
+              </v-radio-group>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <v-tabs>
+          <v-tab
+            @click="
+              teste = true;
+              teste2 = false;
+              teste3 = false;
+              teste4 = false;
+            "
+            >Mais Detalhes</v-tab
+          >
+          <v-tab
+            @click="
+              teste = false;
+              teste2 = false;
+              teste3 = true;
+              teste4 = false;
+            "
+            >Ficha Técnica</v-tab
+          >
+          <v-tab
+            @click="
+              teste = false;
+              teste2 = true;
+              teste3 = false;
+              teste4 = false;
+            "
+            >Complementos</v-tab
+          >
+          <v-tab
+            @click="
+              teste = false;
+              teste2 = false;
+              teste3 = false;
+              teste4 = true;
+            "
+            >Pergunta</v-tab
+          >
+        </v-tabs>
+        <div>
+          <Detalhes v-if="teste"></Detalhes>
+          <TabComplementos v-if="teste2"></TabComplementos>
+          <FichaTecnica v-if="teste3"></FichaTecnica>
+          <Pergunta v-if="teste4"></Pergunta>
+        </div>
+      </div>
+
+      <div class="botaos-form">
+        <button class="botao-cancelar">Cancelar</button>
+        <button class="botao-salvar">Salvar</button>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
-    import Detalhes from '@/components/Produtos/Tabs Produtos/DetalhesProdutoTamanho.vue'
-    import TabComplementos from '@/components/Tipos Produtos/ProdutosTamanho/TabelaTamanho/TabComplementoTamanho.vue'
-    import FichaTecnica from '@/components/Tipos Produtos/ProdutosTamanho/TabelaTamanho/TabFichaTamanho.vue'
-    import Pergunta from '@/components/Tipos Produtos/ProdutosTamanho/TabelaTamanho/TabPerguntaTamanho.vue'
-
-    export default{
-    name: 'NovoProdutoTamanho',
-    components:{
-        Detalhes,
-        TabComplementos,
-        FichaTecnica,
-        Pergunta
-        
+import Detalhes from "@/components/Produtos/Tabs Produtos/DetalhesProdutoTamanho.vue";
+import TabComplementos from "@/components/Tipos Produtos/ProdutosTamanho/TabelaTamanho/TabComplementoTamanho.vue";
+import FichaTecnica from "@/components/Tipos Produtos/ProdutosTamanho/TabelaTamanho/TabFichaTamanho.vue";
+import Pergunta from "@/components/Tipos Produtos/ProdutosTamanho/TabelaTamanho/TabPerguntaTamanho.vue";
+import axios from "axios";
+import { baseApiUrl } from "@/global";
+export default {
+  name: "NovoProdutoTamanho",
+  components: {
+    Detalhes,
+    TabComplementos,
+    FichaTecnica,
+    Pergunta,
+  },
+  data() {
+    return {
+      switch1: true,
+      categoriaProduto: [],
+      tipoProduto: [],
+      teste: true,
+      teste2: false,
+      teste3: false,
+      itemSelect: ["Bebidas", "Frios", "Lanches"],
+    };
+  },
+  computed: {
+    item() {
+      return this.$store.state.produtoTamanho.item;
     },
-    data(){
-        return{
-            switch1: true,
-            
-            teste: true,
-            teste2: false,
-            teste3: false,
-            itemSelect: ['Bebidas', 'Frios', 'Lanches']
-        }
-    }
-    }
+    nome: {
+      get() {
+        return this.$store.state.produtoTamanho.item.nome;
+      },
+      set(value) {
+        this.$store.commit("alteraNomeProduto", value);
+      },
+    },
+    status: {
+      get() {
+        return this.$store.state.produtoTamanho.item.status;
+      },
+      set(value) {
+        this.$store.commit("alteraStatusProduto", value);
+      },
+    },
+    codigo: {
+      get() {
+        return this.$store.state.produtoTamanho.item.codigo;
+      },
+      set(value) {
+        this.$store.commit("alteraCodigoProduto", value);
+      },
+    },
+    medida: {
+      get() {
+        return this.$store.state.produtoTamanho.item.medida;
+      },
+      set(value) {
+        this.$store.commit("alteraMedidaProduto", value);
+      },
+    },
+    preco_custo: {
+      get() {
+        return this.$store.state.produtoTamanho.item.preco_custo;
+      },
+      set(value) {
+        this.$store.commit("alteraPrecoCustoProduto", value);
+      },
+    },
+    categoria: {
+      get() {
+        return this.$store.state.produtoTamanho.item.categoria;
+      },
+      set(value) {
+        this.$store.commit("alteraCategoriaProduto", value);
+      },
+    },
+    tipo: {
+      get() {
+        return this.$store.state.produtoTamanho.item.tipo;
+      },
+      set(value) {
+        this.$store.commit("alteraTipoProduto", value);
+      },
+    },
+    preco_venda: {
+      get() {
+        return this.$store.state.produtoTamanho.item.preco_venda;
+      },
+      set(value) {
+        this.$store.commit("alteraPrecoVendaProduto", value);
+      },
+    },
+    descricao: {
+      get() {
+        return this.$store.state.produtoTamanho.item.descricao;
+      },
+      set(value) {
+        this.$store.commit("alteraDescricaoProduto", value);
+      },
+    },
+    complementos: {
+      get() {
+        return this.$store.state.produto.item.selectComplementos;
+      },
+      set(value) {
+        this.$store.commit("alteraComplementosProduto", value);
+      },
+    },
+    selectInsumo: {
+      get() {
+        return this.$store.state.produto.item.selectInsumo;
+      },
+      set(value) {
+        this.$store.commit("alteraInsumoProduto", value);
+      },
+    },
+    selectPerguntas: {
+      get() {
+        return this.$store.state.produto.item.selectPerguntas;
+      },
+      set(value) {
+        this.$store.commit("alteraPerguntasProduto", value);
+      },
+    },
+  },
+  methods: {
+    getAllCategoriaProduto() {
+      axios
+        .get(`${baseApiUrl}/categoriaProduto`)
+        .then((res) => {
+          this.categoriaProduto = res.data;
+        })
+        .catch();
+    },
+    getAllTipoProduto() {
+      axios
+        .get(`${baseApiUrl}/tiposProdutos`)
+        .then((res) => {
+          this.tipoProduto = res.data;
+        })
+        .catch();
+    },
+  },
+  created() {
+    this.getAllCategoriaProduto();
+    this.getAllTipoProduto();
+  },
+};
 </script>
 
 <style>
-    .NovoProdutoTamanho-pages{
-        padding: 20px;
-    }
+.NovoProdutoTamanho-pages {
+  padding: 20px;
+}
 
-    .headerNovoProdutoTamanho{
-        display: flex;
-        margin-bottom: 20px;
-    }
+.headerNovoProdutoTamanho {
+  display: flex;
+  margin-bottom: 20px;
+}
 
-    .headerNovoProdutoTamanho a{
-        width: 80px;
-    }
+.headerNovoProdutoTamanho a {
+  width: 80px;
+}
 
-    .headerNovoProdutoTamanho h1{
-        font-size: 1.8rem;
-        width: 90%;
-        text-align: center;
-        margin-bottom: 0px;
-        
-    }
+.headerNovoProdutoTamanho h1 {
+  font-size: 1.8rem;
+  width: 90%;
+  text-align: center;
+  margin-bottom: 0px;
+}
 
-    .botaoVoltar{
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-    }
+.botaoVoltar {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
 
-    .botaoVoltar:hover{
-        text-decoration: none;
-    }
+.botaoVoltar:hover {
+  text-decoration: none;
+}
 
-    .botaoVoltar img{
-        width: 13px;
-        height: 13px;
-        margin-right: 10px;
-    }
+.botaoVoltar img {
+  width: 13px;
+  height: 13px;
+  margin-right: 10px;
+}
 
-    .botaoVoltar h1{
-        color: black;
-        font-family: 'Rubik';
-        font-size: 1.3rem;
-        margin-bottom: 0px;
-    }
+.botaoVoltar h1 {
+  color: black;
+  font-family: "Rubik";
+  font-size: 1.3rem;
+  margin-bottom: 0px;
+}
 
-    .fomularioComplemento{
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        background-color: #f2f2f2;
-        border-radius: 20px;
-    }
+.fomularioComplemento {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  background-color: #f2f2f2;
+  border-radius: 20px;
+}
 
-    .primeiraLinha{
-        display: flex;
-        width: 100%;
-        justify-content: space-between;
-    }
+.primeiraLinha {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
 
-    .space{
-        display: flex;
-        justify-content: space-between;
-    }
+.space {
+  display: flex;
+  justify-content: space-between;
+}
 
+.personalizarCampos {
+  display: flex;
+  width: 100%;
+}
 
-    .personalizarCampos{
-        display: flex;
-        width: 100%;
-    }
+.campos-formulario {
+  display: flex;
+  flex-direction: column;
+  transition: 0.3s;
+  margin: 10px;
+}
 
-    .campos-formulario{
-        display: flex;
-        flex-direction: column;
-        transition: .3s;
-        margin: 10px
-    }
+.campos-formulario label {
+  font-family: "Poppins";
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+}
 
-    .campos-formulario label{
-        font-family: 'Poppins';
-        margin-bottom: 5px;
-        font-size: 0.9rem;
+.campos-formulario input {
+  border: 1px solid black;
+  outline: none; /*borda que aparece quando clicamos*/
+  padding: 5px;
+  background: white;
+  font-size: 0.8rem;
+  font-family: "Poppins";
+  border-radius: 5px;
+}
 
-    }
+.campoNomeProduto {
+  width: 71%;
+}
 
-    .campos-formulario input{
-        border: 1px solid black;
-        outline: none; /*borda que aparece quando clicamos*/
-        padding: 5px;
-        background:white;
-        font-size: 0.8rem;
-        font-family: 'Poppins';
-        border-radius: 5px;
-    }
+.campoCodigo {
+  width: 15%;
+}
 
-    .campoNomeProduto{
-        width: 71%;
-    }
+.campoCategoria {
+  width: 50%;
+}
 
-    .campoCodigo{
-        width: 15%;
-    }
+.campoMedida {
+  width: 30%;
+}
 
-    .campoCategoria{
-        width: 50%;
-    }
+.campoCustoProduto {
+  width: 20%;
+}
 
-    .campoMedida{
-        width: 30%;
-    }
+.botaos-form {
+  display: flex;
+  justify-content: end;
+  margin-top: 50px;
+}
 
-    .campoCustoProduto{
-        width: 20%;
-    }
+.botaos-form button {
+  padding: 10px 15px 10px 15px;
+  border: none;
+  border-radius: 10px;
+  color: #def7f4;
+  outline: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: "Rubik";
+  transition: 0.3s;
+}
 
-    .botaos-form{
-        display: flex;
-        justify-content: end;
-        margin-top: 50px;
-    }
+.botao-cancelar {
+  background-color: #ff3131;
+  margin-right: 15px;
+}
 
-    .botaos-form button{
-        padding: 10px 15px 10px 15px;
-        border: none;
-        border-radius: 10px;
-        color: #def7f4;
-        outline: none;
-        cursor: pointer;
-        font-size: 1rem;
-        font-family: "Rubik";
-        transition: .3s;
-    }
+.botao-cancelar:hover {
+  background-color: #f95858;
+}
 
-    .botao-cancelar{
-        background-color: #ff3131;
-        margin-right: 15px;
-    }
+.botao-salvar {
+  background-color: #008000;
+}
 
-    .botao-cancelar:hover{
-        background-color: #f95858;
-    }
+.botao-salvar:hover {
+  background-color: #00b300;
+}
 
-    .botao-salvar{
-        background-color: #008000;
-    }
+.v-text-field {
+  padding-top: 0px !important;
+  margin-top: 0px !important;
+}
 
-    .botao-salvar:hover{
-        background-color: #00b300;
-    }
+.v-text-field input {
+  padding: 5px !important;
+}
 
-    .v-text-field{
-        padding-top: 0px !important;
-        margin-top: 0px !important;
-    }
+.v-text-field > .v-input__control > .v-input__slot:before {
+  border-style: none !important;
+}
 
-    .v-text-field input{
-        padding: 5px !important;
-    }
+.input-select {
+  border: 1px solid black;
+  outline: none; /*borda que aparece quando clicamos*/
+  padding: 5px;
+  background: white;
+  font-size: 0.8rem;
+  font-family: "Poppins";
+  border-radius: 5px;
+}
 
-    .v-text-field > .v-input__control > .v-input__slot:before{
-        border-style: none !important;
-    }
+.opcoes-medidas {
+  display: flex;
+  width: 100%;
+}
 
-    .input-select{
-        border: 1px solid black;
-        outline: none; /*borda que aparece quando clicamos*/
-        padding: 5px;
-        background:white;
-        font-size: 0.8rem;
-        font-family: 'Poppins';
-        border-radius: 5px;
-    }
+.opcoes-medidas div {
+  margin-right: 15px;
+}
 
-    .opcoes-medidas{
-        display: flex;
-        width: 100%;
-    }
+.radio-medidas {
+  margin-right: 4px;
+}
 
-    .opcoes-medidas div{
-        margin-right: 15px;
-    }
+.custom-radio {
+  display: flex;
+  align-items: center;
+}
 
-    .radio-medidas{
-        margin-right: 4px;
-    }
+.custom-radio label {
+  cursor: pointer;
+  margin-bottom: 0px !important;
+}
 
-    .custom-radio{
-        display: flex;
-        align-items: center;
-    }
+.radio-medidas {
+  cursor: pointer !important;
+  appearance: none !important;
+  width: 25px !important;
+  height: 25px !important;
+  border-radius: 50% !important;
+  outline: none !important;
+  border: 2px solid #3decb1 !important;
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0px !important;
+}
 
-    .custom-radio label{
-        cursor: pointer;
-        margin-bottom: 0px !important;
-    }
+.radio-medidas:before {
+  content: "";
+  position: absolute;
+  height: 11px;
+  width: 11px;
+  background: #3decb1;
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 300ms ease-in-out;
+}
 
-    .radio-medidas{
-        cursor:pointer !important;
-        appearance: none !important;
-        width: 25px !important;
-        height: 25px !important;
-        border-radius: 50% !important;
-        outline: none !important;
-        border: 2px solid #3decb1 !important;
-        position: relative !important;;
-        display: flex !important;;
-        align-items: center !important;;
-        justify-content: center !important;
-        padding: 0px !important;
-    }
+.radio-medidas:checked:before {
+  opacity: 1;
+}
 
-    .radio-medidas:before{
-        content: '';
-        position: absolute;
-        height: 11px;
-        width: 11px;
-        background: #3decb1;
-        border-radius: 50%;
-        opacity: 0;
-        transition: all 300ms ease-in-out;
-    }
+.radio-medidas:focus {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 1);
+}
 
-    .radio-medidas:checked:before{
-        opacity: 1;
-    }
+/** SWITCH **/
 
-    .radio-medidas:focus{
-        box-shadow: 0 0 5px rgba(0, 0, 0, 1);
-    }
+.labelStatus {
+  font-family: "Poppins";
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+}
 
-    /** SWITCH **/
+.camposSwitch {
+  display: flex;
+  align-items: center;
+}
 
-    .labelStatus{
-        font-family: 'Poppins';
-        margin-bottom: 5px;
-        font-size: 0.9rem;
-    }
+.campoNomeSwitch {
+  display: flex;
+  width: 70%;
+}
 
-    .camposSwitch{
-        display: flex;
-        align-items: center;
-    }
+.appSwitch {
+  padding: 10px;
+}
 
-    .campoNomeSwitch{
-        display: flex;
-        width: 70%;
-    }
+.textoSwitch {
+  font-family: "Poppins";
 
-    .appSwitch{
-        padding: 10px;
-    }
+  font-size: 0.8rem;
+}
 
-    .textoSwitch{
-        font-family: 'Poppins';
-        
-        font-size: 0.8rem;
-    }
+.espacamentoBottom {
+  margin-bottom: 15px;
+}
 
-    .espacamentoBottom{
-        margin-bottom: 15px;
-    }
+/** -------------- ALTERA CAMPOS VUE  ------------------ **/
 
-    /** -------------- ALTERA CAMPOS VUE  ------------------ **/
+.v-input--selection-controls {
+  margin-top: 0px !important;
+}
 
-        .v-input--selection-controls{
-        margin-top: 0px !important;
-    }
+.v-messages {
+  display: none;
+}
 
-    .v-messages{
-        display: none;
-    }
+.v-input__slot {
+  margin-bottom: 0px !important;
+}
 
-    .v-input__slot{
-        margin-bottom: 0px !important;
-    }
+.v-application .primary--text {
+  color: #3decb1 !important;
+  caret-color: #3decb1 !important;
+}
 
-    .v-application .primary--text {
-        color: #3decb1 !important;
-        caret-color: #3decb1 !important;
-    }
-
-    .theme--light.v-application{
-        background-color: #f2f2f2 !important;
-    }
-
-   
+.theme--light.v-application {
+  background-color: #f2f2f2 !important;
+}
 </style>

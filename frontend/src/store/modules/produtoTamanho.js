@@ -10,6 +10,7 @@ export default {
             descricao: '',
             image: '',
             categoria: '',
+            tipo:'',
             selectComplementos: [],
             selectInsumo:[],
             selectPerguntas :[],
@@ -54,7 +55,9 @@ export default {
         alteraPerguntasProduto(state, value) {
             state.item.selectPerguntas = value
         },
-
+        alteraTipoProduto(state,value){
+            state.item.tipo = value
+        },
         removePerguntasProduto(state, value) {
             state.item.selectPerguntas.splice(state.item.selectPerguntas.findIndex(({ id }) => id == value), 1)
         },
