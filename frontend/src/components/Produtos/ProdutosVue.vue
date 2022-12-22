@@ -137,7 +137,11 @@ export default {
   created() {
     this.getAllProdutos();
     this.$store.commit("resetProduto");
+  
   },
+  updated(){
+    this.$store.commit("resetProduto");
+  }
 };
 </script>
 

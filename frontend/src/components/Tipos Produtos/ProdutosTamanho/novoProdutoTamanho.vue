@@ -146,10 +146,293 @@
           >
         </v-tabs>
         <div>
-          <Detalhes v-if="teste"></Detalhes>
-          <TabComplementos v-if="teste2"></TabComplementos>
-          <FichaTecnica v-if="teste3"></FichaTecnica>
-          <Pergunta v-if="teste4"></Pergunta>
+          <!-- <Detalhes v-if="teste"></Detalhes> -->
+
+          <div class="detalhesProduto" v-if="teste">
+            <div class="porcento50 tabelaTamanhoPreco">
+              <div class="headerTabelaProduto">
+                <div class="porcentagemNomeTabela">
+                  <span class="spanNomeTabela">Selecione por Nome</span>
+                </div>
+                <div class="porcentagemPrecoTabela">
+                  <span class="spanPrecoCustoTabela">Preço de Custo</span>
+                </div>
+                <div class="porcentagemPrecoTabela">
+                  <span class="spanPrecoVendaTabela">Preço de Venda</span>
+                </div>
+              </div>
+              <div>
+                <TamanhoProd></TamanhoProd>
+                <TamanhoProd></TamanhoProd>
+                <TamanhoProd></TamanhoProd>
+              </div>
+            </div>
+            <div class="porcento50 areaDetalhesTamanho">
+              <div class="formsProdutoTamanho">
+                <label for="descricao"> Descrição </label>
+                <textarea
+                  name="descricao"
+                  id="descricao"
+                  cols="10"
+                  rows="5"
+                ></textarea>
+              </div>
+              <div class="campoImagemProdutoTamanho">
+                <div class="tituloFoto">Foto do Produto</div>
+                <div
+                  class="previewImagem"
+                  :style="{ 'background-image': `url(${previewImage})` }"
+                  @click="selectImage"
+                ></div>
+                <label for="arquivo" class="labelInputFile"
+                  >Selecionar Foto</label
+                >
+                <input
+                  id="arquivo"
+                  ref="fileInput"
+                  type="file"
+                  class="inputImagem"
+                  @input="pickFile"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- FIM DETALHES -->
+          <!-- <TabComplementos v-if="teste2"></TabComplementos> -->
+          <v-app class="appComplementos" v-if="teste2">
+            <div class="tabComplemento">
+              <div class="headerTabComplTamanho">
+                <h1 class="tituloCompleTamanho">
+                  Selecione os complementos opcionais para seu tamanho:
+                </h1>
+                <select class="input-select selectComplTamanho">
+                  <option value="valor1">Broto (P)</option>
+                  <option value="valor2">Média (M)</option>
+                  <option value="valor3">Grande (G)</option>
+                </select>
+              </div>
+
+              <div class="selecionarComplementos">
+                <v-select
+                  v-model="complementos_static"
+                  :items="listaComplementos"
+                  label="Todos Complementos"
+                  multiple
+                  chips
+                  hint="Selecione quantos complementos quiser"
+                  persistent-hint
+                ></v-select>
+              </div>
+            </div>
+          </v-app>
+          <!-- FIM COMPLEMENTOS -->
+          <!-- <FichaTecnica v-if="teste3"></FichaTecnica> -->
+          <div class="div-fichatecnica" v-if="teste3">
+            <div class="headerFichaTecnica">
+              <div class="headerFichaTecnicaTamanho">
+                <h1 class="tituloFichaTecnicaTamanho">
+                  Selecione os itens que compõem o tamanho:
+                </h1>
+                <select class="input-select selectComplTamanho">
+                  <option value="valor1">Broto (P)</option>
+                  <option value="valor2">Média (M)</option>
+                  <option value="valor3">Grande (G)</option>
+                </select>
+              </div>
+
+              <v-app>
+                <v-dialog v-model="dialog" max-width="600px">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn v-bind="attrs" v-on="on" class="botaoAdicionarItem">
+                      Adicionar item
+                    </v-btn>
+                  </template>
+                  <v-card>
+                    <div>
+                      <v-card-title class="dialogFicha">
+                        <span class="text-h5">Selecione o item</span>
+
+                        <v-text-field
+                          v-model="search2"
+                          append-icon="mdi-magnify"
+                          label="Buscar"
+                          single-line
+                          hide-details
+                        ></v-text-field>
+
+                        <v-data-table
+                          :headers="cabecalhoFicha"
+                          :items="itensFicha"
+                          :search="search2"
+                        >
+                          <template v-slot:[`item.actions`]>
+                            <v-icon
+                              dense
+                              color="red"
+                              class="mr-2"
+                              @click="reveal = true"
+                            >
+                              mdi-pencil
+                            </v-icon>
+                          </template>
+                        </v-data-table>
+                      </v-card-title>
+                    </div>
+
+                    <v-expand-transition>
+                      <v-card
+                        v-if="reveal"
+                        class="transition-fast-in-fast-out v-card--reveal"
+                        style="height: 100%"
+                      >
+                        <v-card-title class="centralizar-Conteudo">
+                          <h1 class="titulo-quantidadeG text-h5">Quantidade</h1>
+                        </v-card-title>
+
+                        <v-card-text class="pb-0 centralizar-Conteudo">
+                          <div class="formQuantG">
+                            <label for="quantG"
+                              >Informe a quantidade em gramas (g)</label
+                            >
+                            <input
+                              type="number"
+                              id="quantG"
+                              name="quantG"
+                              class="inputG"
+                            />
+                          </div>
+                        </v-card-text>
+
+                        <v-card-actions class="pt-0 centralizar-Conteudo">
+                          <v-btn text color="red" @click="reveal = false">
+                            Voltar
+                          </v-btn>
+                          <v-btn
+                            text
+                            color="teal accent-4"
+                            @click="reveal = false"
+                          >
+                            Salvar
+                          </v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-expand-transition>
+                  </v-card>
+                </v-dialog>
+              </v-app>
+            </div>
+
+            <v-card>
+              <v-card-title>
+                <v-text-field
+                  v-model="search"
+                  append-icon="mdi-magnify"
+                  label="Buscar"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-card-title>
+              <v-data-table :headers="headers" :items="itens" :search="search">
+              </v-data-table>
+            </v-card>
+          </div>
+          <!-- FIM FICHA TECNICA -->
+          <!-- <Pergunta v-if="teste4"></Pergunta> -->
+          <div class="divTabPergunta" v-if="teste4">
+            <div class="headerTabPergunta">
+              <div class="headerTabPerguntaTamanho">
+                <h1 class="tituloTabPerguntaTamanho">
+                  Selecione as perguntas do tamanho:
+                </h1>
+                <select class="input-select selectComplTamanho">
+                  <option value="valor1">Broto (P)</option>
+                  <option value="valor2">Média (M)</option>
+                  <option value="valor3">Grande (G)</option>
+                </select>
+              </div>
+
+              <v-app>
+                <v-dialog v-model="dialog_pergunta" persistent max-width="1000px">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn class="botao-novaPergunta" v-bind="attrs" v-on="on">
+                      <img
+                        src="@/assets/mais preto.png"
+                        alt="Voltar para Página anterior"
+                        class="imgButtonPergunta"
+                      />
+                      Adicionar Pergunta
+                    </v-btn>
+                  </template>
+                  <v-card class="centralizarCard">
+                    <v-card-title class="topoCardTamanho">
+                      <span class="text-h5"
+                        >Selecione uma pergunta para vincular ao produto</span
+                      >
+                    </v-card-title>
+                    <v-card-text class="espacamentoTabPergunta">
+                      <v-text-field
+                        v-model="search2_pergunta"
+                        append-icon="mdi-magnify"
+                        label="Buscar"
+                        single-line
+                        hide-details
+                        class="buscarAdicionarPergunta"
+                      ></v-text-field>
+                      <template>
+                        <v-data-table
+                          v-model="selected"
+                          :headers="headers2"
+                          :items="desserts2"
+                          :search="search2_pergunta"
+                          :single-select="singleSelect"
+                          item-key="codigo"
+                          show-select
+                          class="elevation-1"
+                        >
+                        </v-data-table>
+                      </template>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="red" text @click="dialog_pergunta = false">
+                        Fechar
+                      </v-btn>
+                      <v-btn color="green" text @click="dialog_pergunta = false">
+                        Salvar
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-app>
+            </div>
+
+            <v-app>
+              <v-card>
+                <v-card-title>
+                  <v-text-field
+                    v-model="search_pergunta"
+                    append-icon="mdi-magnify"
+                    label="Buscar"
+                    single-line
+                    hide-details
+                  ></v-text-field>
+                </v-card-title>
+                <v-data-table
+                  :headers="headers_pergunta"
+                  :items="itens_pergunta"
+                  :search="search_pergunta"
+                >
+                  <template v-slot:[`item.actions`]="{ item }">
+                    <v-icon dense @click="deleteItem(item)">
+                      mdi-delete
+                    </v-icon>
+                  </template>
+                </v-data-table>
+              </v-card>
+            </v-app>
+          </div>
+          <!-- FIM PERGUNTA  -->
         </div>
       </div>
 
@@ -162,22 +445,27 @@
 </template>
 
 <script>
-import Detalhes from "@/components/Produtos/Tabs Produtos/DetalhesProdutoTamanho.vue";
-import TabComplementos from "@/components/Tipos Produtos/ProdutosTamanho/TabelaTamanho/TabComplementoTamanho.vue";
-import FichaTecnica from "@/components/Tipos Produtos/ProdutosTamanho/TabelaTamanho/TabFichaTamanho.vue";
-import Pergunta from "@/components/Tipos Produtos/ProdutosTamanho/TabelaTamanho/TabPerguntaTamanho.vue";
+// import Detalhes from "@/components/Produtos/Tabs Produtos/DetalhesProdutoTamanho.vue";
+// import TabComplementos from "@/components/Tipos Produtos/ProdutosTamanho/TabelaTamanho/TabComplementoTamanho.vue";
+// import FichaTecnica from "@/components/Tipos Produtos/ProdutosTamanho/TabelaTamanho/TabFichaTamanho.vue";
+// import Pergunta from "@/components/Tipos Produtos/ProdutosTamanho/TabelaTamanho/TabPerguntaTamanho.vue";
+import TamanhoProd from "@/components/Tipos Produtos/ProdutosTamanho/TabelaTamanho/TabelaTamanho.vue";
+
 import axios from "axios";
 import { baseApiUrl } from "@/global";
 export default {
   name: "NovoProdutoTamanho",
   components: {
-    Detalhes,
-    TabComplementos,
-    FichaTecnica,
-    Pergunta,
+    // Detalhes,
+    // TabComplementos,
+    // FichaTecnica,
+    // Pergunta,
+    TamanhoProd,
   },
   data() {
     return {
+      previewImage: null,
+
       switch1: true,
       categoriaProduto: [],
       tipoProduto: [],
@@ -185,6 +473,155 @@ export default {
       teste2: false,
       teste3: false,
       itemSelect: ["Bebidas", "Frios", "Lanches"],
+
+      // COMPLEMENTOS
+      complementos_static: [],
+      items: ["P", "M", "G"],
+      listaComplementos: [
+        "Alface - R$1,50",
+        "Bacon - R$3,00",
+        "Cebola Frita - R$2,00",
+        "Queijo Prato - R$2,00",
+        "Queijo Cheedar - R$2,50",
+      ],
+
+      //FICHA TECNICA
+
+      dialog: false,
+      reveal: false,
+      search: "",
+      search2: "",
+      headers: [
+        { text: "Nome do Item", value: "nome" },
+        { text: "Qtde.", value: "qtde" },
+        { text: "Medida", value: "medida" },
+        { text: "Custo", value: "custo" },
+        { text: "Ações", value: "actions" },
+      ],
+      itens: [
+        {
+          nome: "Açucar",
+          qtde: "0,200",
+          medida: "Kg",
+          custo: "0,75",
+        },
+        {
+          nome: "Banana",
+          qtde: "0,200",
+          medida: "Kg",
+          custo: "0,75",
+        },
+        {
+          nome: "Açucar",
+          qtde: "0,200",
+          medida: "Kg",
+          custo: "0,75",
+        },
+      ],
+
+      cabecalhoFicha: [
+        { text: "Insumos", value: "nome" },
+        { text: "Medida", value: "medida" },
+        { text: "Preço Custo", value: "custo" },
+        { text: "Ações", value: "actions" },
+      ],
+      itensFicha: [
+        {
+          nome: "Hamburguer",
+          medida: "Kg",
+          custo: "2",
+        },
+        {
+          nome: "Presunto",
+          medida: "Kg",
+          custo: "1",
+        },
+        {
+          nome: "Queijo",
+          medida: "Kg",
+          custo: "0,75",
+        },
+      ],
+
+      // PERGUNTA
+
+      dialog_pergunta: false,
+      reveal_pergunta: false,
+      search_pergunta: "",
+      search2_pergunta: "",
+      headers_pergunta: [
+        { text: "Tipo", value: "tipo" },
+        { text: "Ordem", value: "ordem" },
+        { text: "Pergunta", value: "pergunta" },
+        { text: "Opções de Resposta", value: "opcoesResposta" },
+        { text: "Excluir", value: "actions", sortable: false },
+      ],
+      itens_pergunta: [
+        {
+          tipo: "Compl.",
+          ordem: "1",
+          pergunta: "Quais frutas deseja?",
+          opcoesResposta: "Abacaxi, Banana, Kiwi, Uva",
+        },
+        {
+          tipo: "Prod.",
+          ordem: "2",
+          pergunta: "Quais confeitos deseja?",
+          opcoesResposta: "Abacaxi, Banana, Kiwi, Uva",
+        },
+        {
+          tipo: "Compl.",
+          ordem: "3",
+          pergunta: "Quais frutas deseja?",
+          opcoesResposta: "Abacaxi, Banana, Kiwi, Uva",
+        },
+      ],
+
+      singleSelect: true,
+      selected: [],
+      headers2: [
+        {
+          text: "Cod.",
+          align: "start",
+          sortable: false,
+          value: "codigo",
+        },
+        { text: "Tipo das Respostas", value: "tiposRespostas" },
+        { text: "Pergunta", value: "pergunta" },
+        { text: "Opções de Respostas", value: "opcoesRespostas" },
+      ],
+      desserts2: [
+        {
+          codigo: 2,
+          tiposRespostas: "Compl.",
+          pergunta: "Deseja Molho?",
+          opcoesRespostas: "Molho Branco, Molho Vermelho, Molho de Queijo",
+        },
+        {
+          codigo: 3,
+          tiposRespostas: "Obs.",
+          pergunta: "Qual salada deseja?",
+          opcoesRespostas: "Alface, Couve",
+        },
+        {
+          codigo: 4,
+          tiposRespostas: "Obs.",
+          pergunta: "Qual o tipo de massa?",
+          opcoesRespostas: "Massa espanhola",
+        },
+        {
+          codigo: 5,
+          tiposRespostas: "Prod.",
+          pergunta: "Deseja Bebida?",
+          opcoesRespostas: "Coca-cola, kuat, sprite",
+        },
+        {
+          codigo: 6,
+          tiposRespostas: "Obs.",
+          pergunta: "Deseja talher?",
+          opcoesRespostas: "Sim, Não",
+        },
+      ],
     };
   },
   computed: {
@@ -304,6 +741,21 @@ export default {
           this.tipoProduto = res.data;
         })
         .catch();
+    },
+    pickFile() {
+      let input = this.$refs.fileInput;
+      let file = input.files;
+      if (file && file[0]) {
+        let reader = new FileReader();
+        reader.onload = (e) => {
+          this.previewImage = e.target.result;
+        };
+        reader.readAsDataURL(file[0]);
+        this.$emit("input", file[0]);
+      }
+    },
+    selectImage() {
+      this.$refs.fileInput.click();
     },
   },
   created() {
@@ -592,5 +1044,320 @@ export default {
 
 .theme--light.v-application {
   background-color: #f2f2f2 !important;
+}
+
+/* COMPONENTE DETALHES */
+
+.v-application--wrap {
+  min-height: 0px !important;
+}
+
+.detalhesProduto {
+  background-color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.detalhesProduto textarea {
+  padding: 10px;
+  max-width: 100%;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.formsProdutoTamanho {
+  width: 100%;
+}
+
+.previewImagem {
+  width: 100%;
+  max-width: 250px;
+  height: 250px;
+  display: block;
+  cursor: pointer;
+  margin: 0 auto 10px;
+  background-size: cover;
+  background-position: center center;
+  border: 1px solid black;
+}
+
+.campoImagemProdutoTamanho {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.labelInputFile {
+  padding: 15px 10px;
+  width: 100%;
+  max-width: 250px;
+  background-color: #3decb1;
+  color: black;
+  font-family: "Poppins";
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 0px;
+}
+
+.inputImagem {
+  display: none;
+}
+
+.tituloFoto {
+  font-family: "Poppins";
+  margin-bottom: 5px;
+  font-size: 1rem;
+}
+
+.porcento50 {
+  width: 49%;
+}
+
+.areaDetalhesTamanho {
+  padding: 5px;
+}
+
+.tabelaTamanhoPreco {
+  background-color: #f2f2f2;
+  border: 1px solid black;
+}
+
+/* --- SPAN TABELA ----*/
+
+.headerTabelaProduto {
+  display: flex;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid black;
+}
+
+.porcentagemNomeTabela {
+  width: 40%;
+  padding-left: 10px;
+}
+
+.porcentagemPrecoTabela {
+  width: 30%;
+  padding-left: 5px;
+}
+
+.spanNomeTabela {
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.spanPrecoCustoTabela {
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.spanPrecoVendaTabela {
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+/* COMPLEMENTOS */
+.tituloCompleTamanho {
+  font-size: 1rem;
+  font-family: "Poppins";
+  text-align: center;
+  padding: 20px 0px 20px 0px;
+
+  margin-bottom: 0px;
+}
+
+.appComplementos {
+  display: flex;
+}
+
+.tabComplemento {
+  background-color: white;
+  padding: 20px 20px 40px 20px;
+}
+
+.selecionarComplementos {
+  width: 100% !important;
+  padding: 30px 10px 20px 10px;
+  border-width: 0px 1px 1px 1px;
+  border-color: black;
+  border-style: solid;
+}
+
+.headerTabComplTamanho {
+  display: flex;
+  align-items: center;
+  padding-left: 15px;
+  background-color: #3decb1;
+}
+
+.selectComplTamanho {
+  width: 10%;
+  margin-left: 10px;
+}
+
+/* FICHA TECNICA */
+
+.div-fichatecnica {
+  background-color: white;
+  padding: 20px;
+}
+
+.headerFichaTecnica {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #3decb1;
+}
+
+.tituloFichaTecnicaTamanho {
+  font-size: 1rem;
+  font-family: "Poppins";
+  margin-bottom: 0px;
+  padding: 10px 10px 10px 10px;
+}
+
+.botao-novo {
+  display: flex;
+  align-items: center;
+  -content: center;
+  background-color: white;
+  padding: 10px;
+  border-radius: 15px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.botao-novo:hover {
+  text-decoration: none;
+}
+
+.v-card--reveal {
+  bottom: 0;
+  opacity: 1 !important;
+  position: absolute;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.botao-novo img {
+  width: 15px;
+  height: 15px;
+  margin-right: 10px;
+}
+
+.botao-novo h1 {
+  font-family: "Rubik";
+  font-size: 1rem;
+  color: black;
+  margin: 0px;
+}
+
+.botaoAdicionarItem {
+  font-family: "Rubik";
+  text-transform: capitalize;
+  font-size: 1rem;
+  color: black;
+}
+
+.dialogFicha {
+  display: flex;
+  flex-direction: column;
+}
+
+.v-input {
+  width: 100%;
+}
+
+/* CARD QUANTIDADE GRAMAS */
+
+.formQuantG {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputG {
+  border: 1px solid black;
+  outline: none; /*borda que aparece quando clicamos*/
+  padding: 5px;
+  background: white;
+  font-size: 0.8rem;
+  font-family: "Poppins";
+  border-radius: 5px;
+  width: 100%;
+}
+
+.centralizar-Conteudo {
+  display: flex;
+  justify-content: center;
+}
+
+.titulo-quantidadeG {
+  text-align: center;
+  font-family: "Poppins";
+  font-size: 1.2rem;
+}
+
+.headerFichaTecnicaTamanho {
+  display: flex;
+}
+
+/* PERGUNTA */
+.divTabPergunta {
+  background-color: white;
+  padding: 20px;
+}
+
+.headerTabPergunta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #3decb1;
+}
+
+.tituloTabPerguntaTamanho {
+  font-size: 1rem;
+  font-family: "Poppins";
+  margin-bottom: 0px;
+  padding: 10px 10px 10px 10px;
+}
+
+.dialogTabPergunta {
+  display: flex;
+  flex-direction: column;
+}
+
+.botao-novaPergunta {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.imgButtonPergunta {
+  margin-right: 5px;
+  width: 18px;
+  height: 18px;
+}
+
+.espacamentoTabPergunta {
+  margin-top: 10px;
+}
+
+.buscarAdicionarPergunta {
+  margin-bottom: 15px;
+  border: 1px solid black;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.headerTabPerguntaTamanho {
+  display: flex;
 }
 </style>

@@ -59,6 +59,13 @@ export default {
       produtos: [],
     };
   },
+  created() {
+    console.log("chama reset");
+    this.$store.commit("resetProduto");
+  },
+  updated() {
+    this.$store.commit("resetProduto");
+  },
 };
 </script>
 
