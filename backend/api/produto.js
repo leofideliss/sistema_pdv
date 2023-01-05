@@ -74,7 +74,21 @@ module.exports = app => {
             return res.status(400).send(err.msg)
         }
         if (produto.id) {
-            console.log('entrei atualizar')
+
+            const tamanhoProduto = {
+                id_produto: produto.id,
+                tamanho: 'Unico',
+                preco_venda: produto.preco_venda,
+                preco_custo: produto.preco_custo,
+            }
+            
+            await app.db('produtosTamanho')
+                .update(tamanhoProduto)
+                .where({ id_produto: produto.id })
+
+            delete produto.preco_custo
+            delete produto.preco_venda
+
             await app.db('produtos')
                 .update(produto)
                 .where({ id: produto.id })
@@ -152,12 +166,25 @@ module.exports = app => {
             }
             return res.status(204).send()
         } else {
-            console.log('entrei novo')
+            let tamanhoProduto = {
+                tamanho: 'Unico',
+                preco_venda: produto.preco_venda,
+                preco_custo: produto.preco_custo,
+            }
+
+            delete produto.preco_custo
+            delete produto.preco_venda
 
             const id_prod = await app.db('produtos')
                 .insert(produto, 'id')
                 .then()
                 .catch((err) => res.status(500).send(err))
+
+            tamanhoProduto.id_produto = id_prod[0].id
+
+            console.log(tamanhoProduto)
+            await app.db('produtosTamanho')
+                .insert(tamanhoProduto)
 
             if (perguntas.length != 0) {
 
@@ -207,6 +234,7 @@ module.exports = app => {
     const getAllProdutos = async (req, res) => {
         await app.db('produtos')
             .join('categoriaProduto', 'produtos.id_categoria', '=', 'categoriaProduto.id')
+            .join('produtosTamanho', 'produtos.id', '=', 'produtosTamanho.id_produto')
             .select('produtos.nome as prodNome', 'produtos.id as prodID', 'categoriaProduto.nome as nomeCategoria', '*')
             .then(produtos => res.json(produtos))
             .catch((err) => res.status(500).send(err))
@@ -216,6 +244,7 @@ module.exports = app => {
     const getProdutoById = async (req, res) => {
         await app.db('produtos')
             .join('categoriaProduto', 'produtos.id_categoria', '=', 'categoriaProduto.id')
+            .join('produtosTamanho', 'produtos.id', '=', 'produtosTamanho.id_produto')
             .first('produtos.nome as prodNome', 'produtos.id as prodID', 'categoriaProduto.nome as nomeCategoria', '*')
             .where({ 'produtos.id': req.params.id })
             .then(produto => res.json(produto))
