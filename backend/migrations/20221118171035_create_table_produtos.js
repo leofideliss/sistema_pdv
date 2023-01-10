@@ -12,7 +12,6 @@ exports.up = function(knex) {
     table.integer('id_tipo').unsigned()
     table.foreign('id_tipo').references('id').inTable('tiposProduto')
     table.string('medida').notNullable()
-    
     table.string('descricao')
     table.binary('imagem_prod')
   })

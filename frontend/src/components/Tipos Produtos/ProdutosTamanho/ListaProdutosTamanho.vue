@@ -60,7 +60,6 @@ export default {
     };
   },
   created() {
-    console.log("chama reset");
     this.$store.commit("resetProduto");
   },
   updated() {

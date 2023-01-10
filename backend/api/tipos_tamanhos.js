@@ -43,8 +43,8 @@ module.exports = app => {
             .catch((err) => res.status(500).send(err))
     }
 
-    const getAllTiposProdutos = (req, res) => {
-        app.db('tiposProduto')
+    const getAllTiposProdutos = async (req, res) => {
+        await app.db('tiposProduto')
             .select()
             .then(tipo => res.json(tipo))
             .catch((err) => res.status(500).send(err))

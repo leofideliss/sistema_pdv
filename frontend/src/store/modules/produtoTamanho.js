@@ -5,15 +5,17 @@ export default {
             status: '',
             codigo: '',
             medida: '',
-            preco_custo: '',
-            preco_venda: '',
+        
             descricao: '',
             image: '',
             categoria: '',
             tipo:'',
             selectComplementos: [],
-            selectInsumo:[],
             selectPerguntas :[],
+            tamanhos:[],
+            itensPequeno:[],
+            itensMedio:[],
+            itensGrande:[],
         }
     },
     getters: {},
@@ -30,12 +32,7 @@ export default {
         alteraMedidaProduto(state, value) {
             state.item.medida = value
         },
-        alteraPrecoCustoProduto(state, value) {
-            state.item.preco_custo = value
-        },
-        alteraPrecoVendaProduto(state, value) {
-            state.item.preco_venda = value
-        },
+        
         alteraDescricaoProduto(state, value) {
             state.item.descricao = value
         },
@@ -47,18 +44,15 @@ export default {
         },
         alteraComplementosProduto(state, value) {
             state.item.selectComplementos = value
-
         },
-        alteraInsumoProduto(state, value) {
-            state.item.selectInsumo = value
-        },
+     
         alteraPerguntasProduto(state, value) {
             state.item.selectPerguntas = value
         },
         alteraTipoProduto(state,value){
             state.item.tipo = value
         },
-        removePerguntasProduto(state, value) {
+        removePerguntasProdutoTamanho(state, value) {
             state.item.selectPerguntas.splice(state.item.selectPerguntas.findIndex(({ id }) => id == value), 1)
         },
 
@@ -68,16 +62,30 @@ export default {
                 status: '',
                 codigo: '',
                 medida: '',
-                preco_custo: '',
-                preco_venda: '',
+             
                 descricao: '',
                 image: '',
                 categoria: '',
                 selectComplementos: [],
-                selectInsumo:[],
                 selectPerguntas :[],
             }
-        }
+
+          
+        },
+        alteraTamanhosProduto(state, value) {
+            state.item.tamanhos.push(value)
+        },
+
+        alteraItensPequeno(state, value) {
+            state.item.itensPequeno = value
+        },
+
+        alteraItensMedio(state, value) {
+            state.item.itensMedio = value
+        },
+        alteraItensGrande(state, value) {
+            state.item.itensGrande = value
+        },
 
 
     },

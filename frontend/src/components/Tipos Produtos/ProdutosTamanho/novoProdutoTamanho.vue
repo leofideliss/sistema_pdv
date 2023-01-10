@@ -54,11 +54,12 @@
             <label for="precoCategoria"> Tipo </label>
 
             <v-select
-              v-model="tipo"
+              v-model="tipoSelect"
               :items="tipoProduto"
               item-text="nome"
               item-value="id"
               label="Tipo"
+              @change="getTamanhos"
             ></v-select>
           </div>
           <div class="campos-formulario campoMedida">
@@ -161,10 +162,12 @@
                   <span class="spanPrecoVendaTabela">Preço de Venda</span>
                 </div>
               </div>
-              <div>
-                <TamanhoProd></TamanhoProd>
-                <TamanhoProd></TamanhoProd>
-                <TamanhoProd></TamanhoProd>
+              <div v-for="itens in tamanhos" :key="itens.id">
+                <TamanhoProd
+                  :sigla="itens.sigla"
+                  :nome="itens.descricao"
+                  :id_tamanho="itens.id"
+                ></TamanhoProd>
               </div>
             </div>
             <div class="porcento50 areaDetalhesTamanho">
@@ -206,17 +209,19 @@
                 <h1 class="tituloCompleTamanho">
                   Selecione os complementos opcionais para seu tamanho:
                 </h1>
-                <select class="input-select selectComplTamanho">
+                <!-- <select class="input-select selectComplTamanho">
                   <option value="valor1">Broto (P)</option>
                   <option value="valor2">Média (M)</option>
                   <option value="valor3">Grande (G)</option>
-                </select>
+                </select> -->
               </div>
 
               <div class="selecionarComplementos">
                 <v-select
-                  v-model="complementos_static"
+                  v-model="complementos"
                   :items="listaComplementos"
+                  item-text="nome"
+                  item-value="id"
                   label="Todos Complementos"
                   multiple
                   chips
@@ -234,11 +239,21 @@
                 <h1 class="tituloFichaTecnicaTamanho">
                   Selecione os itens que compõem o tamanho:
                 </h1>
-                <select class="input-select selectComplTamanho">
+
+                <!-- <select class="input-select selectComplTamanho">
                   <option value="valor1">Broto (P)</option>
                   <option value="valor2">Média (M)</option>
                   <option value="valor3">Grande (G)</option>
-                </select>
+                </select> -->
+                <v-select
+                  v-model="selectTamanho"
+                  class="input-select selectComplTamanho"
+                  :items="tamanhos"
+                  item-text="descricao"
+                  item-value="descricao"
+                  no-data-text="Selecione o Tipo!"
+                >
+                </v-select>
               </div>
 
               <v-app>
@@ -261,7 +276,7 @@
                           hide-details
                         ></v-text-field>
 
-                        <v-data-table
+                        <!-- <v-data-table
                           :headers="cabecalhoFicha"
                           :items="itensFicha"
                           :search="search2"
@@ -276,6 +291,48 @@
                               mdi-pencil
                             </v-icon>
                           </template>
+                        </v-data-table> -->
+
+                        <v-data-table
+                          name="pequeno"
+                          id="pequeno"
+                          v-if="selectTamanho == 'Pequeno'"
+                          v-model="itensPequeno"
+                          :headers="cabecalhoFicha"
+                          :items="itensFicha"
+                          :search="searchFicha"
+                          show-select
+                          no-data-text="Nenhum item selecionado"
+                          no-results-text="Nenhum item encontrado"
+                        >
+                        </v-data-table>
+
+                        <v-data-table
+                          name="medio"
+                          id="medio"
+                          v-if="selectTamanho == 'Medio'"
+                          v-model="itensMedio"
+                          :headers="cabecalhoFichaM"
+                          :items="itensFicha"
+                          :search="searchFicha"
+                          show-select
+                          no-data-text="Nenhum item selecionado"
+                          no-results-text="Nenhum item encontrado"
+                        >
+                        </v-data-table>
+
+                        <v-data-table
+                          name="grande"
+                          id="grande"
+                          v-if="selectTamanho == 'Grande'"
+                          v-model="itensGrande"
+                          :headers="cabecalhoFichaG"
+                          :items="itensFicha"
+                          :search="searchFicha"
+                          show-select
+                          no-data-text="Nenhum item selecionado"
+                          no-results-text="Nenhum item encontrado"
+                        >
                         </v-data-table>
                       </v-card-title>
                     </div>
@@ -333,8 +390,122 @@
                   hide-details
                 ></v-text-field>
               </v-card-title>
-              <v-data-table :headers="headers" :items="itens" :search="search">
+
+              <v-data-table
+                name="pequeno"
+                id="pequeno"
+                v-if="selectTamanho == 'Pequeno'"
+                :headers="headersFichaP"
+                :items="itensPequeno"
+                :search="search"
+                no-data-text="Nenhum item selecionado"
+                no-results-text="Nenhum item encontrado"
+              >
+                <template v-slot:[`item.qtd`]="props">
+                  <v-edit-dialog
+                    :return-value.sync="props.item.qtdP"
+                    @save="save"
+                    @cancel="cancel"
+                    @open="open"
+                    @close="close"
+                  >
+                    {{ props.item.qtdP ? props.item.qtdP : 1 }}
+                    <template v-slot:input>
+                      <v-text-field
+                        v-model="props.item.qtdP"
+                        label="Edit"
+                      ></v-text-field>
+                    </template>
+                  </v-edit-dialog>
+                </template>
               </v-data-table>
+              <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
+                {{ snackText }}
+
+                <template v-slot:action="{ attrs }">
+                  <v-btn v-bind="attrs" text @click="snack = false">
+                    FECHAR
+                  </v-btn>
+                </template>
+              </v-snackbar>
+
+              <v-data-table
+                name="medio"
+                id="medio"
+                v-if="selectTamanho == 'Medio'"
+                :headers="headersFichaM"
+                :items="itensMedio"
+                :search="search"
+                no-data-text="Nenhum item selecionado"
+                no-results-text="Nenhum item encontrado"
+              >
+                <template v-slot:[`item.qtd`]="props">
+                  <v-edit-dialog
+                    :return-value.sync="props.item.qtdM"
+                    @save="save"
+                    @cancel="cancel"
+                    @open="open"
+                    @close="close"
+                  >
+                    {{ props.item.qtdM ? props.item.qtdM : 1 }}
+
+                    <template v-slot:input>
+                      <v-text-field
+                        v-model="props.item.qtdM"
+                        label="Edit"
+                      ></v-text-field>
+                    </template>
+                  </v-edit-dialog>
+                </template>
+              </v-data-table>
+              <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
+                {{ snackText }}
+
+                <template v-slot:action="{ attrs }">
+                  <v-btn v-bind="attrs" text @click="snack = false">
+                    FECHAR
+                  </v-btn>
+                </template>
+              </v-snackbar>
+
+              <v-data-table
+                name="grande"
+                id="grande"
+                v-if="selectTamanho == 'Grande'"
+                :headers="headersFichaG"
+                :items="itensGrande"
+                :search="search"
+                no-data-text="Nenhum item selecionado"
+                no-results-text="Nenhum item encontrado"
+              >
+                <template v-slot:[`item.qtd`]="props">
+                  <v-edit-dialog
+                    :return-value.sync="props.item.qtdG"
+                    @save="save"
+                    @cancel="cancel"
+                    @open="open"
+                    @close="close"
+                  >
+                    {{ props.item.qtdG ? props.item.qtdG : 1 }}
+
+                    <template v-slot:input>
+                      <v-text-field
+                        v-model="props.item.qtdG"
+                        label="Edit"
+                      ></v-text-field>
+                    </template>
+                  </v-edit-dialog>
+                </template>
+              </v-data-table>
+              <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
+                {{ snackText }}
+
+                <template v-slot:action="{ attrs }">
+                  <v-btn v-bind="attrs" text @click="snack = false">
+                    FECHAR
+                  </v-btn>
+                </template>
+              </v-snackbar>
             </v-card>
           </div>
           <!-- FIM FICHA TECNICA -->
@@ -345,15 +516,19 @@
                 <h1 class="tituloTabPerguntaTamanho">
                   Selecione as perguntas do tamanho:
                 </h1>
-                <select class="input-select selectComplTamanho">
+                <!-- <select class="input-select selectComplTamanho">
                   <option value="valor1">Broto (P)</option>
                   <option value="valor2">Média (M)</option>
                   <option value="valor3">Grande (G)</option>
-                </select>
+                </select> -->
               </div>
 
               <v-app>
-                <v-dialog v-model="dialog_pergunta" persistent max-width="1000px">
+                <v-dialog
+                  v-model="dialog_pergunta"
+                  persistent
+                  max-width="1000px"
+                >
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn class="botao-novaPergunta" v-bind="attrs" v-on="on">
                       <img
@@ -372,7 +547,7 @@
                     </v-card-title>
                     <v-card-text class="espacamentoTabPergunta">
                       <v-text-field
-                        v-model="search2_pergunta"
+                        v-model="searchPergunta"
                         append-icon="mdi-magnify"
                         label="Buscar"
                         single-line
@@ -381,14 +556,14 @@
                       ></v-text-field>
                       <template>
                         <v-data-table
-                          v-model="selected"
-                          :headers="headers2"
-                          :items="desserts2"
-                          :search="search2_pergunta"
-                          :single-select="singleSelect"
-                          item-key="codigo"
+                          v-model="selectPerguntas"
+                          :headers="headersPerguntas"
+                          :items="perguntas"
+                          :search="searchPergunta"
                           show-select
                           class="elevation-1"
+                          no-data-text="Nenhum item selecionado"
+                          no-results-text="Nenhum item encontrado"
                         >
                         </v-data-table>
                       </template>
@@ -398,7 +573,11 @@
                       <v-btn color="red" text @click="dialog_pergunta = false">
                         Fechar
                       </v-btn>
-                      <v-btn color="green" text @click="dialog_pergunta = false">
+                      <v-btn
+                        color="green"
+                        text
+                        @click="dialog_pergunta = false"
+                      >
                         Salvar
                       </v-btn>
                     </v-card-actions>
@@ -407,7 +586,7 @@
               </v-app>
             </div>
 
-            <v-app>
+            <!-- <v-app>
               <v-card>
                 <v-card-title>
                   <v-text-field
@@ -430,6 +609,33 @@
                   </template>
                 </v-data-table>
               </v-card>
+            </v-app> -->
+
+            <v-app>
+              <v-card>
+                <v-card-title>
+                  <v-text-field
+                    v-model="search"
+                    append-icon="mdi-magnify"
+                    label="Buscar"
+                    single-line
+                    hide-details
+                  ></v-text-field>
+                </v-card-title>
+                <v-data-table
+                  :headers="headers"
+                  :items="selectPerguntas"
+                  :search="search"
+                  no-data-text="Nenhum item selecionado"
+                  no-results-text="Nenhum item encontrado"
+                >
+                  <template v-slot:[`item.actions`]="{ item }">
+                    <v-icon dense @click="deleteItem(item)">
+                      mdi-delete
+                    </v-icon>
+                  </template>
+                </v-data-table>
+              </v-card>
             </v-app>
           </div>
           <!-- FIM PERGUNTA  -->
@@ -437,8 +643,10 @@
       </div>
 
       <div class="botaos-form">
-        <button class="botao-cancelar">Cancelar</button>
-        <button class="botao-salvar">Salvar</button>
+        <button class="botao-cancelar" @click.prevent="voltar">Cancelar</button>
+        <button class="botao-salvar" @click.prevent="salvarProduto">
+          Salvar
+        </button>
       </div>
     </form>
   </div>
@@ -465,163 +673,97 @@ export default {
   data() {
     return {
       previewImage: null,
-
+      tipoSelect: "",
       switch1: true,
       categoriaProduto: [],
       tipoProduto: [],
       teste: true,
       teste2: false,
       teste3: false,
-      itemSelect: ["Bebidas", "Frios", "Lanches"],
+      teste4: false,
+      tamanhos: [],
 
       // COMPLEMENTOS
       complementos_static: [],
-      items: ["P", "M", "G"],
-      listaComplementos: [
-        "Alface - R$1,50",
-        "Bacon - R$3,00",
-        "Cebola Frita - R$2,00",
-        "Queijo Prato - R$2,00",
-        "Queijo Cheedar - R$2,50",
-      ],
 
       //FICHA TECNICA
 
+      selectTamanho: "",
       dialog: false,
       reveal: false,
       search: "",
       search2: "",
-      headers: [
-        { text: "Nome do Item", value: "nome" },
-        { text: "Qtde.", value: "qtde" },
+      headersFichaP: [
+        { text: "Nome do Item", value: "nomeInsumo" },
+        { text: "Qtde.", value: "qtd" },
         { text: "Medida", value: "medida" },
-        { text: "Custo", value: "custo" },
-        { text: "Ações", value: "actions" },
+        { text: "Custo", value: "preco" },
+        // { text: "Ações", value: "actions" },
       ],
-      itens: [
-        {
-          nome: "Açucar",
-          qtde: "0,200",
-          medida: "Kg",
-          custo: "0,75",
-        },
-        {
-          nome: "Banana",
-          qtde: "0,200",
-          medida: "Kg",
-          custo: "0,75",
-        },
-        {
-          nome: "Açucar",
-          qtde: "0,200",
-          medida: "Kg",
-          custo: "0,75",
-        },
+      headersFichaM: [
+        { text: "Nome do Item", value: "nomeInsumo" },
+        { text: "Qtde.", value: "qtd" },
+        { text: "Medida", value: "medida" },
+        { text: "Custo", value: "preco" },
+        // { text: "Ações", value: "actions" },
+      ],
+      headersFichaG: [
+        { text: "Nome do Item", value: "nomeInsumo" },
+        { text: "Qtde.", value: "qtd" },
+        { text: "Medida", value: "medida" },
+        { text: "Custo", value: "preco" },
+        // { text: "Ações", value: "actions" },
       ],
 
       cabecalhoFicha: [
-        { text: "Insumos", value: "nome" },
+        { text: "Insumos", value: "nomeInsumo" },
         { text: "Medida", value: "medida" },
-        { text: "Preço Custo", value: "custo" },
-        { text: "Ações", value: "actions" },
+        { text: "Preço Custo", value: "preco" },
+        // { text: "Ações", value: "actions" },
       ],
-      itensFicha: [
-        {
-          nome: "Hamburguer",
-          medida: "Kg",
-          custo: "2",
-        },
-        {
-          nome: "Presunto",
-          medida: "Kg",
-          custo: "1",
-        },
-        {
-          nome: "Queijo",
-          medida: "Kg",
-          custo: "0,75",
-        },
+
+      cabecalhoFichaM: [
+        { text: "Insumos", value: "nomeInsumo" },
+        { text: "Medida", value: "medida" },
+        { text: "Preço Custo", value: "preco" },
+        // { text: "Ações", value: "actions" },
       ],
+
+      cabecalhoFichaG: [
+        { text: "Insumos", value: "nomeInsumo" },
+        { text: "Medida", value: "medida" },
+        { text: "Preço Custo", value: "preco" },
+        // { text: "Ações", value: "actions" },
+      ],
+      itensFicha: [],
 
       // PERGUNTA
 
       dialog_pergunta: false,
       reveal_pergunta: false,
       search_pergunta: "",
-      search2_pergunta: "",
-      headers_pergunta: [
+      searchPergunta: "",
+      headers: [
         { text: "Tipo", value: "tipo" },
-        { text: "Ordem", value: "ordem" },
+        // { text: "Ordem", value: "ordem" },
         { text: "Pergunta", value: "pergunta" },
-        { text: "Opções de Resposta", value: "opcoesResposta" },
+        { text: "Opções de Resposta", value: "opcoesRespostas" },
         { text: "Excluir", value: "actions", sortable: false },
-      ],
-      itens_pergunta: [
-        {
-          tipo: "Compl.",
-          ordem: "1",
-          pergunta: "Quais frutas deseja?",
-          opcoesResposta: "Abacaxi, Banana, Kiwi, Uva",
-        },
-        {
-          tipo: "Prod.",
-          ordem: "2",
-          pergunta: "Quais confeitos deseja?",
-          opcoesResposta: "Abacaxi, Banana, Kiwi, Uva",
-        },
-        {
-          tipo: "Compl.",
-          ordem: "3",
-          pergunta: "Quais frutas deseja?",
-          opcoesResposta: "Abacaxi, Banana, Kiwi, Uva",
-        },
       ],
 
       singleSelect: true,
-      selected: [],
-      headers2: [
+      headersPerguntas: [
         {
           text: "Cod.",
           align: "start",
           sortable: false,
-          value: "codigo",
+          value: "id",
         },
-        { text: "Tipo das Respostas", value: "tiposRespostas" },
+        { text: "Tipo das Respostas", value: "tipo" },
         { text: "Pergunta", value: "pergunta" },
         { text: "Opções de Respostas", value: "opcoesRespostas" },
       ],
-      desserts2: [
-        {
-          codigo: 2,
-          tiposRespostas: "Compl.",
-          pergunta: "Deseja Molho?",
-          opcoesRespostas: "Molho Branco, Molho Vermelho, Molho de Queijo",
-        },
-        {
-          codigo: 3,
-          tiposRespostas: "Obs.",
-          pergunta: "Qual salada deseja?",
-          opcoesRespostas: "Alface, Couve",
-        },
-        {
-          codigo: 4,
-          tiposRespostas: "Obs.",
-          pergunta: "Qual o tipo de massa?",
-          opcoesRespostas: "Massa espanhola",
-        },
-        {
-          codigo: 5,
-          tiposRespostas: "Prod.",
-          pergunta: "Deseja Bebida?",
-          opcoesRespostas: "Coca-cola, kuat, sprite",
-        },
-        {
-          codigo: 6,
-          tiposRespostas: "Obs.",
-          pergunta: "Deseja talher?",
-          opcoesRespostas: "Sim, Não",
-        },
-      ],
+      perguntas: [],
     };
   },
   computed: {
@@ -702,26 +844,46 @@ export default {
     },
     complementos: {
       get() {
-        return this.$store.state.produto.item.selectComplementos;
+        return this.$store.state.produtoTamanho.item.selectComplementos;
       },
       set(value) {
         this.$store.commit("alteraComplementosProduto", value);
       },
     },
-    selectInsumo: {
-      get() {
-        return this.$store.state.produto.item.selectInsumo;
-      },
-      set(value) {
-        this.$store.commit("alteraInsumoProduto", value);
-      },
-    },
+
     selectPerguntas: {
       get() {
-        return this.$store.state.produto.item.selectPerguntas;
+        return this.$store.state.produtoTamanho.item.selectPerguntas;
       },
       set(value) {
         this.$store.commit("alteraPerguntasProduto", value);
+      },
+    },
+
+    itensPequeno: {
+      get() {
+        return this.$store.state.produtoTamanho.item.itensPequeno;
+      },
+      set(value) {
+        this.$store.commit("alteraItensPequeno", value);
+      },
+    },
+
+    itensMedio: {
+      get() {
+        return this.$store.state.produtoTamanho.item.itensMedio;
+      },
+      set(value) {
+        this.$store.commit("alteraItensMedio", value);
+      },
+    },
+
+    itensGrande: {
+      get() {
+        return this.$store.state.produtoTamanho.item.itensGrande;
+      },
+      set(value) {
+        this.$store.commit("alteraItensGrande", value);
       },
     },
   },
@@ -757,10 +919,133 @@ export default {
     selectImage() {
       this.$refs.fileInput.click();
     },
+
+    getTamanhos() {
+      this.tipo = this.tipoSelect;
+      axios
+        .get(`${baseApiUrl}/produtoTamanhos/${this.tipoSelect}`)
+        .then((res) => {
+          this.tamanhos = res.data;
+          console.log(this.tamanhos);
+        })
+        .catch();
+    },
+    salvarProduto() {
+      const method = this.id ? "put" : "post";
+      const id = this.id ? this.id : "";
+
+      axios[method](`${baseApiUrl}/produtosComTamanhos/${id}`, this.item)
+        .then(() => {
+          this.$router.back();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getAllInsumos() {
+      axios
+        .get(`${baseApiUrl}/insumo`)
+        .then((res) => {
+          var itens;
+
+          itens = res.data;
+          itens.forEach((element) => {
+            var obj = {
+              id: element.id,
+              preco: element.preco.toLocaleString("pt-br", {
+                style: "currency",
+                currency: "BRL",
+              }),
+              nomeInsumo: element.nomeInsumo,
+              medida: element.medida,
+              qtd: 1,
+            };
+
+            this.itensFicha.push(obj);
+          });
+        })
+        .catch();
+    },
+    getAllComplementos() {
+      axios
+        .get(`${baseApiUrl}/complemento`)
+        .then((res) => {
+          this.listaComplementos = res.data;
+          this.listaComplementos.forEach((element) => {
+            element.preco_venda = element.preco_venda.toLocaleString("pt-br", {
+              style: "currency",
+              currency: "BRL",
+            });
+            element.preco_custo = element.preco_custo.toLocaleString("pt-br", {
+              style: "currency",
+              currency: "BRL",
+            });
+            element.status
+              ? (element.status = "Ativo")
+              : (element.status = "Pausado");
+          });
+        })
+        .catch();
+    },
+    getAllPerguntas() {
+      axios
+        .get(`${baseApiUrl}/perguntas`)
+        .then((res) => {
+          res.data.forEach((element) => {
+            var respostas = {};
+            if (element.tipo == "observacao")
+              respostas = this.getPerguntaByIdObs(element.id);
+            if (element.tipo == "complemento")
+              respostas = this.getPerguntaByIdComp(element.id);
+            var objPergunta = {
+              id: element.id,
+              tipo: element.tipo,
+              pergunta: element.pergunta,
+              opcoesRespostas: respostas,
+            };
+            this.perguntas.push(objPergunta);
+          });
+          console.log(this.perguntas);
+        })
+        .catch();
+    },
+    getPerguntaByIdObs(id) {
+      var respostas = [];
+      axios
+        .get(`${baseApiUrl}/perguntasObservacao/${id}`)
+        .then((res) => {
+          res.data.forEach((element) => {
+            respostas.push(element.descricao);
+          });
+        })
+        .catch();
+      return respostas;
+    },
+    getPerguntaByIdComp(id) {
+      var respostas = [];
+      axios
+        .get(`${baseApiUrl}/perguntasComplemento/${id}`)
+        .then((res) => {
+          res.data.forEach((element) => {
+            respostas.push(element.nome);
+          });
+        })
+        .catch();
+      return respostas;
+    },
+    voltar() {
+      this.$router.back();
+    },
+    deleteItem(item) {
+      this.$store.commit("removePerguntasProdutoTamanho", item.id);
+    },
   },
   created() {
     this.getAllCategoriaProduto();
     this.getAllTipoProduto();
+    this.getAllInsumos();
+    this.getAllComplementos();
+    this.getAllPerguntas();
   },
 };
 </script>
