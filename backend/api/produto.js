@@ -62,9 +62,6 @@ module.exports = app => {
         delete produto.insumos
         delete produto.perguntas
 
-        // console.log('complementos', complementos)
-        // console.log('insumos', insumos)
-        // console.log('perguntas', perguntas)
         if (req.params.id) produto.id = req.params.id
 
         try {
@@ -225,7 +222,6 @@ module.exports = app => {
     }
 
     const deleteProduto = async (req, res) => {
-        console.log('entrei delete')
         await app.db('produtos')
             .where({ id: req.params.id })
             .del()
@@ -290,16 +286,12 @@ module.exports = app => {
     const saveProdTamanho = async (req, res) => {
 
         const produto = { ...req.body }
-        console.log(produto)
         let complementos = produto.selectComplementos
         let perguntas = produto.selectPerguntas
 
         delete produto.complementos
         delete produto.perguntas
 
-        // console.log('complementos', complementos)
-        // console.log('insumos', insumos)
-        // console.log('perguntas', perguntas)
         if (req.params.id) produto.id = req.params.id
 
         try {
@@ -431,9 +423,19 @@ module.exports = app => {
                 .catch((err) => res.status(500).send(err))
 
 
-           
-            const fieldsToInsertProdutosTamanho = produto.tamanhos.map(field =>
+            var fieldsToInsertProdutosTamanho = produto.tamanhos.map(field =>
                 ({ id_produto: id_prod[0].id, tamanho: field.descricao, sigla: field.sigla, preco_venda: field.preco_venda, preco_custo: field.preco_custo }));
+
+
+            function compare(a, b) {
+                if (a.sigla < b.sigla)
+                    return 1;
+                if (a.sigla > b.sigla)
+                    return -1;
+                return 0;
+            }
+
+            fieldsToInsertProdutosTamanho.sort(compare)
 
             const id_tamanho = await app.db('produtosTamanho')
                 .insert(fieldsToInsertProdutosTamanho, 'id')
@@ -460,17 +462,32 @@ module.exports = app => {
                     .insert(fieldsToInsertComplementos)
                     .catch((err) => res.status(500).send(err))
             }
-            // if (insumos.length != 0) {
 
-            //     const fieldsToInsertInsumos = insumos.map(field =>
-            //         ({ id_produto: id_tamanho[0].id, id_insumo: field.id, qtd: field.qtd }));
 
-            //     await app.db('produto_insumo')
-            //         .insert(fieldsToInsertInsumos)
-            //         .catch((err) => res.status(500).send(err))
+            if (produto.itensPequeno.length != 0) {
+                const fieldsToInsertInsumosP = produto.itensPequeno.map(field =>
+                    ({ id_produto: id_tamanho[0].id, id_insumo: field.id, qtd: field.qtdP }));
 
-            // }
+                await app.db('produto_insumo')
+                    .insert(fieldsToInsertInsumosP)
+                    .catch((err) => res.status(500).send(err))
+            }
+            if (produto.itensMedio.length != 0) {
+                const fieldsToInsertInsumosM = produto.itensMedio.map(field =>
+                    ({ id_produto: id_tamanho[1].id, id_insumo: field.id, qtd: field.qtdM }));
 
+                await app.db('produto_insumo')
+                    .insert(fieldsToInsertInsumosM)
+                    .catch((err) => res.status(500).send(err))
+            }
+            if (produto.itensGrande.length != 0) {
+                const fieldsToInsertInsumosG = produto.itensGrande.map(field =>
+                    ({ id_produto: id_tamanho[2].id, id_insumo: field.id, qtd: field.qtdG }));
+
+                await app.db('produto_insumo')
+                    .insert(fieldsToInsertInsumosG)
+                    .catch((err) => res.status(500).send(err))
+            }
             return res.status(204).send()
         }
 

@@ -409,7 +409,7 @@
                     @open="open"
                     @close="close"
                   >
-                    {{ props.item.qtdP ? props.item.qtdP : 1 }}
+                    {{ props.item.qtdP ? props.item.qtdP : 0 }}
                     <template v-slot:input>
                       <v-text-field
                         v-model="props.item.qtdP"
@@ -447,7 +447,7 @@
                     @open="open"
                     @close="close"
                   >
-                    {{ props.item.qtdM ? props.item.qtdM : 1 }}
+                    {{ props.item.qtdM ? props.item.qtdM : 0 }}
 
                     <template v-slot:input>
                       <v-text-field
@@ -486,7 +486,7 @@
                     @open="open"
                     @close="close"
                   >
-                    {{ props.item.qtdG ? props.item.qtdG : 1 }}
+                    {{ props.item.qtdG ? props.item.qtdG : 0 }}
 
                     <template v-slot:input>
                       <v-text-field
